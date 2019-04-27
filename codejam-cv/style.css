@@ -1,0 +1,125 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    width: 100%;
+    font-size: 16px;
+    font-family: Arial;
+    color: #fffdf5;
+    background-image: url("./img/kosmos-1.jpg");
+    background-size: cover;
+    
+}
+
+h1 {
+    font-size: 24px;
+    font-family: 'ZCOOL QingKe HuangYou', cursive;
+    color: #ff873e;
+}
+
+h2, h3 {
+    font-size: 18px;
+    font-family: 'Open Sans', sans-serif;
+}
+
+p, .main-section-list {
+    margin-top: 10px;
+}
+
+p, ul {
+    font-family: 'PT Sans', sans-serif;
+}
+
+a {
+    text-decoration: none;
+    color: #21f9fb;
+}
+
+li {
+    list-style: none;
+}
+
+header, main, footer {
+    max-width: 1024px;
+    margin: 20px auto;
+}
+
+.header-wrap {
+    display: flex;
+    flex-flow: row wrap;
+    margin-top: 20px;
+}
+
+.header-wrap > div {
+    margin-left: 50px;
+}
+
+header section {
+    padding: 40px 120px 30px;
+    background-color: #e0d6d666;
+}
+
+section {
+    padding: 15px 120px;
+    background-color: #1a4b6763;
+}
+
+.contacts-block {
+    margin-top: 10px;
+}
+
+.contacts-block li {
+    display: flex;
+    align-items: center;
+}
+
+.contacts-block div {
+    width: 30px;
+    height: 33px;
+    margin-right: 12px;
+    background-image: url(./img/sprite-contacts.png);
+}
+
+.contacts-block div + div {
+    margin-left: 12px;
+}
+
+.phone {
+    background-position-y: -3px; 
+}
+
+.email {
+    background-position-y: -37px;
+}
+
+.telegram {
+    background-position-y: -73px;
+}
+
+.github {
+    background-position-y: -107px;
+}
+
+.first-section {
+    padding-top: 70px;   
+}
+
+.last-section {
+    padding-bottom: 70px;
+}
+
+footer {
+    display: flex;
+    height: 60px; 
+    font-size: .85rem;
+    background-color: #513f7d63;
+}
+
+footer p {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 15px 120px;
+}
