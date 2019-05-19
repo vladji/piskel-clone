@@ -3,13 +3,22 @@ export default class AppView {
     this.clips = clips;
   }
 
-  render() {
-    const search = document.createElement('div');
-    search.innerHTML = '<form action=""><input type="text" value=""><button>SEND</button></form>';
-    document.body.appendChild(search);
+  render(data) {
+    const checkForm = document.querySelector('div');
+    if (!checkForm) {
+      const form = document.createElement('div');
+      form.innerHTML = '<form action=""><input type="text" value=""><button>SEND</button></form>';
+      document.body.appendChild(form);
+    }
 
-    const content = document.createElement('ul');
-    content.innerHTML = this.clips.map(title => `<li>${title}</li>`).join('');
-    document.body.appendChild(content);
+    if (data) this.clips = data;
+
+    let ulTag = document.querySelector('ul');
+    if (!ulTag) {
+      const content = document.createElement('ul');
+      document.body.appendChild(content);
+      ulTag = content;
+    }
+    ulTag.innerHTML = this.clips.map(title => `<li>${title}</li>`).join('');
   }
 }

@@ -16,11 +16,11 @@ export default class App {
     view.render();
 
     const btn = document.querySelector('button');
-    btn.addEventListener('click', async () => {
+    btn.addEventListener('click', async (event) => {
       const query = document.querySelector('input').value;
+      event.preventDefault();
       data = await model.getClips(query);
-      // const clientModel = new AppModel(this.state);
-      // clientModel.getClips(query);
+      view.render(data);
     });
   }
 }
