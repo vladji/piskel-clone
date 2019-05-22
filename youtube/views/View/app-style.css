@@ -8,5 +8,6 @@ ul {
 }
 
 li {
-  background: #ccc;
+  width: 320px;
+  height: 380px;
 }
