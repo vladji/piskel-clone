@@ -3,11 +3,70 @@
   margin: 0;
 }
 
+body {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
 ul {
   list-style: none;
 }
 
-li {
-  width: 320px;
-  height: 380px;
+button {
+  display: none;
+}
+
+form {
+  margin: 30px 0;
+}
+
+.txt-center {
+  text-align: center;
+}
+
+.search-box {
+  width: 40vw;
+  height: 33px;
+  padding-left: 35px;
+  border-style: none;
+  border: 1.5px solid grey;
+  border-radius: 5px;
+  background: url('https://img.icons8.com/ios-glyphs/26/000000/search.png') no-repeat 1% 50%;
+}
+
+input:focus {
+  outline: none;
+}
+
+/* SLIDER */
+
+.wrapper {
+  width: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.wrapper ul {
+  display: flex;
+  width: 9999px;
+}
+
+.wrapper li {
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  margin: 0 25px;
+  padding-top: 210px;
+}
+
+/* NAV Button */
+
+nav {
+  margin-top: 25px;
+}
+
+nav ul {
+  display: flex;
+  justify-content: center;
 }

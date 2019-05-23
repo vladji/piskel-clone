@@ -10,23 +10,27 @@ export default class AppView {
     const checkForm = document.querySelector('div');
     if (!checkForm) {
       const form = document.createElement('div');
-      form.innerHTML = '<form action=""><input type="text" value=""><button>SEND</button></form>';
+      form.classList.add('txt-center');
+      form.innerHTML = '<form action=""><input class="search-box" type="text" value=""><button>SEND</button></form>';
       document.body.appendChild(form);
     }
 
-    let content = document.querySelector('ul');
+    let content = document.querySelector('.wrapper');
     if (!content) {
+      const wrapper = document.createElement('div');
+      wrapper.classList.add('wrapper');
       content = document.createElement('ul');
-      const liArr = new Array(titles.length).join('<li></li>');
+      wrapper.appendChild(content);
+      const liArr = new Array(titles.length + 1).join('<li></li>');
       content.innerHTML = liArr;
-      document.body.appendChild(content);
+      document.body.appendChild(wrapper);
     }
 
-    const itemsList = document.getElementsByTagName('LI');
+    const itemsList = document.querySelectorAll('.wrapper li');
     // eslint-disable-next-line no-restricted-syntax
     for (const i of itemsList) {
       const desStr = descriptions[0].slice(0, 161);
-      i.innerHTML = `<div>${titles[0]}</div><div>${desStr}</div><div>${channel[0]}</div><div>${published[0]}</div><div>${clipStatistics[0]}</div>`;
+      i.innerHTML = `<div>${titles[0]}</div><div>${desStr}...</div><div>${channel[0]}</div><div>${published[0]}</div><div>${clipStatistics[0]}</div>`;
       i.style = `background: url("${pics[0]}") center top no-repeat`;
       titles.splice(0, 1);
       pics.splice(0, 1);
@@ -34,6 +38,16 @@ export default class AppView {
       channel.splice(0, 1);
       published.splice(0, 1);
       clipStatistics.splice(0, 1);
+    }
+  }
+
+  navBtn(count) {
+    this.clips = count;
+    let navBar = document.querySelector('nav');
+    if (!navBar) {
+      navBar = document.createElement('nav');
+      navBar.innerHTML = '<ul><li class="prev-btn">&lt;&lt; Prev</li><li class="counter-page"></li><li class="nex-btn">Next >></li></ul>';
+      document.body.appendChild(navBar);
     }
   }
 }
