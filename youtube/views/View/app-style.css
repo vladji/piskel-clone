@@ -42,21 +42,19 @@ input:focus {
 /* SLIDER */
 
 .wrapper {
-  width: 100%;
-  margin: 0 auto;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 .wrapper ul {
   display: flex;
-  width: 9999px;
+  width: 100%;
 }
 
 .wrapper li {
-  display: flex;
-  flex-direction: column;
-  width: 250px;
-  margin: 0 25px;
+  min-width: 20%;
+  margin: 0 2.5%;
+  /* min-width: 250px;
+  margin: 0 27.5px; */
   padding-top: 210px;
 }
 
@@ -69,4 +67,52 @@ nav {
 nav ul {
   display: flex;
   justify-content: center;
+}
+
+nav ul li {
+  cursor: pointer;
+}
+
+/* MEDIA */
+
+/* @media (max-width: 1215px) {
+  body {
+    max-width: 900px;
+  }
+}
+
+@media (max-width: 917px) {
+  body {
+    max-width: 600px;
+  }
+}
+
+@media (max-width: 617px) {
+  body {
+    max-width: 300px;
+  }
+} */
+
+@media (max-width: 1000px) {
+  .wrapper li {
+    min-width: 30%;
+    margin: 0 1.66%;
+  }
+}
+
+@media (max-width: 768px) {
+  .wrapper li {
+    min-width: 40%;
+    margin: 0 5%;
+  }
+}
+
+@media (max-width: 540px) {
+  .search-box {
+    width: 60vw;
+  }
+  .wrapper li {
+    min-width: 70%;
+    margin: 0 15%;
+  }
 }

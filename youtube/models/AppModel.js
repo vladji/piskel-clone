@@ -1,8 +1,8 @@
 export default class AppModel {
-  constructor(state) {
-    this.state = state;
+  constructor(url) {
+    this.url = url;
     this.urlGetId = {
-      url: 'https://www.googleapis.com/youtube/v3/videos?&key=AIzaSyBlxA3nAtgqIAobnJHamtdMz3sTz1ud89A&part=snippet,statistics',
+      url: 'https://www.googleapis.com/youtube/v3/videos?&key=AIzaSyCTWC75i70moJLzyNh3tt4jzCljZcRkU8Y&part=snippet,statistics',
     };
   }
 
@@ -29,7 +29,7 @@ export default class AppModel {
   }
 
   async getClips(path) {
-    let { url } = this.state;
+    let { url } = this.url;
 
     if (path) {
       url += path;
