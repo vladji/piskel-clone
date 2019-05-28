@@ -28,10 +28,12 @@ export default class AppModel {
     return parsingData;
   }
 
-  async getClips(path) {
+  async getClips(path, token) {
     let { url } = this.url;
 
-    if (path) {
+    if (token && path) {
+      url = `${url}${path}&pageToken=${token}`;
+    } else if (path) {
       url += path;
     } else {
       url += 'dogs';

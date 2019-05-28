@@ -12,15 +12,14 @@ export default class AppView {
     const bodyWidth = document.body.getBoundingClientRect().width;
     const itemsList = document.querySelector('.wrapper ul');
 
-
     if (bodyWidth > 1000) {
       itemsList.style.cssText = `transform: translateX(-${scroll}%);`;
     }
 
     if (bodyWidth < 1000 && bodyWidth > 768) {
-      let trans1 = scroll;
-      trans1 += 33 * counter;
-      itemsList.style.cssText = `transform: translateX(-${trans1}%);`;
+      let trans2 = scroll;
+      trans2 += 33 * counter;
+      itemsList.style.cssText = `transform: translateX(-${trans2}%);`;
     }
 
     if (bodyWidth < 768 && bodyWidth > 540) {
@@ -34,22 +33,9 @@ export default class AppView {
       trans3 += 300 * counter;
       itemsList.style.cssText = `transform: translateX(-${trans3}%);`;
     }
-
-    // let currentScroll = itemsList.style.transform;
-    // console.log(currentScroll);
-    // const btnNext = document.querySelector('.next-btn');
-    // btnNext.addEventListener('click', () => {
-    //   // eslint-disable-next-line no-plusplus
-    //   // eslint-disable-next-line no-param-reassign
-    //   counter++;
-    //   currentScroll += 100;
-    //   AppView.nextSlide(currentScroll, counter);
-    // });
   }
 
-  static nextSlide(scroll, counter) {
-    // const bodyWidth = document.body.getBoundingClientRect().width;
-    // let trans = scroll;
+  static changeSlide(scroll, counter) {
     const itemsList = document.querySelector('.wrapper ul');
     const lastItem = document.querySelector('.wrapper li:last-child');
 
@@ -94,6 +80,9 @@ export default class AppView {
       const navBar = document.createElement('nav');
       navBar.innerHTML = '<ul><li class="prev-btn">&lt;&lt; Prev</li><li class="counter-page"></li><li class="next-btn">Next >></li></ul>';
       document.body.appendChild(navBar);
+    } else {
+      const itemsList = document.querySelector('.wrapper ul');
+      itemsList.style.transform = '';
     }
 
     const itemsList = document.querySelectorAll('.wrapper li');
