@@ -19,6 +19,7 @@ export default class App {
 
     let query = '';
     let counter = 0;
+    const navBlock = document.querySelector('nav');
 
     const btnSearch = document.querySelector('button');
     btnSearch.addEventListener('click', async (event) => {
@@ -29,39 +30,40 @@ export default class App {
       view.render(reData);
     });
 
-    const btnNext = document.querySelector('.next-btn');
-    btnNext.addEventListener('click', async () => {
-      // eslint-disable-next-line no-plusplus
-      counter++;
-      if (counter > 3) {
-        data = await model.getClips(query, token);
-        token = data.nextPageToken;
-        reData = await model.getID(data);
-        view.render(reData);
-      }
+    navBlock.addEventListener('click', async (event) => {
+      const btnNext = document.querySelector('.next-btn');
+      const btnPrev = document.querySelector('.prev-btn');
 
       const itemsList = document.querySelector('.wrapper ul');
-      const tempVal = itemsList.style.transform;
-      let liveScroll;
+      const translateX = itemsList.style.transform;
+      const translateVal = translateX.slice(12);
 
-      if (!tempVal) {
-        const scroll = 100;
-        AppView.changeSlide(scroll, counter);
-      } else {
-        liveScroll = +tempVal.slice(12, -2) + 100;
-        AppView.changeSlide(liveScroll, counter);
+      if (event.target === btnNext) {
+        // eslint-disable-next-line no-plusplus
+        counter++;
+        if (counter % 3 === 0) {
+          data = await model.getClips(query, token);
+          token = data.nextPageToken;
+          reData = await model.getID(data);
+          view.render(reData);
+        }
+
+        if (!translateX) {
+          const scroll = 100;
+          AppView.changeSlide(scroll, counter);
+        } else {
+          const toScroll = parseInt(translateVal, 0) + 100;
+          AppView.changeSlide(toScroll, counter);
+        }
       }
-    });
 
-    const btnPrev = document.querySelector('.prev-btn');
-    btnPrev.addEventListener('click', () => {
-      const itemsList = document.querySelector('.wrapper ul');
-      const tempVal = itemsList.style.transform;
-      // eslint-disable-next-line no-plusplus
-      counter--;
-      if (!itemsList) return;
-      const liveScroll = +tempVal.slice(12, -2) - 100;
-      AppView.changeSlide(liveScroll, counter);
+      if (event.target === btnPrev) {
+        // eslint-disable-next-line no-plusplus
+        counter--;
+        if (!translateX) return;
+        const toScroll = parseInt(translateVal, 0) - 100;
+        AppView.changeSlide(toScroll, counter);
+      }
     });
 
     const itemsBox = document.querySelector('.wrapper ul');
@@ -71,9 +73,5 @@ export default class App {
         document.removeEventListener('mousemove', AppView.move);
       });
     });
-
-    // if (counter == 3) {
-
-    // }
   }
 }

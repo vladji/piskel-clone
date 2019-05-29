@@ -35,6 +35,8 @@ export default class AppModel {
       url = `${url}${path}&pageToken=${token}`;
     } else if (path) {
       url += path;
+    } else if (token) {
+      url = `${url}&pageToken=${token}`;
     } else {
       url += 'dogs';
     }

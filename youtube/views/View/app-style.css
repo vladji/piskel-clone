@@ -52,9 +52,8 @@ input:focus {
 
 .wrapper li {
   min-width: 20%;
+  height: 220px;
   margin: 0 2.5%;
-  /* min-width: 250px;
-  margin: 0 27.5px; */
   padding-top: 210px;
 }
 

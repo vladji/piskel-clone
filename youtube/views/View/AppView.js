@@ -66,31 +66,25 @@ export default class AppView {
       document.body.appendChild(form);
     }
 
-    let content = document.querySelector('.wrapper');
-    if (!content) {
+    const chekContent = document.querySelector('.wrapper');
+    if (!chekContent) {
       const wrapper = document.createElement('div');
       wrapper.classList.add('wrapper');
-      content = document.createElement('ul');
-      wrapper.appendChild(content);
-
-      const liArr = new Array(titles.length + 1).join('<li></li>');
-      content.innerHTML = liArr;
+      const content = document.createElement('ul');
       document.body.appendChild(wrapper);
+      wrapper.appendChild(content);
 
       const navBar = document.createElement('nav');
       navBar.innerHTML = '<ul><li class="prev-btn">&lt;&lt; Prev</li><li class="counter-page"></li><li class="next-btn">Next >></li></ul>';
       document.body.appendChild(navBar);
-    } else {
-      const itemsList = document.querySelector('.wrapper ul');
-      itemsList.style.transform = '';
+      window.content = content;
     }
 
-    const itemsList = document.querySelectorAll('.wrapper li');
-    // eslint-disable-next-line no-restricted-syntax
-    for (const i of itemsList) {
+    let itemList = '';
+    while (titles.length) {
       const desStr = descriptions[0].slice(0, 85);
-      i.innerHTML = `<div>${titles[0]}</div><div>${desStr}...</div><div>${channel[0]}</div><div>${published[0]}</div><div>${clipStatistics[0]}</div>`;
-      i.style = `background: url("${pics[0]}") center top no-repeat`;
+      const item = `<li style="background: url('${pics[0]}') center top no-repeat;"><div>${titles[0]}</div><div>${desStr}...</div><div>${channel[0]}</div><div>${published[0]}</div><div>${clipStatistics[0]}</div></li>`;
+      itemList += item;
       titles.splice(0, 1);
       pics.splice(0, 1);
       descriptions.splice(0, 1);
@@ -98,6 +92,25 @@ export default class AppView {
       published.splice(0, 1);
       clipStatistics.splice(0, 1);
     }
+
+    window.content.insertAdjacentHTML('beforeEnd', itemList);
+    // const liArr = new Array(titles.length + 1).join('<li></li>');
+    // content.appendChild(liArr);
+
+    // const itemsList = document.querySelectorAll('.wrapper li');
+
+    // for (const i of itemsList) {
+    //   const desStr = descriptions[0].slice(0, 85);
+    //   i.innerHTML = `<div>${titles[0]}</div><div>${desStr}...</div><div>${channel[0]}
+    // </div><div>${published[0]}</div><div>${clipStatistics[0]}</div>`;
+    //   i.style = `background: url("${pics[0]}") center top no-repeat`;
+    //   titles.splice(0, 1);
+    //   pics.splice(0, 1);
+    //   descriptions.splice(0, 1);
+    //   channel.splice(0, 1);
+    //   published.splice(0, 1);
+    //   clipStatistics.splice(0, 1);
+    // }
   }
 
   static getCoords(elem) {
