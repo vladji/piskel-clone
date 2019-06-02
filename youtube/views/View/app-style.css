@@ -5,8 +5,8 @@
 
 body {
   width: 100%;
-  max-width: 1200px;
   margin: 0 auto;
+  font-family: arial;
 }
 
 ul {
@@ -42,7 +42,7 @@ input:focus {
 /* SLIDER */
 
 .wrapper {
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 .wrapper ul {
@@ -51,10 +51,16 @@ input:focus {
 }
 
 .wrapper li {
-  min-width: 20%;
-  height: 220px;
-  margin: 0 2.5%;
-  padding-top: 210px;
+  min-width: 23%;
+  height: 245px;
+  margin: 0 1%;
+  padding-top: 200px;
+  border-radius: 10px;
+}
+
+.wrapper li div {
+  height: 38px;
+  padding: 7px 10px;
 }
 
 /* NAV Button */
@@ -73,24 +79,6 @@ nav ul li {
 }
 
 /* MEDIA */
-
-/* @media (max-width: 1215px) {
-  body {
-    max-width: 900px;
-  }
-}
-
-@media (max-width: 917px) {
-  body {
-    max-width: 600px;
-  }
-}
-
-@media (max-width: 617px) {
-  body {
-    max-width: 300px;
-  }
-} */
 
 @media (max-width: 1000px) {
   .wrapper li {

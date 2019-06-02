@@ -4,8 +4,17 @@ export default class AppView {
   }
 
   static move(evt) {
-    const itemsBox = document.querySelector('.wrapper ul');
-    itemsBox.style.cssText = `transform: translateX(-${evt.pageX}px);`;
+    const list = document.querySelector('.wrapper ul');
+    list.onselectstart = () => false;
+
+    const bodyWidth = list.getBoundingClientRect().width;
+    const getPercentWidth = 100 / bodyWidth;
+    const mouseMove = window.touchDown - evt.pageX;
+    // eslint-disable-next-line no-restricted-globals
+    if (isNaN(window.scroll)) { window.scroll = 0; }
+    const move = (mouseMove * getPercentWidth) + window.scroll;
+    window.move = move;
+    list.style.cssText = `transform: translateX(-${move}%);`;
   }
 
   static actualResize(scroll, counter) {
@@ -17,39 +26,41 @@ export default class AppView {
     }
 
     if (bodyWidth < 1000 && bodyWidth > 768) {
-      let trans2 = scroll;
-      trans2 += 33 * counter;
-      itemsList.style.cssText = `transform: translateX(-${trans2}%);`;
+      let trans = scroll;
+      trans += 33 * counter;
+      itemsList.style.cssText = `transform: translateX(-${trans}%);`;
     }
 
     if (bodyWidth < 768 && bodyWidth > 540) {
-      let trans2 = scroll;
-      trans2 += 100 * counter;
-      itemsList.style.cssText = `transform: translateX(-${trans2}%);`;
+      let trans = scroll;
+      trans += 100 * counter;
+      itemsList.style.cssText = `transform: translateX(-${trans}%);`;
     }
 
     if (bodyWidth < 540) {
-      let trans3 = scroll;
-      trans3 += 300 * counter;
-      itemsList.style.cssText = `transform: translateX(-${trans3}%);`;
+      let trans = scroll;
+      trans += 300 * counter;
+      itemsList.style.cssText = `transform: translateX(-${trans}%);`;
     }
   }
 
-  static changeSlide(scroll, counter) {
-    const itemsList = document.querySelector('.wrapper ul');
-    const lastItem = document.querySelector('.wrapper li:last-child');
+  static changeSlide(toScroll, counter) {
+    const list = document.querySelector('.wrapper ul');
+    let pageScroll = window.scroll;
+    // eslint-disable-next-line no-restricted-globals
+    if (isNaN(pageScroll)) { pageScroll = 0; }
+    // eslint-disable-next-line no-restricted-globals
+    const scr = pageScroll + toScroll;
 
-    if (lastItem.getBoundingClientRect().x > document.body.getBoundingClientRect().width) {
-      itemsList.style.cssText = `transform: translateX(-${scroll}%);`;
-    }
+    list.style.cssText = `transform: translateX(-${scr}%);`;
 
     window.addEventListener('resize', () => {
       let resizeTimeout;
       if (!resizeTimeout) {
         resizeTimeout = setTimeout(() => {
           resizeTimeout = null;
-          AppView.actualResize(scroll, counter);
-        }, 66);
+          AppView.actualResize(scr, counter);
+        }, 500);
       }
     }, false);
   }
@@ -58,25 +69,26 @@ export default class AppView {
     if (data) this.clips = data;
     const [titles, pics, descriptions, channel, published, clipStatistics] = this.clips;
 
-    const checkForm = document.querySelector('div');
-    if (!checkForm) {
+    let wrapper = document.querySelector('.wrapper');
+    if (!wrapper) {
       const form = document.createElement('div');
       form.classList.add('txt-center');
       form.innerHTML = '<form action=""><input class="search-box" type="text" value=""><button>SEND</button></form>';
       document.body.appendChild(form);
-    }
 
-    const chekContent = document.querySelector('.wrapper');
-    if (!chekContent) {
-      const wrapper = document.createElement('div');
+      wrapper = document.createElement('div');
       wrapper.classList.add('wrapper');
-      const content = document.createElement('ul');
       document.body.appendChild(wrapper);
-      wrapper.appendChild(content);
 
       const navBar = document.createElement('nav');
       navBar.innerHTML = '<ul><li class="prev-btn">&lt;&lt; Prev</li><li class="counter-page"></li><li class="next-btn">Next >></li></ul>';
       document.body.appendChild(navBar);
+    }
+
+    const chekContent = document.querySelector('.wrapper ul');
+    if (!chekContent) {
+      const content = document.createElement('ul');
+      wrapper.appendChild(content);
       window.content = content;
     }
 
@@ -94,29 +106,5 @@ export default class AppView {
     }
 
     window.content.insertAdjacentHTML('beforeEnd', itemList);
-    // const liArr = new Array(titles.length + 1).join('<li></li>');
-    // content.appendChild(liArr);
-
-    // const itemsList = document.querySelectorAll('.wrapper li');
-
-    // for (const i of itemsList) {
-    //   const desStr = descriptions[0].slice(0, 85);
-    //   i.innerHTML = `<div>${titles[0]}</div><div>${desStr}...</div><div>${channel[0]}
-    // </div><div>${published[0]}</div><div>${clipStatistics[0]}</div>`;
-    //   i.style = `background: url("${pics[0]}") center top no-repeat`;
-    //   titles.splice(0, 1);
-    //   pics.splice(0, 1);
-    //   descriptions.splice(0, 1);
-    //   channel.splice(0, 1);
-    //   published.splice(0, 1);
-    //   clipStatistics.splice(0, 1);
-    // }
-  }
-
-  static getCoords(elem) {
-    const box = elem.getBoundingClientRect();
-    return {
-      left: box.left,
-    };
   }
 }
