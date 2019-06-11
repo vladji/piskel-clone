@@ -1,0 +1,123 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  width: 100vw;
+  height: 900px;
+  background: #fff;
+  font-family: sans-serif;
+  color: #888;
+}
+
+ul {
+  list-style: none;
+}
+
+header {
+  padding: 15px 0;
+  border-bottom: 3px solid #ccc;
+}
+
+header h1 {
+  margin-left: 29px;
+}
+
+/* #palette {
+  position: absolute;
+  width: 228px;
+  height: 246px;
+  left: 29px;
+  top: 127px;
+  border: 1px solid #ccc;
+}
+
+#colors {
+  position: absolute;
+  width: 228px;
+  height: 246px;
+  left: 29px;
+  top: 465px;
+  border: 1px solid #ccc;
+} */
+
+#canvas {
+  position: absolute;
+  left: 500px;
+  top: 127px;
+  border: solid 1px #ccc;
+}
+
+#frames-block {
+  position: relative;
+  left: 300px;
+  top: 57px;
+  width: 128px;
+}
+
+.frame-unit, .frame-unit-2, .frame-unit-3 {
+  width: 128px;
+  height: 128px;
+  border: solid 1px #ccc;
+}
+
+.add-frame {
+  margin-top: 30px;
+  border: 2px solid yellow;
+}
+
+/* tools */
+
+section {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+section>div {
+  display: flex;
+  align-items: center;
+}
+
+section>div div {
+  width: 20px;
+  height: 20px;
+  margin: 0 15px;
+}
+
+section>div div, section>div p {
+  cursor: pointer;
+}
+
+/* #colors>div div {
+  border-radius: 50%;
+  border: 1px solid #888;
+} */
+
+/* #colors .current-btn div {
+  width: 90%;
+  border-radius: 0;
+  text-align: center;
+  line-height: 1.2;
+  cursor: default;
+  background: #ccc;
+} */
+
+.prev-btn p {
+  text-decoration: line-through;
+  cursor: not-allowed;
+}
+
+.prev-btn div {
+  background: #30a326;
+  cursor: default;
+}
+
+.red-btn div {
+  background: #f00;
+}
+
+.blue-btn div {
+  background: #3421da;
+}

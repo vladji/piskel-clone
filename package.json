@@ -1,20 +1,18 @@
 {
-  "name": "youtube-client",
+  "name": "animation-player",
   "version": "1.0.0",
-  "description": "youtube REST API",
-  "main": "youtube/index.js",
+  "description": "",
+  "main": "piskel-clone/index.js",
   "scripts": {
     "dev": "webpack-dev-server --mode development --watch",
     "build": "webpack --mode production",
-    "lint": "eslint youtube/"
+    "lint": "eslint piskel-clone/"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/rolling-scopes-school/vladji-2019Q1.git"
   },
-  "keywords": [
-    "youtube-client"
-  ],
+  "keywords": [],
   "author": "Vladislav Priakhine",
   "license": "ISC",
   "bugs": {
