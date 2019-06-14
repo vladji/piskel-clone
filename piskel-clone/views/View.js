@@ -4,7 +4,7 @@ export default class View {
   }
 
   render() {
-    this.body.innerHTML = `  <header>
+    this.body.innerHTML = `<header>
     <h1>Piskel-clone</h1>
   </header>
   <main>
@@ -29,8 +29,6 @@ export default class View {
     <div id="frames-block">
       <div class="frames-list">
         <ul>
-          <li><canvas class="frame-unit" width="500" height="500"></canvas></li>
-          <li><canvas class="frame-unit" width="500" height="500"></canvas></li>
           <li><canvas class="frame-unit" width="500" height="500"></canvas></li>
         </ul>
       </div>
