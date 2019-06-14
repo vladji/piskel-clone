@@ -1,5 +1,3 @@
-// import Canvas from './Canvas';
-
 export default class Frames {
   constructor() {
     this.canvasDraw = document.getElementById('canvas');
@@ -21,7 +19,7 @@ export default class Frames {
     this.currentFrame = targetFrame;
   }
 
-  static frame() {
+  static getFrame() {
     return this.currentFrame;
   }
 

@@ -1,7 +1,6 @@
-import Controller from './controllers/Controller';
 import View from './views/View';
-
-// import Frames from './models/Frames1';
+import Controller from './controllers/Controller';
+import Frames from './models/Frames';
 
 import './style.css';
 
@@ -10,3 +9,6 @@ initPage.render();
 
 const control = new Controller();
 control.start();
+
+const frames = new Frames();
+frames.logic();
