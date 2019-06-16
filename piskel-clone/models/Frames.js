@@ -1,5 +1,3 @@
-
-
 export default class Frames {
   constructor() {
     this.framesBlock = document.querySelector('#frames-block');
@@ -31,6 +29,9 @@ export default class Frames {
     const canvasDraw = document.getElementById('canvas');
     const ctxCanvas = canvasDraw.getContext('2d');
     ctxCanvas.putImageData(frameData, 0, 0);
+
+    // const imgData = targetFrame.toDataURL();
+    // console.log(imgData);
   }
 
   static getFrame() {

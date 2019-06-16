@@ -49,6 +49,8 @@ header h1 {
   border: solid 1px #ccc;
 }
 
+/* Frames block */
+
 #frames-block {
   position: relative;
   left: 300px;
@@ -67,7 +69,15 @@ header h1 {
   border: 2px solid yellow;
 }
 
-/* tools */
+/* Preview block */
+
+.preview_screen {
+  width: 200px;
+  height: 200px;
+  border: 1px solid grey;
+}
+
+/* Tools panel */
 
 section {
   display: flex;
