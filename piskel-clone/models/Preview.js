@@ -1,6 +1,22 @@
 export default class Preview {
   constructor() {
     this.animationView = document.querySelector('.preview_screen');
+    this.fpsButton = document.querySelector('.preview_input-range input');
+    this.fps = 12;
+  }
+
+  getFps() {
+    return this.fps;
+  }
+
+  setFps() {
+    const fpsBtn = this.fpsButton;
+
+    fpsBtn.addEventListener('mouseup', () => {
+      const valueFps = fpsBtn.value;
+      console.log('value FPS', valueFps);
+      this.fps = +valueFps;
+    });
   }
 
   static prepareSlides() {

@@ -9,5 +9,4 @@ const frames = new Frames();
 frames.logic();
 
 // const preview = new Preview();
-// preview.prepareSlides();
-// preview.animationRun();
+// preview.setFps();

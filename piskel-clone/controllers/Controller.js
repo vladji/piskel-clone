@@ -11,24 +11,27 @@ export default class Controller {
 
     const canvasInit = new Canvas();
     canvasInit.prepareData();
-
     const penToolDefault = canvasInit.penToolDefault.bind(canvasInit);
 
-    const animation = Preview.animationRun.bind(Preview);
+    const preview = new Preview();
+    preview.setFps();
+
     let workSlides = { scope: [''] };
     let i = 0;
+    let fps = null;
+
+    setTimeout(function run() {
+      fps = preview.getFps();
+      Preview.animationRun(workSlides, i);
+      setTimeout(run, 1000 / fps);
+      i += 1;
+    }, 1000 / fps);
 
     const remove = () => {
       canvas.removeEventListener('mousemove', penToolDefault);
       canvas.removeEventListener('mouseup', remove);
       workSlides = Preview.prepareSlides();
     };
-
-    setTimeout(function run() {
-      animation(workSlides, i);
-      setTimeout(run, 2000);
-      i += 1;
-    }, 2000);
 
     canvas.addEventListener('mousedown', (e) => {
       canvasInit.prepareData();

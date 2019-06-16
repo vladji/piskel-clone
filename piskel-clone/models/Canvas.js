@@ -1,5 +1,4 @@
 import Frames from './Frames';
-// import Preview from './Preview';
 
 export default class Canvas {
   constructor() {
