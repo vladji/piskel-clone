@@ -7,7 +7,6 @@ export default class Canvas {
     this.contextCanvas = this.canvasDraw.getContext('2d');
     this.canvasData = null;
     this.contextFrame = null;
-    // this.preview = new Preview();
   }
 
   prepareData() {
@@ -18,11 +17,9 @@ export default class Canvas {
   }
 
   penToolDefault(evt) {
-    // console.log('this', this);
     const canvas = this.canvasDraw;
     const ctxCanvas = this.contextCanvas;
 
-    // const fill = (evt) => {
     if (canvas.getContext) {
       const moveX = Math.round((evt.pageX - canvas.offsetLeft) / 20) * 20 - 10;
       const moveY = Math.round((evt.pageY - canvas.offsetTop) / 20) * 20 - 10;
@@ -32,18 +29,5 @@ export default class Canvas {
       this.canvasData = ctxCanvas.getImageData(0, 0, canvas.width, canvas.height);
       this.contextFrame.putImageData(this.canvasData, 0, 0);
     }
-    // };
-
-    // fill(e);
-
-    // const remove = () => {
-    //   this.canvasDraw.removeEventListener('mousemove', fill);
-    //   this.canvasDraw.removeEventListener('mouseup', remove);
-    //   // this.preview.prepareSlides();
-    //   // this.preview.animationRun();
-    // };
-
-    // this.canvasDraw.addEventListener('mousemove', fill);
-    // this.canvasDraw.addEventListener('mouseup', remove);
   }
 }

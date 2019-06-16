@@ -1,13 +1,9 @@
 export default class Preview {
   constructor() {
     this.animationView = document.querySelector('.preview_screen');
-    this.imgDataArray = [];
-    this.timerId = null;
   }
 
-  prepareSlides() {
-    this.timerId = null;
-
+  static prepareSlides() {
     let workSlides = document.querySelectorAll('.frames-list canvas');
     workSlides = Array.prototype.slice.call(workSlides);
     const imgArr = [];
@@ -17,32 +13,15 @@ export default class Preview {
       imgArr.push(imgData);
     });
 
-    this.imgDataArray = imgArr;
-    console.log('this', this.imgDataArray);
+    return {
+      scope: imgArr,
+    };
   }
 
-  animationRun() {
-    const actionScreen = this.animationView;
-    const slidesArr = this.imgDataArray;
+  static animationRun(obj, i) {
+    const actionScreen = document.querySelector('.preview_screen');
+    const slidesArr = obj.scope;
 
-    let i = 0;
-    this.timerId = setTimeout(function run() {
-      // const actualSlides = getSlides();
-      actionScreen.style.background = `url("${slidesArr[i % slidesArr.length]}")`;
-      i += 1;
-      setTimeout(run, 2500);
-    }, 2500);
-
-    // const getSlides = () => {
-    //   const slidesArr = this.imgDataArray;
-    //   return slidesArr;
-    // };
-
-    // const actualSlides = getSlides();
-    // actualSlides.forEach((slide) => {
-    //   setInterval(() => {
-    //     actionScreen.style.background = `url("${slide}")`;
-    //   }, 2000);
-    // });
+    actionScreen.style.background = `url("${slidesArr[i % slidesArr.length]}")`;
   }
 }

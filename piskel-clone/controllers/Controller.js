@@ -1,5 +1,5 @@
 import Canvas from '../models/Canvas';
-// import Preview from '../models/Preview';
+import Preview from '../models/Preview';
 
 export default class Controller {
   constructor() {
@@ -14,24 +14,27 @@ export default class Controller {
 
     const penToolDefault = canvasInit.penToolDefault.bind(canvasInit);
 
-    // const preview = new Preview();
+    const animation = Preview.animationRun.bind(Preview);
+    let workSlides = { scope: [''] };
+    let i = 0;
 
     const remove = () => {
       canvas.removeEventListener('mousemove', penToolDefault);
       canvas.removeEventListener('mouseup', remove);
+      workSlides = Preview.prepareSlides();
     };
+
+    setTimeout(function run() {
+      animation(workSlides, i);
+      setTimeout(run, 2000);
+      i += 1;
+    }, 2000);
 
     canvas.addEventListener('mousedown', (e) => {
       canvasInit.prepareData();
-      canvasInit.penToolDefault(e);
-      // console.log('canvasInit', canvasInit);
+      penToolDefault(e);
       canvas.addEventListener('mousemove', penToolDefault);
       canvas.addEventListener('mouseup', remove);
     });
-
-    // canvas.addEventListener('mouseup', () => {
-    //   preview.prepareSlides();
-    //   preview.animationRun();
-    // });
   }
 }
