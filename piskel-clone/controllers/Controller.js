@@ -4,6 +4,7 @@ import Preview from '../models/Preview';
 export default class Controller {
   constructor() {
     this.canvasDraw = document.getElementById('canvas');
+    this.fps = null;
   }
 
   start() {
@@ -13,24 +14,21 @@ export default class Controller {
     canvasInit.prepareData();
     const penToolDefault = canvasInit.penToolDefault.bind(canvasInit);
 
-    const preview = new Preview();
-    preview.setFps();
+    // const preview = new Preview();
+    // let i = 0;
 
-    let workSlides = { scope: [''] };
-    let i = 0;
-    let fps = null;
-
-    setTimeout(function run() {
-      fps = preview.getFps();
-      Preview.animationRun(workSlides, i);
-      setTimeout(run, 1000 / fps);
-      i += 1;
-    }, 1000 / fps);
+    // setTimeout(function run() {
+    //   this.fps = preview.getFps();
+    //   const workSlides = preview.getSlides();
+    //   Preview.putSlide(workSlides, i);
+    //   setTimeout(run, 1000 / this.fps);
+    //   i += 1;
+    // }, 1000 / this.fps);
 
     const remove = () => {
       canvas.removeEventListener('mousemove', penToolDefault);
       canvas.removeEventListener('mouseup', remove);
-      workSlides = Preview.prepareSlides();
+      Preview.setSlides();
     };
 
     canvas.addEventListener('mousedown', (e) => {
