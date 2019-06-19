@@ -7,7 +7,7 @@ export default class Canvas {
     this.contextCanvas = this.canvasDraw.getContext('2d');
     this.canvasData = null;
     this.contextFrame = null;
-    this.bucketBtn = document.querySelector('.bucket-btn');
+    // this.bucketBtn = document.querySelector('.bucket-btn');
   }
 
   prepareData() {

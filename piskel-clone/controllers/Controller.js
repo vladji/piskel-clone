@@ -1,38 +1,38 @@
-import Canvas from '../models/Canvas';
-import Preview from '../models/Preview';
-import Tools from './Tools';
+// import Canvas from '../models/Canvas';
+// import Preview from '../models/Preview';
+// import Tools from './Tools';
 
-export default class Controller {
-  constructor() {
-    this.canvasDraw = document.getElementById('canvas');
-    this.fps = null;
-  }
+// export default class Controller {
+//   constructor() {
+//     this.canvasDraw = document.getElementById('canvas');
+//   }
 
-  start() {
-    const canvas = this.canvasDraw;
+//   start() {
+//     const canvas = this.canvasDraw;
 
-    const canvasInit = new Canvas();
-    canvasInit.prepareData();
-    const penToolDefault = canvasInit.penToolDefault.bind(canvasInit);
-    const bucketTool = canvasInit.bucketTool.bind(canvasInit);
+//     const canvasInit = new Canvas();
+//     canvasInit.prepareData();
+//     const penToolDefault = canvasInit.penToolDefault.bind(canvasInit);
+//     // const bucketTool = canvasInit.bucketTool.bind(canvasInit);
 
-    const remove = () => {
-      canvas.removeEventListener('mousemove', penToolDefault);
-      canvas.removeEventListener('mouseup', remove);
-      Preview.setSlides();
-    };
+//     // const tools = new Tools();
+//     // tools.logic();
 
-    canvas.addEventListener('mousedown', (e) => {
-      canvasInit.prepareData();
-      const currentTool = Tools.getTool();
+//     const remove = () => {
+//       canvas.removeEventListener('mousemove', penToolDefault);
+//       canvas.removeEventListener('mouseup', remove);
+//       Preview.setSlides();
+//     };
 
-      if (!currentTool) {
-        penToolDefault(e);
-        canvas.addEventListener('mousemove', penToolDefault);
-        canvas.addEventListener('mouseup', remove);
-      } else {
-        bucketTool(e);
-      }
-    });
-  }
-}
+//     canvas.addEventListener('mousedown', (e) => {
+//       canvasInit.prepareData();
+//       const currentTool = tools.currentTool();
+
+//       if (!currentTool) {
+//         penToolDefault(e);
+//         canvas.addEventListener('mousemove', penToolDefault);
+//         canvas.addEventListener('mouseup', remove);
+//       }
+//     });
+//   }
+// }
