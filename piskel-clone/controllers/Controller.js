@@ -1,5 +1,6 @@
 import Canvas from '../models/Canvas';
 import Preview from '../models/Preview';
+import Tools from './Tools';
 
 export default class Controller {
   constructor() {
@@ -13,17 +14,7 @@ export default class Controller {
     const canvasInit = new Canvas();
     canvasInit.prepareData();
     const penToolDefault = canvasInit.penToolDefault.bind(canvasInit);
-
-    // const preview = new Preview();
-    // let i = 0;
-
-    // setTimeout(function run() {
-    //   this.fps = preview.getFps();
-    //   const workSlides = preview.getSlides();
-    //   Preview.putSlide(workSlides, i);
-    //   setTimeout(run, 1000 / this.fps);
-    //   i += 1;
-    // }, 1000 / this.fps);
+    const bucketTool = canvasInit.bucketTool.bind(canvasInit);
 
     const remove = () => {
       canvas.removeEventListener('mousemove', penToolDefault);
@@ -33,9 +24,15 @@ export default class Controller {
 
     canvas.addEventListener('mousedown', (e) => {
       canvasInit.prepareData();
-      penToolDefault(e);
-      canvas.addEventListener('mousemove', penToolDefault);
-      canvas.addEventListener('mouseup', remove);
+      const currentTool = Tools.getTool();
+
+      if (!currentTool) {
+        penToolDefault(e);
+        canvas.addEventListener('mousemove', penToolDefault);
+        canvas.addEventListener('mouseup', remove);
+      } else {
+        bucketTool(e);
+      }
     });
   }
 }
