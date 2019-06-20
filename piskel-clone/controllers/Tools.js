@@ -5,39 +5,43 @@ export default class Tools {
   constructor() {
     this.currentTool = null;
     this.canvasDraw = document.getElementById('canvas');
-    this.panelTools = document.querySelector('#draw-tools');
-    this.bucketBtn = document.querySelector('.bucket-btn p');
+    this.btnPanel = document.querySelector('#draw-tools');
+    // this.allBtnTools = document.querySelectorAll('i.fas');
+    // this.bucketBtn = document.querySelector('.btn_bucket');
     this.canvasStart = new Canvas();
   }
 
   logic() {
     const canvas = this.canvasDraw;
-    const toolsPanel = this.panelTools;
+    const btnPanelTools = this.btnPanel;
     const canvasInit = this.canvasStart;
 
     canvasInit.prepareData();
+    let currentTool = null;
 
-    const currentTool = this.getTool();
-
-    const remove = () => {
+    const removeAction = () => {
       canvas.removeEventListener('mousemove', currentTool);
-      canvas.removeEventListener('mouseup', remove);
+      canvas.removeEventListener('mouseup', removeAction);
       Preview.setSlides();
     };
 
     canvas.addEventListener('mousedown', (e) => {
       canvasInit.prepareData();
+      currentTool = this.getTool();
 
-
-      // if (!currentTool) {
-      currentTool(e);
-      canvas.addEventListener('mousemove', currentTool);
-      canvas.addEventListener('mouseup', remove);
-      // }
+      if (currentTool.name === 'bound bucketTool') {
+        currentTool(e);
+        canvas.addEventListener('mouseup', removeAction);
+      } else {
+        currentTool(e);
+        canvas.addEventListener('mousemove', currentTool);
+        canvas.addEventListener('mouseup', removeAction);
+      }
     });
 
-    toolsPanel.addEventListener('click', (e) => {
-      this.currentTool = e.target;
+    btnPanelTools.addEventListener('click', (e) => {
+      const tool = e.target.closest('li').className;
+      this.currentTool = tool;
     });
   }
 
@@ -48,7 +52,7 @@ export default class Tools {
     const bucketTool = canvasInit.bucketTool.bind(canvasInit);
 
     switch (this.currentTool) {
-      case this.bucketBtn:
+      case 'btn_bucket':
         currentTool = bucketTool;
         break;
       default:

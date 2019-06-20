@@ -18,6 +18,7 @@ export default class Canvas {
   }
 
   penToolDefault(evt) {
+    console.log('penToolDefault');
     const canvas = this.canvasDraw;
     const ctxCanvas = this.contextCanvas;
 
@@ -33,7 +34,10 @@ export default class Canvas {
   }
 
   bucketTool(evt) {
+    console.log('bucketTool');
     const canvas = this.canvasDraw;
+    canvas.onmousemove = null;
+
     const ctxCanvas = this.contextCanvas;
     ctxCanvas.fillStyle = 'rgb(200,0,0)';
 

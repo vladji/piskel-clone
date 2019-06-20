@@ -11,10 +11,6 @@ body {
   color: #888;
 }
 
-ul {
-  list-style: none;
-}
-
 header {
   padding: 15px 0;
   border-bottom: 3px solid #ccc;
@@ -24,38 +20,49 @@ header h1 {
   margin-left: 29px;
 }
 
-/* #palette {
-  position: absolute;
-  width: 228px;
-  height: 246px;
-  left: 29px;
-  top: 127px;
-  border: 1px solid #ccc;
+main {
+  display: flex;
+  margin-top: 50px;
 }
 
-#colors {
-  position: absolute;
-  width: 228px;
-  height: 246px;
-  left: 29px;
-  top: 465px;
-  border: 1px solid #ccc;
-} */
+ul {
+  list-style: none;
+}
 
-#canvas {
-  position: absolute;
-  left: 500px;
-  top: 127px;
-  border: solid 1px #ccc;
+/* TOOLS SECTION */
+
+.wrap_tools {
+  display: flex;
+  flex-grow: 2;
+  justify-content: space-between;
+}
+
+/* Tools block */
+
+.wrap_draw-panel {
+  position: relative;
+  left: 20px;
+}
+
+#draw-tools ul>li {
+  display: flex;
+  width: 50px;
+  height: 50px;
+}
+
+#draw-tools ul>li>div {
+  margin: auto;
 }
 
 /* Frames block */
 
+.wrap_frames-block {
+  height: 600px;
+}
+
 #frames-block {
-  position: relative;
-  left: 300px;
-  top: 57px;
-  width: 128px;
+  height: 100%;
+  overflow-y: scroll;
 }
 
 .frame-unit, .frame-unit-2, .frame-unit-3 {
@@ -67,6 +74,24 @@ header h1 {
 .add-frame {
   margin-top: 30px;
   border: 2px solid yellow;
+  z-index: 10;
+}
+
+/* CANVAS SECTION */
+
+.canvas-wrapper {
+  flex-grow: 3;
+  text-align: center;
+}
+
+#canvas {
+  border: solid 1px #ccc;
+}
+
+/* UTILS SECTION */
+
+#utils {
+  flex-grow: 1;
 }
 
 /* Preview block */
@@ -75,59 +100,5 @@ header h1 {
   width: 200px;
   height: 200px;
   border: 1px solid grey;
-}
-
-/* Tools panel */
-
-section {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-}
-
-section>div {
-  display: flex;
-  align-items: center;
-}
-
-section>div div {
-  width: 20px;
-  height: 20px;
-  margin: 0 15px;
-}
-
-section>div div, section>div p {
-  cursor: pointer;
-}
-
-/* #colors>div div {
-  border-radius: 50%;
-  border: 1px solid #888;
-} */
-
-/* #colors .current-btn div {
-  width: 90%;
-  border-radius: 0;
-  text-align: center;
-  line-height: 1.2;
-  cursor: default;
-  background: #ccc;
-} */
-
-.prev-btn p {
-  text-decoration: line-through;
-  cursor: not-allowed;
-}
-
-.prev-btn div {
-  background: #30a326;
-  cursor: default;
-}
-
-.red-btn div {
-  background: #f00;
-}
-
-.blue-btn div {
-  background: #3421da;
+  background-size: contain;
 }

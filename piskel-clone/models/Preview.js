@@ -54,6 +54,7 @@ export default class Preview {
   static putSlide(obj, i) {
     const actionScreen = document.querySelector('.preview_screen');
 
-    actionScreen.style.background = `url("${obj[i % obj.length]}")`;
+    actionScreen.style.backgroundImage = `url("${obj[i % obj.length]}")`;
+    actionScreen.style.backgroundSize = 'contain';
   }
 }
