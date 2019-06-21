@@ -6,7 +6,6 @@ export default class Canvas {
     this.contextCanvas = this.canvasDraw.getContext('2d');
     this.canvasData = null;
     this.contextFrame = null;
-    // this.frameData = null;
   }
 
   prepareData() {
@@ -14,16 +13,11 @@ export default class Canvas {
     if (!currentFrame) currentFrame = document.querySelector('.frame-unit');
     const ctxFrame = currentFrame.getContext('2d');
     this.contextFrame = ctxFrame;
-
-    // const frameData = ctxFrame.getImageData(0, 0, currentFrame.width, currentFrame.height);
-    // this.frameData = frameData;
   }
 
   penToolDefault(e) {
     const canvas = this.canvasDraw;
     const ctxCanvas = this.contextCanvas;
-
-    // ctxCanvas.putImageData(this.frameData, 0, 0);
 
     const fill = (evt) => {
       if (canvas.getContext) {
