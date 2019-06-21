@@ -1,5 +1,3 @@
-
-
 export default class Frames {
   constructor() {
     this.framesBlock = document.querySelector('#frames-block');
@@ -44,6 +42,6 @@ export default class Frames {
   // }
 
   static addNewFrame(framesList) {
-    framesList.insertAdjacentHTML('beforeend', '<li><canvas class="frame-unit" width="500" height="500"></canvas></li>');
+    framesList.insertAdjacentHTML('beforeend', '<li><canvas class="frame-unit" width="700" height="700"></canvas></li>');
   }
 }

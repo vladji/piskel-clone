@@ -1,14 +1,12 @@
-import View from './views/View';
-import Controller from './controllers/Controller';
 import Frames from './models/Frames';
-
-import './style.css';
-
-const initPage = new View();
-initPage.render();
-
-const control = new Controller();
-control.start();
+import Preview from './models/Preview';
+import Tools from './controllers/Tools';
 
 const frames = new Frames();
 frames.logic();
+
+const preview = new Preview();
+preview.initAnimation();
+
+const tools = new Tools();
+tools.logic();
