@@ -1,9 +1,10 @@
 import Canvas from '../models/Canvas';
 import Preview from '../models/Preview';
+import View from '../views/View';
 
 export default class Tools {
   constructor() {
-    this.currentTool = null;
+    this.currentTool = 'btn_pen';
     this.canvasDraw = document.getElementById('canvas');
     this.btnPanel = document.querySelector('#draw-tools');
     this.canvasStart = new Canvas();
@@ -12,6 +13,8 @@ export default class Tools {
   logic() {
     // const targetPoint = this.canvasStart.targetPoint();
     // console.log('targetPoint', targetPoint);
+    View.actualState(this.currentTool);
+    // actualView(this.currentTool);
 
     const canvas = this.canvasDraw;
     const btnPanelTools = this.btnPanel;
@@ -43,6 +46,7 @@ export default class Tools {
     btnPanelTools.addEventListener('click', (e) => {
       const tool = e.target.closest('li').className;
       this.currentTool = tool;
+      View.actualState(tool);
     });
   }
 
