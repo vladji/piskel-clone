@@ -1,21 +1,30 @@
+import Preview from './Preview';
+
 export default class Frames {
   constructor() {
     this.framesBlock = document.querySelector('#frames-block');
     this.framesList = document.querySelector('.frames-list ul');
-    this.currentFrame = null;
+    this.currentFrame = document.querySelector('.frames-list canvas');
     this.lastFrame = () => document.querySelector('.frames-list li:last-child canvas');
+    this.framesStates = [];
   }
 
   logic() {
     const framesWrap = this.framesBlock;
+    this.activeFrameState(this.currentFrame);
 
     framesWrap.addEventListener('click', (e) => {
-      if (e.target.closest('.frames-list')) Frames.pickFrame(e);
+      let frameHighlited = null;
+
+      if (e.target.closest('.frames-list')) frameHighlited = Frames.pickFrame(e);
 
       if (e.target.closest('.add-frame')) {
         Frames.addNewFrame(this.framesList);
-        Frames.pickFrame(this.lastFrame());
+        frameHighlited = Frames.pickFrame(this.lastFrame());
+        Preview.setSlides(this.lastFrame());
       }
+
+      this.activeFrameState(frameHighlited);
     });
   }
 
@@ -29,6 +38,8 @@ export default class Frames {
     const canvasDraw = document.getElementById('canvas');
     const ctxCanvas = canvasDraw.getContext('2d');
     ctxCanvas.putImageData(frameData, 0, 0);
+
+    return targetFrame;
   }
 
   static getFrame() {
@@ -43,5 +54,19 @@ export default class Frames {
 
   static addNewFrame(framesList) {
     framesList.insertAdjacentHTML('beforeend', '<li><canvas class="frame-unit" width="700" height="700"></canvas></li>');
+  }
+
+  activeFrameState(frame) {
+    this.framesStates.push(frame);
+
+    if (this.framesStates.length < 2) {
+      this.currentFrame.style.border = '4px solid #ffed15';
+    } else {
+      const prevFrame = this.framesStates.shift();
+      prevFrame.style.border = '';
+
+      const currentFrame = this.framesStates[0];
+      currentFrame.style.border = '4px solid #ffed15';
+    }
   }
 }

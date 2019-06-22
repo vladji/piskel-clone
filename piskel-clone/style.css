@@ -52,7 +52,7 @@ ul {
   width: 117px;
 }
 
-#draw-tools ul>li {
+#draw-tools li {
   display: inline-block;
   width: 50px;
   height: 50px;
@@ -63,7 +63,7 @@ ul {
   cursor: pointer;
 }
 
-#draw-tools ul>li>div {
+#draw-tools div {
   text-align: center;
 }
 
@@ -79,10 +79,10 @@ ul {
   overflow-y: scroll;
 }
 
-.frame-unit, .frame-unit-2, .frame-unit-3 {
+.frame-unit {
   width: 128px;
   height: 128px;
-  border: solid 1px #ccc;
+  border: 4px solid;
 }
 
 .add-frame {
@@ -91,6 +91,10 @@ ul {
   z-index: 10;
   cursor: pointer;
   background-color: #323232;
+}
+
+.add-frame:active {
+  border: 2px solid #ffed15;
 }
 
 .add-frame p {

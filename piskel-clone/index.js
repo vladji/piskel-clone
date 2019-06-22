@@ -1,7 +1,7 @@
 import Frames from './models/Frames';
 import Preview from './models/Preview';
 import Tools from './controllers/Tools';
-import View from './views/View';
+// import View from './views/View';
 
 const frames = new Frames();
 frames.logic();
@@ -12,5 +12,5 @@ preview.initAnimation();
 const tools = new Tools();
 tools.logic();
 
-const view = new View();
-view.logic();
+// const view = new View();
+// view.logic();

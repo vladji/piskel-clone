@@ -1,6 +1,5 @@
 import Canvas from '../models/Canvas';
 import Preview from '../models/Preview';
-import View from '../views/View';
 
 export default class Tools {
   constructor() {
@@ -8,12 +7,14 @@ export default class Tools {
     this.canvasDraw = document.getElementById('canvas');
     this.btnPanel = document.querySelector('#draw-tools');
     this.canvasStart = new Canvas();
+    this.btnStates = [];
+    this.defaultTool = document.querySelector('.btn_pen');
   }
 
   logic() {
     // const targetPoint = this.canvasStart.targetPoint();
     // console.log('targetPoint', targetPoint);
-    View.actualState(this.currentTool);
+    this.activeToolState(this.currentTool);
     // actualView(this.currentTool);
 
     const canvas = this.canvasDraw;
@@ -46,7 +47,7 @@ export default class Tools {
     btnPanelTools.addEventListener('click', (e) => {
       const tool = e.target.closest('li').className;
       this.currentTool = tool;
-      View.actualState(tool);
+      this.activeToolState(tool);
     });
   }
 
@@ -65,5 +66,21 @@ export default class Tools {
     }
 
     return currentTool;
+  }
+
+  activeToolState(tool) {
+    this.btnStates.push(tool);
+
+    if (this.btnStates.length < 2) {
+      this.defaultTool.style.border = '2px solid #ffed15';
+    } else {
+      const prevState = this.btnStates.shift();
+      const prevTool = document.querySelector(`.${prevState}`);
+      prevTool.style.border = '2px solid #a7a79d';
+
+      const currentState = this.btnStates[0];
+      const currentTool = document.querySelector(`.${currentState}`);
+      currentTool.style.border = '2px solid #ffed15';
+    }
   }
 }
