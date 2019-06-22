@@ -4,7 +4,9 @@ export default class Preview {
     this.fpsButton = document.querySelector('.preview_input-range input');
     this.fps = 12;
     this.img = null;
-    this.setFps = this.setFps();
+    this.displayFps = document.querySelector('.fps-range');
+    this.fpsDisplay(this.fps);
+    this.setFps();
   }
 
   initAnimation() {
@@ -27,10 +29,18 @@ export default class Preview {
   setFps() {
     const fpsBtn = this.fpsButton;
 
-    fpsBtn.addEventListener('mouseup', () => {
+    const actualFps = () => {
       const valueFps = fpsBtn.value;
-      console.log('value FPS', valueFps);
       this.fps = +valueFps;
+      this.fpsDisplay(this.fps);
+    };
+
+    fpsBtn.addEventListener('mousedown', () => {
+      fpsBtn.addEventListener('mousemove', actualFps);
+    });
+    fpsBtn.addEventListener('mouseup', () => {
+      actualFps();
+      fpsBtn.removeEventListener('mousemove', actualFps);
     });
   }
 
@@ -56,5 +66,9 @@ export default class Preview {
 
     actionScreen.style.backgroundImage = `url("${obj[i % obj.length]}")`;
     actionScreen.style.backgroundSize = 'contain';
+  }
+
+  fpsDisplay(fps) {
+    this.displayFps.innerHTML = `${fps}`;
   }
 }

@@ -93,7 +93,8 @@ ul {
   background-color: #323232;
 }
 
-.add-frame:active {
+.add-frame:active,
+.add-frame:hover {
   border: 2px solid #ffed15;
 }
 
@@ -121,12 +122,33 @@ ul {
 
 /* Preview block */
 
+#preview-wrapper {
+  width: 202px;
+  background-color: #888;
+}
+
 .preview_screen {
   width: 200px;
   height: 200px;
+  margin: 0 auto;
   border: 1px solid grey;
   background-size: contain;
   background-color: #fff;
+}
+
+.preview_input-range {
+  display: flex;
+  justify-content: space-around;
+  padding: 5px;
+  font-size: 14px;
+}
+
+.fps-range {
+  width: 15px;
+}
+
+.preview_input-range div {
+  line-height: 2;
 }
 
 .preview_input-range input {

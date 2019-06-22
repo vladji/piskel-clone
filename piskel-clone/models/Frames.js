@@ -46,12 +46,6 @@ export default class Frames {
     return this.currentFrame;
   }
 
-  // static clearFrameDraw(canvasDraw, canvasDrawWidth, canvasDrawHeight) {
-  //   const ctxCanvas = canvasDraw.getContext('2d');
-  //   ctxCanvas.clearRect(0, 0, canvasDrawWidth, canvasDrawHeight);
-  //   ctxCanvas.beginPath();
-  // }
-
   static addNewFrame(framesList) {
     framesList.insertAdjacentHTML('beforeend', '<li><canvas class="frame-unit" width="700" height="700"></canvas></li>');
   }

@@ -30,7 +30,6 @@ export default class Canvas {
   }
 
   penToolDefault(evt) {
-    console.log('penToolDefault');
     const canvas = this.canvasDraw;
     const ctxCanvas = this.contextCanvas;
 
@@ -44,12 +43,6 @@ export default class Canvas {
       const pointWidth = moveX - pointShiftX;
       const pointHeight = moveY - pointShiftY;
 
-      // console.log('pointWidth', pointWidth);
-      // console.log('pointHeight', pointHeight);
-
-      console.log('canvas.height', canvas.height);
-      console.log('canvas.width', canvas.width);
-
       ctxCanvas.fillRect(pointWidth, pointHeight, 20, 20);
 
       this.canvasData = ctxCanvas.getImageData(0, 0, canvas.width, canvas.height);
@@ -58,7 +51,6 @@ export default class Canvas {
   }
 
   bucketTool(evt) {
-    console.log('bucketTool');
     const canvas = this.canvasDraw;
     canvas.onmousemove = null;
 
