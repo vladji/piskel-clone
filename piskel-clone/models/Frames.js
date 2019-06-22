@@ -7,11 +7,15 @@ export default class Frames {
     this.currentFrame = document.querySelector('.frames-list canvas');
     this.lastFrame = () => document.querySelector('.frames-list li:last-child canvas');
     this.framesStates = [];
+    this.frameTools = document.querySelector('.frame-tools');
+    this.frameTools.hidden = true;
+    this.frameHover();
   }
 
   logic() {
     const framesWrap = this.framesBlock;
     this.activeFrameState(this.currentFrame);
+    let counter = 2;
 
     framesWrap.addEventListener('click', (e) => {
       let frameHighlited = null;
@@ -19,12 +23,16 @@ export default class Frames {
       if (e.target.closest('.frames-list')) frameHighlited = Frames.pickFrame(e);
 
       if (e.target.closest('.add-frame')) {
-        Frames.addNewFrame(this.framesList);
+        Frames.addNewFrame(this.framesList, counter);
+        counter += 1;
+
         frameHighlited = Frames.pickFrame(this.lastFrame());
+        this.frameHover();
         Preview.setSlides(this.lastFrame());
       }
 
       this.activeFrameState(frameHighlited);
+      this.currentFrame = frameHighlited;
     });
   }
 
@@ -46,21 +54,56 @@ export default class Frames {
     return this.currentFrame;
   }
 
-  static addNewFrame(framesList) {
-    framesList.insertAdjacentHTML('beforeend', '<li><canvas class="frame-unit" width="700" height="700"></canvas></li>');
+  static addNewFrame(framesList, counter) {
+    framesList.insertAdjacentHTML('beforeend',
+      `<li>
+        <p class="frame-num">${counter}</p>
+        <canvas class="frame-unit" width="700" height="700"></canvas>
+        <div class="frame-tools">
+          <button class="frame-duplicate">dupl</button>
+          <button class="frame-delete">del</button>
+          <button class="frame-move">move</button>
+        </div>
+      </li>`);
   }
 
   activeFrameState(frame) {
-    this.framesStates.push(frame);
+    const activeFrame = frame.closest('li');
+    this.framesStates.push(activeFrame);
 
     if (this.framesStates.length < 2) {
-      this.currentFrame.style.border = '4px solid #ffed15';
+      activeFrame.style.border = '5px solid #ffed15';
     } else {
       const prevFrame = this.framesStates.shift();
       prevFrame.style.border = '';
 
       const currentFrame = this.framesStates[0];
-      currentFrame.style.border = '4px solid #ffed15';
+      currentFrame.style.border = '5px solid #ffed15';
     }
+  }
+
+  frameHover() {
+    let frameTools;
+    let targetLi;
+
+    this.framesList.addEventListener('mouseover', (e) => {
+      if (e.target.closest('li')) {
+        targetLi = e.target.closest('li');
+        frameTools = targetLi.querySelector('.frame-tools');
+        frameTools.hidden = false;
+
+        const activeFrame = this.currentFrame.closest('li');
+        if (targetLi !== activeFrame) targetLi.style.border = '4px solid #888';
+      }
+    });
+
+    this.framesList.addEventListener('mouseout', () => {
+      if (targetLi) {
+        frameTools.hidden = true;
+
+        const activeFrame = this.currentFrame.closest('li');
+        if (targetLi !== activeFrame) targetLi.style.border = '';
+      }
+    });
   }
 }

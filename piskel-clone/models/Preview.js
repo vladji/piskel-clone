@@ -44,6 +44,10 @@ export default class Preview {
     });
   }
 
+  fpsDisplay(fps) {
+    this.displayFps.innerHTML = `${fps}`;
+  }
+
   static getSlides() {
     return this.img;
   }
@@ -66,9 +70,5 @@ export default class Preview {
 
     actionScreen.style.backgroundImage = `url("${obj[i % obj.length]}")`;
     actionScreen.style.backgroundSize = 'contain';
-  }
-
-  fpsDisplay(fps) {
-    this.displayFps.innerHTML = `${fps}`;
   }
 }

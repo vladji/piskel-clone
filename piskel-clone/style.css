@@ -80,9 +80,8 @@ ul {
 }
 
 .frame-unit {
-  width: 128px;
-  height: 128px;
-  border: 4px solid;
+  width: 135px;
+  height: 135px;
 }
 
 .add-frame {
@@ -93,14 +92,57 @@ ul {
   background-color: #323232;
 }
 
-.add-frame:active,
-.add-frame:hover {
+.add-frame:active, .add-frame:hover {
   border: 2px solid #ffed15;
 }
 
 .add-frame p {
   padding: 10px;
   text-align: center;
+}
+
+.frames-list li {
+  position: relative;
+  width: 135px;
+  height: 135px;
+  margin-bottom: 10px;
+  border: 4px solid #fff;
+}
+
+.frame-num, .frame-duplicate, .frame-delete, .frame-move {
+  position: absolute;
+}
+
+.frame-num {
+  top: 0;
+  left: 0;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  line-height: 2;
+  color: #000;
+  background-color: #ffed15;
+}
+
+.frame-duplicate {
+  top: 100px;
+  left: 100px;
+  width: 30px;
+  height: 30px;
+}
+
+.frame-delete {
+  top: 0px;
+  left: 100px;
+  width: 30px;
+  height: 30px;
+}
+
+.frame-move {
+  top: 100px;
+  left: 0px;
+  width: 30px;
+  height: 30px;
 }
 
 /* CANVAS SECTION */
