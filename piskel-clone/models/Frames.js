@@ -51,32 +51,43 @@ export default class Frames {
   frameDragDrop() {
     const allFrames = this.framesList;
     let targetFrameLi = null;
-    let startMove = null;
-    let firstTouch = null;
+    // let firstTouch = null;
+    const dragFrameParam = {};
 
     const frameMove = (evt) => {
-      const shiftY = firstTouch - evt.clientY - startMove;
-      targetFrameLi.style.top = `${-shiftY}px`;
+      targetFrameLi.style.top = `${dragFrameParam.startTop}px`;
+      targetFrameLi.style.left = `${dragFrameParam.startLeft}px`;
+      targetFrameLi.style.position = 'absolute';
 
-      const checkDistance = (firstTouch - evt.clientY) % 20;
+      const startY = dragFrameParam.startTop;
+      const moveY = startY - evt.clientY;
+      console.log('moveY', moveY);
+      targetFrameLi.style.top = `${-moveY}px`;
+
+      const checkDistance = (startY - evt.clientY) % 20;
       if (checkDistance === 0) {
         targetFrameLi.style.zIndex = '-1';
         const elem = document.elementFromPoint(evt.clientX, evt.clientY);
-        console.log('elem', elem);
+        const replaceLi = elem.closest('li');
 
-        // if (elem.matches('canvas')) {
-
-        // }
+        if (replaceLi) {
+          allFrames.insertBefore(replaceLi, targetFrameLi);
+          replaceLi.style.top = '';
+          const topTargetFrame = parseInt(targetFrameLi.style.top, 0);
+          console.log('top', topTargetFrame);
+        }
         targetFrameLi.style.zIndex = '99';
       }
     };
 
     allFrames.addEventListener('mousedown', (e) => {
       targetFrameLi = e.target.closest('li');
-      firstTouch = e.clientY;
-      startMove = parseInt(targetFrameLi.style.top, 0) || 0;
+      // firstTouch = e.clientY;
       this.framesLayout();
       targetFrameLi.style.zIndex = '99';
+      dragFrameParam.startTop = targetFrameLi.offsetTop;
+      dragFrameParam.startLeft = targetFrameLi.offsetLeft;
+      console.log('startTop', dragFrameParam.startTop);
 
       targetFrameLi.addEventListener('mousemove', frameMove);
     });
@@ -154,23 +165,28 @@ export default class Frames {
     const cloneCanvasCtx = cloneCanvas.getContext('2d');
     cloneCanvasCtx.putImageData(targetCanvasData, 0, 0);
 
-    this.framesList.insertBefore(cloneFrameLi, targetFrameLi);
+    targetFrameLi.after(cloneFrameLi);
+    this.chekFrameTools(cloneFrameLi);
   }
 
-  countFrames() {
+  chekFrameTools(frame) {
     const frames = this.framesUnits();
-    const firsFrameTools = this.frameTools();
 
-    const delTool = firsFrameTools.children[1];
-    const moveTool = firsFrameTools.children[2];
+    const delTool = frame.querySelector('.frame-delete');
+    const moveTool = frame.querySelector('.frame-move');
 
     if (frames.length === 1 && delTool) {
       delTool.remove();
       moveTool.remove();
     } else if (frames.length > 1 && !delTool) {
-      firsFrameTools.insertAdjacentHTML('beforeend',
+      frame.insertAdjacentHTML('beforeend',
         '<button class="frame-delete"><i class="fas fa-trash-alt"></i></button><button class="frame-move"><i class="fas fa-arrows-alt-v"></i></button>');
     }
+  }
+
+  countFrames() {
+    const frames = this.framesUnits();
+    this.chekFrameTools(this.frameTools());
 
     let counter = 1;
     for (let i = 0; i < frames.length; i += 1) {
