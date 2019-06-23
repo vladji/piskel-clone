@@ -4,8 +4,8 @@ export default class Frames {
   constructor() {
     this.framesBlock = document.querySelector('#frames-block');
     this.framesList = document.querySelector('.frames-list ul');
-    this.framesUnits = () => document.querySelectorAll('.frames-list li');
     this.currentFrame = document.querySelector('.frames-list canvas');
+    this.framesUnits = () => document.querySelectorAll('.frames-list li');
     this.lastFrame = () => document.querySelector('.frames-list li:last-child canvas');
     this.framesStates = [];
     this.frameTools = document.querySelector('.frame-tools');
@@ -74,8 +74,17 @@ export default class Frames {
   }
 
   frameDelete(e) {
-    const targetFrame = e.target.closest('li');
-    this.framesList.removeChild(targetFrame);
+    const targetFrameLi = e.target.closest('li');
+    let nextFrameLi = targetFrameLi.previousElementSibling;
+    if (!nextFrameLi) nextFrameLi = targetFrameLi.nextElementSibling;
+
+    const nextFrame = nextFrameLi.querySelector('canvas');
+    this.currentFrame = nextFrame;
+
+    Frames.setFrame(nextFrame);
+    this.activeFrameState(nextFrame);
+
+    this.framesList.removeChild(targetFrameLi);
     Preview.setSlides();
   }
 
@@ -90,11 +99,11 @@ export default class Frames {
   }
 
   activeFrameState(frame) {
-    const activeFrame = frame.closest('li');
-    this.framesStates.push(activeFrame);
+    const activeFrameLi = frame.closest('li');
+    this.framesStates.push(activeFrameLi);
 
     if (this.framesStates.length < 2) {
-      activeFrame.style.border = '5px solid #ffed15';
+      activeFrameLi.style.border = '5px solid #ffed15';
     } else {
       const prevFrame = this.framesStates.shift();
       prevFrame.style.border = '';

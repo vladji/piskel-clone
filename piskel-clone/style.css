@@ -16,6 +16,12 @@ header {
   border-bottom: 3px solid #ccc;
 }
 
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
 canvas {
   background-color: #fff;
 }
