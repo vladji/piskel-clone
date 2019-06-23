@@ -8,7 +8,7 @@ export default class Frames {
     this.framesUnits = () => document.querySelectorAll('.frames-list li');
     this.lastFrame = () => document.querySelector('.frames-list li:last-child canvas');
     this.framesStates = [];
-    this.frameTools = document.querySelector('.frame-tools');
+    this.frameTools = () => document.querySelector('.frame-tools');
     this.frameTools.hidden = true;
     this.frameHover();
   }
@@ -95,6 +95,19 @@ export default class Frames {
 
   countFrames() {
     const frames = this.framesUnits();
+    const firsFrameTools = this.frameTools();
+
+    const delTool = firsFrameTools.children[1];
+    const moveTool = firsFrameTools.children[2];
+
+    if (frames.length === 1) {
+      delTool.remove();
+      moveTool.remove();
+    } else if (!delTool && frames.length > 1) {
+      firsFrameTools.insertAdjacentHTML('beforeend',
+        '<button class="frame-delete">del</button><button class="frame-move">move</button>');
+    }
+
     let counter = 1;
     for (let i = 0; i < frames.length; i += 1) {
       const frameNumber = frames[i].querySelector('.frame-num');
