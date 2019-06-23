@@ -13,6 +13,7 @@ export default class Frames {
     this.frameHover();
     this.countFrames();
     this.activeFrameState(this.currentFrame);
+    this.frameDragDrop();
   }
 
   logic() {
@@ -41,9 +42,55 @@ export default class Frames {
       if (e.target.closest('.frame-duplicate')) {
         this.frameDuplicate(e);
       }
+
       Preview.setSlides();
       this.countFrames();
     });
+  }
+
+  frameDragDrop() {
+    const allFrames = this.framesList;
+    let targetFrameLi = null;
+    let startMove = null;
+    let firstTouch = null;
+
+    const frameMove = (evt) => {
+      const shiftY = firstTouch - evt.clientY - startMove;
+      targetFrameLi.style.top = `${-shiftY}px`;
+
+      const checkDistance = (firstTouch - evt.clientY) % 20;
+      if (checkDistance === 0) {
+        targetFrameLi.style.zIndex = '-1';
+        const elem = document.elementFromPoint(evt.clientX, evt.clientY);
+        console.log('elem', elem);
+
+        // if (elem.matches('canvas')) {
+
+        // }
+        targetFrameLi.style.zIndex = '99';
+      }
+    };
+
+    allFrames.addEventListener('mousedown', (e) => {
+      targetFrameLi = e.target.closest('li');
+      firstTouch = e.clientY;
+      startMove = parseInt(targetFrameLi.style.top, 0) || 0;
+      this.framesLayout();
+      targetFrameLi.style.zIndex = '99';
+
+      targetFrameLi.addEventListener('mousemove', frameMove);
+    });
+
+    allFrames.addEventListener('mouseup', () => {
+      targetFrameLi.removeEventListener('mousemove', frameMove);
+    });
+  }
+
+  framesLayout() {
+    const allFrames = this.framesUnits();
+    for (let i = 0; i < allFrames.length; i += 1) {
+      allFrames[i].style.zIndex = '11';
+    }
   }
 
   static setFrame(e) {
