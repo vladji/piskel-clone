@@ -15,6 +15,7 @@ export default class Frames {
 
   logic() {
     const framesWrap = this.framesBlock;
+    this.countFrames();
     this.activeFrameState(this.currentFrame);
 
     framesWrap.addEventListener('click', (e) => {
@@ -75,14 +76,18 @@ export default class Frames {
 
   frameDelete(e) {
     const targetFrameLi = e.target.closest('li');
-    let nextFrameLi = targetFrameLi.previousElementSibling;
-    if (!nextFrameLi) nextFrameLi = targetFrameLi.nextElementSibling;
+    const targetCanvas = targetFrameLi.querySelector('canvas');
 
-    const nextFrame = nextFrameLi.querySelector('canvas');
-    this.currentFrame = nextFrame;
+    if (targetCanvas === this.currentFrame) {
+      let nextFrameLi = targetFrameLi.previousElementSibling;
+      if (!nextFrameLi) nextFrameLi = targetFrameLi.nextElementSibling;
 
-    Frames.setFrame(nextFrame);
-    this.activeFrameState(nextFrame);
+      const nextCanvas = nextFrameLi.querySelector('canvas');
+      this.currentFrame = nextCanvas;
+
+      Frames.setFrame(nextCanvas);
+      this.activeFrameState(nextCanvas);
+    }
 
     this.framesList.removeChild(targetFrameLi);
     Preview.setSlides();
