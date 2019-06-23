@@ -22,6 +22,10 @@ button {
   cursor: pointer;
 }
 
+button:focus {
+  outline: none;
+}
+
 canvas {
   background-color: #fff;
 }
@@ -115,6 +119,11 @@ ul {
   border: 4px solid #fff;
 }
 
+.frame-tools i {
+  font-size: 16px;
+  color: #808080;
+}
+
 .frame-num, .frame-duplicate, .frame-delete, .frame-move {
   position: absolute;
 }
@@ -131,21 +140,21 @@ ul {
 }
 
 .frame-duplicate {
-  top: 100px;
-  left: 100px;
+  top: 105px;
+  left: 105px;
   width: 30px;
   height: 30px;
 }
 
 .frame-delete {
   top: 0px;
-  left: 100px;
+  left: 105px;
   width: 30px;
   height: 30px;
 }
 
 .frame-move {
-  top: 100px;
+  top: 105px;
   left: 0px;
   width: 30px;
   height: 30px;

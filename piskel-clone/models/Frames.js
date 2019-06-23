@@ -9,14 +9,14 @@ export default class Frames {
     this.lastFrame = () => document.querySelector('.frames-list li:last-child canvas');
     this.framesStates = [];
     this.frameTools = () => document.querySelector('.frame-tools');
-    this.frameTools.hidden = true;
+    this.frameTools().hidden = true;
     this.frameHover();
+    this.countFrames();
+    this.activeFrameState(this.currentFrame);
   }
 
   logic() {
     const framesWrap = this.framesBlock;
-    this.countFrames();
-    this.activeFrameState(this.currentFrame);
 
     framesWrap.addEventListener('click', (e) => {
       let frameHighlited = null;
@@ -30,16 +30,19 @@ export default class Frames {
       if (e.target.closest('.add-frame')) {
         Frames.addNewFrame(this.framesList);
         frameHighlited = Frames.setFrame(this.lastFrame());
-        Preview.setSlides();
         this.activeFrameState(frameHighlited);
-        this.countFrames();
         this.currentFrame = frameHighlited;
       }
 
       if (e.target.closest('.frame-delete')) {
         this.frameDelete(e);
-        this.countFrames();
       }
+
+      if (e.target.closest('.frame-duplicate')) {
+        this.frameDuplicate(e);
+      }
+      Preview.setSlides();
+      this.countFrames();
     });
   }
 
@@ -67,9 +70,9 @@ export default class Frames {
         <p class="frame-num"></p>
         <canvas class="frame-unit" width="700" height="700"></canvas>
         <div class="frame-tools">
-          <button class="frame-duplicate">dupl</button>
-          <button class="frame-delete">del</button>
-          <button class="frame-move">move</button>
+          <button class="frame-duplicate"><i class="fas fa-clone"></i></button>
+          <button class="frame-delete"><i class="fas fa-trash-alt"></i></button>
+          <button class="frame-move"><i class="fas fa-arrows-alt-v"></i></button>
         </div>
       </li>`);
   }
@@ -90,7 +93,21 @@ export default class Frames {
     }
 
     this.framesList.removeChild(targetFrameLi);
-    Preview.setSlides();
+  }
+
+  frameDuplicate(e) {
+    const targetFrameLi = e.target.closest('li');
+    const targetCanvas = targetFrameLi.querySelector('canvas');
+    const targetCanvasCtx = targetCanvas.getContext('2d');
+    // eslint-disable-next-line max-len
+    const targetCanvasData = targetCanvasCtx.getImageData(0, 0, targetCanvas.width, targetCanvas.height);
+
+    const cloneFrameLi = targetFrameLi.cloneNode(true);
+    const cloneCanvas = cloneFrameLi.querySelector('canvas');
+    const cloneCanvasCtx = cloneCanvas.getContext('2d');
+    cloneCanvasCtx.putImageData(targetCanvasData, 0, 0);
+
+    this.framesList.insertBefore(cloneFrameLi, targetFrameLi);
   }
 
   countFrames() {
@@ -100,12 +117,12 @@ export default class Frames {
     const delTool = firsFrameTools.children[1];
     const moveTool = firsFrameTools.children[2];
 
-    if (frames.length === 1) {
+    if (frames.length === 1 && delTool) {
       delTool.remove();
       moveTool.remove();
-    } else if (!delTool && frames.length > 1) {
+    } else if (frames.length > 1 && !delTool) {
       firsFrameTools.insertAdjacentHTML('beforeend',
-        '<button class="frame-delete">del</button><button class="frame-move">move</button>');
+        '<button class="frame-delete"><i class="fas fa-trash-alt"></i></button><button class="frame-move"><i class="fas fa-arrows-alt-v"></i></button>');
     }
 
     let counter = 1;
