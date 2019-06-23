@@ -4,6 +4,7 @@ export default class Frames {
   constructor() {
     this.framesBlock = document.querySelector('#frames-block');
     this.framesList = document.querySelector('.frames-list ul');
+    this.framesUnits = () => document.querySelectorAll('.frames-list li');
     this.currentFrame = document.querySelector('.frames-list canvas');
     this.lastFrame = () => document.querySelector('.frames-list li:last-child canvas');
     this.framesStates = [];
@@ -15,28 +16,33 @@ export default class Frames {
   logic() {
     const framesWrap = this.framesBlock;
     this.activeFrameState(this.currentFrame);
-    let counter = 2;
 
     framesWrap.addEventListener('click', (e) => {
       let frameHighlited = null;
 
-      if (e.target.closest('.frames-list')) frameHighlited = Frames.pickFrame(e);
-
-      if (e.target.closest('.add-frame')) {
-        Frames.addNewFrame(this.framesList, counter);
-        counter += 1;
-
-        frameHighlited = Frames.pickFrame(this.lastFrame());
-        this.frameHover();
-        Preview.setSlides(this.lastFrame());
+      if (e.target.closest('canvas')) {
+        frameHighlited = Frames.setFrame(e);
+        this.activeFrameState(frameHighlited);
+        this.currentFrame = frameHighlited;
       }
 
-      this.activeFrameState(frameHighlited);
-      this.currentFrame = frameHighlited;
+      if (e.target.closest('.add-frame')) {
+        Frames.addNewFrame(this.framesList);
+        frameHighlited = Frames.setFrame(this.lastFrame());
+        Preview.setSlides();
+        this.activeFrameState(frameHighlited);
+        this.countFrames();
+        this.currentFrame = frameHighlited;
+      }
+
+      if (e.target.closest('.frame-delete')) {
+        this.frameDelete(e);
+        this.countFrames();
+      }
     });
   }
 
-  static pickFrame(e) {
+  static setFrame(e) {
     const targetFrame = e.target || e;
     this.currentFrame = targetFrame;
 
@@ -54,10 +60,10 @@ export default class Frames {
     return this.currentFrame;
   }
 
-  static addNewFrame(framesList, counter) {
+  static addNewFrame(framesList) {
     framesList.insertAdjacentHTML('beforeend',
       `<li>
-        <p class="frame-num">${counter}</p>
+        <p class="frame-num"></p>
         <canvas class="frame-unit" width="700" height="700"></canvas>
         <div class="frame-tools">
           <button class="frame-duplicate">dupl</button>
@@ -65,6 +71,22 @@ export default class Frames {
           <button class="frame-move">move</button>
         </div>
       </li>`);
+  }
+
+  frameDelete(e) {
+    const targetFrame = e.target.closest('li');
+    this.framesList.removeChild(targetFrame);
+    Preview.setSlides();
+  }
+
+  countFrames() {
+    const frames = this.framesUnits();
+    let counter = 1;
+    for (let i = 0; i < frames.length; i += 1) {
+      const frameNumber = frames[i].querySelector('.frame-num');
+      frameNumber.innerHTML = `${counter}`;
+      counter += 1;
+    }
   }
 
   activeFrameState(frame) {
