@@ -9,7 +9,7 @@ export default class Frames {
     this.lastFrame = () => document.querySelector('.frames-list li:last-child canvas');
     this.framesStates = [];
     this.frameTools = () => document.querySelector('.frame-tools');
-    this.frameTools().hidden = true;
+    // this.frameTools().hidden = true;
     this.frameHover();
     this.countFrames();
     this.activeFrameState(this.currentFrame);
@@ -51,7 +51,6 @@ export default class Frames {
   frameDragDrop() {
     const allFrames = this.framesList;
     let targetFrameLi = null;
-    // let firstTouch = null;
     const dragFrameParam = {};
 
     const frameMove = (evt) => {
@@ -60,7 +59,9 @@ export default class Frames {
       targetFrameLi.style.position = 'absolute';
 
       const startY = dragFrameParam.startTop;
-      const moveY = startY - evt.clientY;
+      const firstTouch = dragFrameParam.firstTouchY;
+
+      const moveY = (firstTouch - evt.clientY) - startY;
       console.log('moveY', moveY);
       targetFrameLi.style.top = `${-moveY}px`;
 
@@ -81,10 +82,13 @@ export default class Frames {
     };
 
     allFrames.addEventListener('mousedown', (e) => {
-      targetFrameLi = e.target.closest('li');
-      // firstTouch = e.clientY;
+      if (this.framesUnits().length === 1) return;
       this.framesLayout();
+
+      targetFrameLi = e.target.closest('li');
       targetFrameLi.style.zIndex = '99';
+
+      dragFrameParam.firstTouchY = e.clientY;
       dragFrameParam.startTop = targetFrameLi.offsetTop;
       dragFrameParam.startLeft = targetFrameLi.offsetLeft;
       console.log('startTop', dragFrameParam.startTop);
@@ -127,7 +131,7 @@ export default class Frames {
       `<li>
         <p class="frame-num"></p>
         <canvas class="frame-unit" width="700" height="700"></canvas>
-        <div class="frame-tools">
+        <div class="frame-tools" style="display: none;">
           <button class="frame-duplicate"><i class="fas fa-clone"></i></button>
           <button class="frame-delete"><i class="fas fa-trash-alt"></i></button>
           <button class="frame-move"><i class="fas fa-arrows-alt-v"></i></button>
@@ -161,27 +165,16 @@ export default class Frames {
     const targetCanvasData = targetCanvasCtx.getImageData(0, 0, targetCanvas.width, targetCanvas.height);
 
     const cloneFrameLi = targetFrameLi.cloneNode(true);
+    console.log('cloneFrameLi', cloneFrameLi);
     const cloneCanvas = cloneFrameLi.querySelector('canvas');
     const cloneCanvasCtx = cloneCanvas.getContext('2d');
     cloneCanvasCtx.putImageData(targetCanvasData, 0, 0);
 
     targetFrameLi.after(cloneFrameLi);
-    this.chekFrameTools(cloneFrameLi);
-  }
 
-  chekFrameTools(frame) {
-    const frames = this.framesUnits();
-
-    const delTool = frame.querySelector('.frame-delete');
-    const moveTool = frame.querySelector('.frame-move');
-
-    if (frames.length === 1 && delTool) {
-      delTool.remove();
-      moveTool.remove();
-    } else if (frames.length > 1 && !delTool) {
-      frame.insertAdjacentHTML('beforeend',
-        '<button class="frame-delete"><i class="fas fa-trash-alt"></i></button><button class="frame-move"><i class="fas fa-arrows-alt-v"></i></button>');
-    }
+    const frameTools = cloneFrameLi.querySelector('.frame-tools');
+    frameTools.style.display = 'none';
+    this.chekFrameTools(frameTools);
   }
 
   countFrames() {
@@ -193,6 +186,21 @@ export default class Frames {
       const frameNumber = frames[i].querySelector('.frame-num');
       frameNumber.innerHTML = `${counter}`;
       counter += 1;
+    }
+  }
+
+  chekFrameTools(frameTools) {
+    const frames = this.framesUnits();
+
+    const delTool = frameTools.querySelector('.frame-delete');
+    const moveTool = frameTools.querySelector('.frame-move');
+
+    if (frames.length === 1 && delTool) {
+      delTool.remove();
+      moveTool.remove();
+    } else if (frames.length > 1 && !delTool) {
+      frameTools.insertAdjacentHTML('beforeend',
+        '<button class="frame-delete"><i class="fas fa-trash-alt"></i></button><button class="frame-move"><i class="fas fa-arrows-alt-v"></i></button>');
     }
   }
 
@@ -219,7 +227,8 @@ export default class Frames {
       if (e.target.closest('li')) {
         targetLi = e.target.closest('li');
         frameTools = targetLi.querySelector('.frame-tools');
-        frameTools.hidden = false;
+        // frameTools.hidden = false;
+        frameTools.style.display = '';
 
         const activeFrame = this.currentFrame.closest('li');
         if (targetLi !== activeFrame) targetLi.style.border = '4px solid #888';
@@ -228,7 +237,8 @@ export default class Frames {
 
     this.framesList.addEventListener('mouseout', () => {
       if (targetLi) {
-        frameTools.hidden = true;
+        // frameTools.hidden = true;
+        frameTools.style.display = 'none';
 
         const activeFrame = this.currentFrame.closest('li');
         if (targetLi !== activeFrame) targetLi.style.border = '';
