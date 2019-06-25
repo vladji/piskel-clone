@@ -51,15 +51,19 @@ export default class Frames {
   frameDragDrop() {
     const allFrames = this.framesList;
     let targetFrameLi = null;
-    const dragFrameParam = {};
+    const dropElemProxy = document.createElement('li');
+    // dropElemProxy.innerHTML = '<p class="frame-num" style="display: none;"></p>';
+    dropElemProxy.className = 'drop-elem-proxy';
+    const frameParam = {};
+    console.log('frameParam', frameParam);
 
     const frameMove = (evt) => {
-      targetFrameLi.style.top = `${dragFrameParam.startTop}px`;
-      targetFrameLi.style.left = `${dragFrameParam.startLeft}px`;
+      targetFrameLi.style.top = `${frameParam.startTop}px`;
+      targetFrameLi.style.left = `${frameParam.startLeft}px`;
       targetFrameLi.style.position = 'absolute';
 
-      const startY = dragFrameParam.startTop;
-      const firstTouch = dragFrameParam.firstTouchY;
+      const startY = frameParam.startTop;
+      const firstTouch = frameParam.firstTouchY;
 
       const moveY = (firstTouch - evt.clientY) - startY;
       console.log('moveY', moveY);
@@ -71,11 +75,11 @@ export default class Frames {
         const elem = document.elementFromPoint(evt.clientX, evt.clientY);
         const replaceLi = elem.closest('li');
 
-        if (replaceLi) {
-          allFrames.insertBefore(replaceLi, targetFrameLi);
-          replaceLi.style.top = '';
-          const topTargetFrame = parseInt(targetFrameLi.style.top, 0);
-          console.log('top', topTargetFrame);
+        if (replaceLi === frameParam.nextSibling) {
+          // allFrames.insertBefore(replaceLi, targetFrameLi);
+          replaceLi.after(dropElemProxy);
+          // replaceLi.style.top = '';
+          // const topTargetFrame = parseInt(targetFrameLi.style.top, 0);
         }
         targetFrameLi.style.zIndex = '99';
       }
@@ -88,11 +92,14 @@ export default class Frames {
       targetFrameLi = e.target.closest('li');
       targetFrameLi.style.zIndex = '99';
 
-      dragFrameParam.firstTouchY = e.clientY;
-      dragFrameParam.startTop = targetFrameLi.offsetTop;
-      dragFrameParam.startLeft = targetFrameLi.offsetLeft;
-      console.log('startTop', dragFrameParam.startTop);
+      frameParam.firstTouchY = e.clientY;
+      frameParam.startTop = targetFrameLi.offsetTop;
+      frameParam.startLeft = targetFrameLi.offsetLeft;
 
+      frameParam.previousSibling = targetFrameLi.previousElementSibling;
+      frameParam.nextSibling = targetFrameLi.nextElementSibling;
+
+      targetFrameLi.after(dropElemProxy);
       targetFrameLi.addEventListener('mousemove', frameMove);
     });
 

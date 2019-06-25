@@ -84,6 +84,7 @@ ul {
 }
 
 #frames-block {
+  width: 160px;
   height: 100%;
   padding-right: 15px;
   overflow-y: scroll;
@@ -147,7 +148,7 @@ ul {
 }
 
 .frame-delete {
-  top: 0px;
+  top: 0;
   left: 105px;
   width: 30px;
   height: 30px;
@@ -155,9 +156,18 @@ ul {
 
 .frame-move {
   top: 105px;
-  left: 0px;
+  left: 0;
   width: 30px;
   height: 30px;
+}
+
+li.drop-elem-proxy {
+  width: 135px;
+  height: 135px;
+  margin-bottom: 10px;
+  border: 4px dashed #ffed15;
+  border-radius: 3px;
+  background: #323;
 }
 
 /* CANVAS SECTION */
