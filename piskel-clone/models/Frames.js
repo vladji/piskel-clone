@@ -9,7 +9,6 @@ export default class Frames {
     this.lastFrame = () => document.querySelector('.frames-list li:last-child canvas');
     this.framesStates = [];
     this.frameTools = () => document.querySelector('.frame-tools');
-    // this.frameTools().hidden = true;
     this.frameHover();
     this.countFrames();
     this.activeFrameState(this.currentFrame);
@@ -26,93 +25,106 @@ export default class Frames {
         frameHighlited = Frames.setFrame(e);
         this.activeFrameState(frameHighlited);
         this.currentFrame = frameHighlited;
-      }
+      } else {
+        if (e.target.closest('.add-frame')) {
+          Frames.addNewFrame(this.framesList);
+          frameHighlited = Frames.setFrame(this.lastFrame());
+          this.activeFrameState(frameHighlited);
+          this.currentFrame = frameHighlited;
+        }
 
-      if (e.target.closest('.add-frame')) {
-        Frames.addNewFrame(this.framesList);
-        frameHighlited = Frames.setFrame(this.lastFrame());
-        this.activeFrameState(frameHighlited);
-        this.currentFrame = frameHighlited;
-      }
+        if (e.target.closest('.frame-delete')) {
+          this.frameDelete(e);
+        }
 
-      if (e.target.closest('.frame-delete')) {
-        this.frameDelete(e);
-      }
+        if (e.target.closest('.frame-duplicate')) {
+          this.frameDuplicate(e);
+        }
 
-      if (e.target.closest('.frame-duplicate')) {
-        this.frameDuplicate(e);
+        Preview.setSlides();
+        this.countFrames();
       }
-
-      Preview.setSlides();
-      this.countFrames();
     });
   }
 
   frameDragDrop() {
     const allFrames = this.framesList;
     let targetFrameLi = null;
-    const dropElemProxy = document.createElement('li');
-    // dropElemProxy.innerHTML = '<p class="frame-num" style="display: none;"></p>';
-    dropElemProxy.className = 'drop-elem-proxy';
     const frameParam = {};
-    console.log('frameParam', frameParam);
 
-    const frameMove = (evt) => {
+    const framesLayout = () => {
+      const frames = this.framesUnits();
+      for (let i = 0; i < frames.length; i += 1) {
+        frames[i].style.zIndex = '11';
+      }
+    };
+
+    const chekElement = (evt) => {
+      const dropElemProxy = frameParam.proxy;
+
+      frameParam.previousSibling = dropElemProxy.previousElementSibling;
+      frameParam.nextSibling = dropElemProxy.nextElementSibling;
+
+      targetFrameLi.style.zIndex = '-1';
+      const elem = document.elementFromPoint(evt.clientX, evt.clientY);
+      const replaceFrame = elem.closest('li');
+
+      // eslint-disable-next-line max-len
+      if (frameParam.nextSibling && replaceFrame === frameParam.nextSibling) replaceFrame.after(dropElemProxy);
+      // eslint-disable-next-line max-len
+      if (frameParam.previousSibling && replaceFrame === frameParam.previousSibling) replaceFrame.before(dropElemProxy);
+      targetFrameLi.style.zIndex = '99';
+    };
+
+    const startMove = () => {
+      framesLayout();
+      const dropElemProxy = document.createElement('li');
+      dropElemProxy.className = 'drop-elem-proxy frame-wrap';
+
+      targetFrameLi.style.zIndex = '99';
       targetFrameLi.style.top = `${frameParam.startTop}px`;
       targetFrameLi.style.left = `${frameParam.startLeft}px`;
       targetFrameLi.style.position = 'absolute';
+      targetFrameLi.after(dropElemProxy);
+      document.body.appendChild(targetFrameLi);
+      return dropElemProxy;
+    };
+
+    const frameMove = (evt) => {
+      if (!frameParam.proxy) {
+        frameParam.proxy = startMove();
+      }
 
       const startY = frameParam.startTop;
       const firstTouch = frameParam.firstTouchY;
-
       const moveY = (firstTouch - evt.clientY) - startY;
-      console.log('moveY', moveY);
       targetFrameLi.style.top = `${-moveY}px`;
 
-      const checkDistance = (startY - evt.clientY) % 20;
-      if (checkDistance === 0) {
-        targetFrameLi.style.zIndex = '-1';
-        const elem = document.elementFromPoint(evt.clientX, evt.clientY);
-        const replaceLi = elem.closest('li');
-
-        if (replaceLi === frameParam.nextSibling) {
-          // allFrames.insertBefore(replaceLi, targetFrameLi);
-          replaceLi.after(dropElemProxy);
-          // replaceLi.style.top = '';
-          // const topTargetFrame = parseInt(targetFrameLi.style.top, 0);
-        }
-        targetFrameLi.style.zIndex = '99';
-      }
+      setInterval(chekElement(evt), 1000);
     };
 
     allFrames.addEventListener('mousedown', (e) => {
       if (this.framesUnits().length === 1) return;
-      this.framesLayout();
-
       targetFrameLi = e.target.closest('li');
-      targetFrameLi.style.zIndex = '99';
 
       frameParam.firstTouchY = e.clientY;
       frameParam.startTop = targetFrameLi.offsetTop;
       frameParam.startLeft = targetFrameLi.offsetLeft;
 
-      frameParam.previousSibling = targetFrameLi.previousElementSibling;
-      frameParam.nextSibling = targetFrameLi.nextElementSibling;
-
-      targetFrameLi.after(dropElemProxy);
       targetFrameLi.addEventListener('mousemove', frameMove);
-    });
 
-    allFrames.addEventListener('mouseup', () => {
-      targetFrameLi.removeEventListener('mousemove', frameMove);
-    });
-  }
+      targetFrameLi.addEventListener('mouseup', () => {
+        targetFrameLi.removeEventListener('mousemove', frameMove);
 
-  framesLayout() {
-    const allFrames = this.framesUnits();
-    for (let i = 0; i < allFrames.length; i += 1) {
-      allFrames[i].style.zIndex = '11';
-    }
+        if (frameParam.proxy) frameParam.proxy.replaceWith(targetFrameLi);
+        frameParam.proxy = null;
+        targetFrameLi.style.position = 'relative';
+        targetFrameLi.style.top = '';
+        targetFrameLi.style.left = '';
+        Preview.setSlides();
+        this.countFrames();
+      });
+    });
   }
 
   static setFrame(e) {
@@ -135,7 +147,7 @@ export default class Frames {
 
   static addNewFrame(framesList) {
     framesList.insertAdjacentHTML('beforeend',
-      `<li>
+      `<li class="frame-wrap">
         <p class="frame-num"></p>
         <canvas class="frame-unit" width="700" height="700"></canvas>
         <div class="frame-tools" style="display: none;">
@@ -172,7 +184,6 @@ export default class Frames {
     const targetCanvasData = targetCanvasCtx.getImageData(0, 0, targetCanvas.width, targetCanvas.height);
 
     const cloneFrameLi = targetFrameLi.cloneNode(true);
-    console.log('cloneFrameLi', cloneFrameLi);
     const cloneCanvas = cloneFrameLi.querySelector('canvas');
     const cloneCanvasCtx = cloneCanvas.getContext('2d');
     cloneCanvasCtx.putImageData(targetCanvasData, 0, 0);
@@ -235,17 +246,17 @@ export default class Frames {
         targetLi = e.target.closest('li');
         frameTools = targetLi.querySelector('.frame-tools');
         // frameTools.hidden = false;
-        frameTools.style.display = '';
+        if (frameTools) frameTools.style.display = '';
 
         const activeFrame = this.currentFrame.closest('li');
-        if (targetLi !== activeFrame) targetLi.style.border = '4px solid #888';
+        if (targetLi !== activeFrame) targetLi.style.border = '5px solid #888';
       }
     });
 
     this.framesList.addEventListener('mouseout', () => {
       if (targetLi) {
         // frameTools.hidden = true;
-        frameTools.style.display = 'none';
+        if (frameTools) frameTools.style.display = 'none';
 
         const activeFrame = this.currentFrame.closest('li');
         if (targetLi !== activeFrame) targetLi.style.border = '';
