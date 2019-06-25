@@ -9,19 +9,16 @@ export default class Tools {
     this.canvasStart = new Canvas();
     this.btnStates = [];
     this.defaultTool = document.querySelector('.btn_pen');
+    this.currentColor = '#888';
+    this.eraserDetect = {};
   }
 
   logic() {
-    // const targetPoint = this.canvasStart.targetPoint();
-    // console.log('targetPoint', targetPoint);
     this.activeToolState(this.currentTool);
-    // actualView(this.currentTool);
 
     const canvas = this.canvasDraw;
     const btnPanelTools = this.btnPanel;
     const canvasInit = this.canvasStart;
-
-    canvasInit.prepareData();
     let currentTool = null;
 
     const removeAction = () => {
@@ -57,15 +54,38 @@ export default class Tools {
     const penToolDefault = canvasInit.penToolDefault.bind(canvasInit);
     const bucketTool = canvasInit.bucketTool.bind(canvasInit);
 
+    if (this.currentTool === 'btn_eraser') {
+      this.eraserDetect.eraser = 'btn_eraser';
+    } else if (this.eraserDetect.eraser) {
+      this.eraserDetect.eraser = null;
+      canvasInit.prepareData(this.currentColor);
+    }
+
     switch (this.currentTool) {
       case 'btn_bucket':
         currentTool = bucketTool;
         break;
+      case 'btn_eraser':
+        canvasInit.prepareData('#fff');
+        currentTool = penToolDefault;
+        break;
       default:
         currentTool = penToolDefault;
     }
-
     return currentTool;
+  }
+
+  chooseColor(color) {
+    const canvasInit = this.canvasStart;
+    const colorBuffer = [];
+
+    if (colorBuffer.length === 4) {
+      colorBuffer.shift();
+    }
+    colorBuffer.push(color);
+
+    this.currentColor = color;
+    canvasInit.prepareData(color);
   }
 
   activeToolState(tool) {
