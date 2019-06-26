@@ -77,12 +77,6 @@ export default class Tools {
 
   chooseColor(color) {
     const canvasInit = this.canvasStart;
-    const colorBuffer = [];
-
-    if (colorBuffer.length === 4) {
-      colorBuffer.shift();
-    }
-    colorBuffer.push(color);
 
     this.currentColor = color;
     canvasInit.prepareData(color);
