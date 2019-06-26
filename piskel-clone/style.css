@@ -55,6 +55,42 @@ ul {
   justify-content: space-between;
 }
 
+/* Thickness section */
+
+.thickness-tool ul {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 10px;
+}
+
+.thickness-tool li {
+  display: flex;
+  width: 25px;
+  height: 25px;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #a7a79d;
+}
+
+.thickness-1 div, .thickness-2 div, .thickness-3 div {
+  background-color: #ffed15;
+}
+
+.thickness-1 div {
+  width: 7px;
+  height: 7px;
+}
+
+.thickness-2 div {
+  width: 10px;
+  height: 10px;
+}
+
+.thickness-3 div {
+  width: 14px;
+  height: 14px;
+}
+
 /* Tools block */
 
 .wrap_draw-panel {
@@ -64,6 +100,7 @@ ul {
 
 #draw-tools ul {
   width: 117px;
+  text-align: center;
 }
 
 #draw-tools li {

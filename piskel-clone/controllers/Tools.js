@@ -8,10 +8,11 @@ export default class Tools {
     this.canvasDraw = document.getElementById('canvas');
     this.btnPanel = document.querySelector('#draw-tools');
     this.btnStates = [];
+    this.eraserDetect = {};
     this.defaultTool = document.querySelector('.btn_pen');
     this.currentColor = null;
     this.chooseColor();
-    this.eraserDetect = {};
+    this.chooseThickness();
   }
 
   logic() {
@@ -74,6 +75,55 @@ export default class Tools {
         currentTool = penToolDefault;
     }
     return currentTool;
+  }
+
+  chooseThickness() {
+    const canvasInit = this.canvasStart;
+    let thicknessBtn = null;
+    let lineFat = 20;
+
+    const thicknessPanel = document.querySelector('.thickness-tool');
+
+    const thiscknessState = [];
+    const firstThick = document.querySelector('.thickness-1').className;
+    thiscknessState.push(firstThick);
+
+    const activeThick = (btn) => {
+      thiscknessState.push(btn);
+
+      const prevState = thiscknessState.shift();
+      const prevThick = document.querySelector(`.${prevState}`);
+      prevThick.style.border = '2px solid #a7a79d';
+
+      const currentState = thiscknessState[0];
+      const currentThick = document.querySelector(`.${currentState}`);
+      currentThick.style.border = '2px solid #ffed15';
+    };
+
+    thicknessPanel.addEventListener('click', (e) => {
+      if (e.target.closest('li')) {
+        thicknessBtn = e.target.closest('li').className;
+
+        switch (thicknessBtn) {
+          case 'thickness-1':
+            lineFat = 20;
+            break;
+          case 'thickness-2':
+            lineFat = 30;
+            break;
+          case 'thickness-3':
+            lineFat = 40;
+            break;
+          default:
+            lineFat = 20;
+        }
+        canvasInit.prepareData(null, lineFat);
+        activeThick(thicknessBtn);
+      }
+    });
+
+    canvasInit.prepareData(null, lineFat);
+    activeThick(firstThick);
   }
 
   chooseColor() {

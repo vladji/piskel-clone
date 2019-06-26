@@ -7,30 +7,23 @@ export default class Canvas {
     this.canvasData = null;
     this.contextFrame = null;
     this.contextCanvas.fillStyle = null;
+    this.saveColor = null;
     this.thikness = null;
+    this.saveThickness = null;
   }
 
-  // targetPoint() {
-  //   const canvas = this.canvasDraw;
+  prepareData(...args) {
+    const color = args[0];
+    const thikness = args[1];
 
-  //   canvas.addEventListener('mouseover', () => {
-  //     canvas.addEventListener('mousemove', (e) => {
-  //       const moveX = e.pageX - canvas.offsetLeft;
-  //       const moveY = e.pageY - canvas.offsetTop;
-
-  //       console.log('moveX', moveX);
-  //       console.log('moveY', moveY);
-  //     });
-  //   });
-  // }
-
-  prepareData(color, thikness) {
     let currentFrame = Frames.getFrame();
     if (!currentFrame) currentFrame = document.querySelector('.frame-unit');
     const ctxFrame = currentFrame.getContext('2d');
     this.contextFrame = ctxFrame;
-    this.contextCanvas.fillStyle = color;
-    if (!thikness) this.thikness = 20;
+
+    if (color) this.contextCanvas.fillStyle = color;
+
+    if (thikness) this.thikness = thikness;
   }
 
   penToolDefault(evt) {
@@ -56,7 +49,6 @@ export default class Canvas {
   }
 
   bucketTool(evt) {
-    const lineFat = this.thikness;
     const canvas = this.canvasDraw;
 
     const ctxCanvas = this.contextCanvas;
@@ -66,7 +58,7 @@ export default class Canvas {
 
     const pixelDefault = ctxCanvas.getImageData(startX, startY, 1, 1).data.join('');
 
-    const shiftX = startX % lineFat;
+    const shiftX = startX % 10;
     startX -= shiftX;
     const pixelStack = [[startX, startY]];
 
@@ -78,15 +70,14 @@ export default class Canvas {
     };
 
     const paintPixel = (posX, posY) => {
-      ctxCanvas.fillRect(posX, posY, lineFat, lineFat);
+      ctxCanvas.fillRect(posX, posY, 10, 10);
     };
 
     while (pixelStack.length) {
       const newPos = pixelStack.pop();
       const x = newPos[0];
       let y = newPos[1];
-      let stepX = lineFat;
-      let stepY = lineFat;
+
       // GO UP
       do {
         y -= 1;
@@ -98,16 +89,11 @@ export default class Canvas {
       do {
         paintPixel(x, y);
 
-        if (x + stepX > canvas.width) {
-          stepX = 1;
-        } else {
-          stepX = lineFat;
-        }
         //  LOOK to the RIGHT
         if (x < canvas.width) {
-          if (checkPixel(x + stepX, y)) {
+          if (checkPixel(x + 10, y)) {
             if (!reachRight) {
-              pixelStack.push([x + stepX, y]);
+              pixelStack.push([x + 10, y]);
               reachRight = true;
             }
           } else if (reachRight) {
@@ -117,9 +103,9 @@ export default class Canvas {
 
         //  LOOK to the LEFT
         if (x > 0) {
-          if (checkPixel(x - stepX, y)) {
+          if (checkPixel(x - 10, y)) {
             if (!reachLeft) {
-              pixelStack.push([x - stepX, y]);
+              pixelStack.push([x - 10, y]);
               reachLeft = true;
             }
           } else if (reachLeft) {
@@ -127,12 +113,7 @@ export default class Canvas {
           }
         }
 
-        if (y + lineFat > canvas.height) {
-          stepY = 1;
-        } else {
-          stepY = lineFat;
-        }
-        y += stepY;
+        y += 10;
       } while (y !== canvas.height && checkPixel(x, y));
     }
 
