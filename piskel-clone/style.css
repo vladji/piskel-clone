@@ -111,12 +111,12 @@ ul {
   top: 25px;
   right: 52px;
   font-size: 18px;
-  color: #c4c0c0;
+  color: rgb(196, 192, 192);
 }
 
 .wrap_palette {
   position: absolute;
-  top: 90px;
+  top: 70px;
 }
 
 .wrap_palette img {

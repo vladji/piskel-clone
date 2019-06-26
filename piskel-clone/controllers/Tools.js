@@ -3,10 +3,10 @@ import Preview from '../models/Preview';
 
 export default class Tools {
   constructor() {
+    this.canvasStart = new Canvas();
     this.currentTool = 'btn_pen';
     this.canvasDraw = document.getElementById('canvas');
     this.btnPanel = document.querySelector('#draw-tools');
-    this.canvasStart = new Canvas();
     this.btnStates = [];
     this.defaultTool = document.querySelector('.btn_pen');
     this.currentColor = null;
