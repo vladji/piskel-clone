@@ -9,7 +9,8 @@ export default class Tools {
     this.canvasStart = new Canvas();
     this.btnStates = [];
     this.defaultTool = document.querySelector('.btn_pen');
-    this.currentColor = '#888';
+    this.currentColor = null;
+    this.chooseColor();
     this.eraserDetect = {};
   }
 
@@ -75,11 +76,57 @@ export default class Tools {
     return currentTool;
   }
 
-  chooseColor(color) {
+  chooseColor() {
     const canvasInit = this.canvasStart;
+    let primaryBtn = null;
+    const paletteWrap = document.querySelector('.wrap_palette');
+    const colorSection = document.querySelector('.wrap_color-section');
+    const colorPalette = document.querySelector('.wrap_palette img');
+    const colorCanvas = document.querySelector('.wrap_palette canvas');
+    const colorContext = colorCanvas.getContext('2d');
+    let currentColorBtn = null;
 
-    this.currentColor = color;
-    canvasInit.prepareData(color);
+    const setColor = () => {
+      primaryBtn = document.querySelector('.wrap_color-section button:first-child');
+      const primBtnStyle = getComputedStyle(primaryBtn);
+      const color = primBtnStyle.backgroundColor;
+
+      this.currentColor = color;
+      canvasInit.prepareData(color);
+    };
+
+    colorSection.addEventListener('click', (e) => {
+      const targetBtn = e.target;
+      if (targetBtn.closest('.choose-color-btn')) {
+        colorContext.drawImage(colorPalette, 0, 0);
+        paletteWrap.hidden = false;
+        currentColorBtn = targetBtn.closest('.choose-color-btn');
+      }
+
+      if (targetBtn.closest('.color-switch')) {
+        primaryBtn = document.querySelector('.wrap_color-section button:first-child');
+        const secondaryBtn = document.querySelector('.wrap_color-section button:nth-child(2)');
+        colorSection.insertBefore(secondaryBtn, primaryBtn);
+        setColor();
+      }
+
+      if (targetBtn.closest('.wrap_close-btn')) paletteWrap.hidden = true;
+    });
+
+    const palettePicker = (e) => {
+      const colorPixel = colorContext.getImageData(e.layerX, e.layerY, 1, 1).data.join(', ');
+      currentColorBtn.style.backgroundColor = `rgba(${colorPixel})`;
+    };
+
+    colorCanvas.addEventListener('mousedown', () => {
+      colorCanvas.addEventListener('mousemove', palettePicker);
+      colorCanvas.addEventListener('mouseup', () => {
+        colorCanvas.removeEventListener('mousemove', palettePicker);
+        setColor();
+      });
+    });
+
+    setColor();
   }
 
   activeToolState(tool) {

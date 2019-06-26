@@ -17,7 +17,6 @@ li {
 
 header {
   padding: 15px 0;
-  border-bottom: 3px solid #ccc;
   background: #17797e;
 }
 
@@ -89,19 +88,18 @@ ul {
   top: 25px;
 }
 
-.color-primary, .color-secondary {
+.choose-color-btn {
   width: 50px;
   height: 50px;
   border: 3px solid #888;
-  background-color: rgb(21, 224, 21);
 }
 
-.color-primary {
+.wrap_color-section button:first-child {
   position: relative;
   z-index: 22;
 }
 
-.color-secondary {
+.wrap_color-section button:nth-child(2) {
   position: absolute;
   top: 30px;
   left: 30px;
@@ -111,9 +109,27 @@ ul {
 .color-switch {
   position: relative;
   top: 25px;
-  right: 55px;
-  font-size: 20px;
+  right: 52px;
+  font-size: 18px;
   color: #c4c0c0;
+}
+
+.wrap_palette {
+  position: absolute;
+  top: 90px;
+}
+
+.wrap_palette img {
+  display: none;
+}
+
+.wrap_close-btn {
+  text-align: right;
+}
+
+.wrap_close-btn button {
+  font-size: 18px;
+  color: #bbb;
 }
 
 /* Frames block */

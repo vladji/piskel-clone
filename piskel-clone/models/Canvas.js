@@ -6,7 +6,7 @@ export default class Canvas {
     this.contextCanvas = this.canvasDraw.getContext('2d');
     this.canvasData = null;
     this.contextFrame = null;
-    this.contextCanvas.fillStyle = '#888';
+    this.contextCanvas.fillStyle = null;
   }
 
   // targetPoint() {
@@ -28,7 +28,7 @@ export default class Canvas {
     if (!currentFrame) currentFrame = document.querySelector('.frame-unit');
     const ctxFrame = currentFrame.getContext('2d');
     this.contextFrame = ctxFrame;
-    if (color) this.contextCanvas.fillStyle = color;
+    this.contextCanvas.fillStyle = color;
   }
 
   penToolDefault(evt) {
@@ -54,7 +54,6 @@ export default class Canvas {
 
   bucketTool(evt) {
     const canvas = this.canvasDraw;
-    // canvas.onmousemove = null;
 
     const ctxCanvas = this.contextCanvas;
 
