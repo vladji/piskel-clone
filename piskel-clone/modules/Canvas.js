@@ -22,7 +22,6 @@ export default class Canvas {
     this.contextFrame = ctxFrame;
 
     if (color) this.contextCanvas.fillStyle = color;
-
     if (thikness) this.thikness = thikness;
   }
 

@@ -4,6 +4,7 @@ export default class Frames {
   constructor() {
     this.framesBlock = document.querySelector('#frames-block');
     this.framesList = document.querySelector('.frames-list ul');
+    Frames.addNewFrame(this.framesList);
     this.currentFrame = document.querySelector('.frames-list canvas');
     this.framesUnits = () => document.querySelectorAll('.frames-list li');
     this.lastFrame = () => document.querySelector('.frames-list li:last-child canvas');

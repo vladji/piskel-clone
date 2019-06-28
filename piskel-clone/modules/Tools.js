@@ -1,5 +1,5 @@
-import Canvas from '../models/Canvas';
-import Preview from '../models/Preview';
+import Canvas from './Canvas';
+import Preview from './Preview';
 
 export default class Tools {
   constructor() {
