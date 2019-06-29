@@ -4,20 +4,23 @@ export default class Frames {
   constructor() {
     this.framesBlock = document.querySelector('#frames-block');
     this.framesList = document.querySelector('.frames-list ul');
-    Frames.addNewFrame(this.framesList);
     this.currentFrame = document.querySelector('.frames-list canvas');
     this.framesUnits = () => document.querySelectorAll('.frames-list li');
+    this.addFrame = () => {
+      if (this.framesUnits().length === 0) Frames.addNewFrame(this.framesList);
+    };
     this.lastFrame = () => document.querySelector('.frames-list li:last-child canvas');
-    this.framesStates = [];
     this.frameTools = () => document.querySelector('.frame-tools');
-    this.frameHover();
-    this.countFrames();
-    this.activeFrameState(this.currentFrame);
-    this.frameDragDrop();
+    this.framesStates = [this.currentFrame];
   }
 
   logic() {
     const framesWrap = this.framesBlock;
+    this.addFrame();
+    this.frameHover();
+    this.countFrames();
+    this.frameDragDrop();
+    this.activeFrameState(this.currentFrame);
 
     framesWrap.addEventListener('click', (e) => {
       let frameHighlited = null;
@@ -227,15 +230,11 @@ export default class Frames {
     const activeFrameLi = frame.closest('li');
     this.framesStates.push(activeFrameLi);
 
-    if (this.framesStates.length < 2) {
-      activeFrameLi.style.border = '5px solid #ffed15';
-    } else {
-      const prevFrame = this.framesStates.shift();
-      prevFrame.style.border = '';
+    const prevFrame = this.framesStates.shift();
+    prevFrame.style.border = '';
 
-      const currentFrame = this.framesStates[0];
-      currentFrame.style.border = '5px solid #ffed15';
-    }
+    const currentFrame = this.framesStates[0];
+    currentFrame.style.border = '5px solid #ffed15';
   }
 
   frameHover() {
