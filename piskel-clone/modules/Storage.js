@@ -7,13 +7,12 @@ export default class Storage {
   }
 
   logic() {
-    let result = this.putSession;
+    const result = this.putSession;
     window.addEventListener('beforeunload', (e) => {
       e.preventDefault();
       e.returnValue = '';
-      result = e.returnValue;
+      this.framesStore();
       console.log('result', result);
-      return result;
     });
   }
 
@@ -49,7 +48,7 @@ export default class Storage {
     return lastFrame;
   }
 
-  static framesStore() {
+  framesStore() {
     const frames = document.querySelectorAll('.frames-list li');
     const framesData = [];
 
