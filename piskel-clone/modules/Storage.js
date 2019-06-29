@@ -1,63 +1,68 @@
 export default class Storage {
   constructor() {
-    this.putSession = null;
-    this.framesData = null;
-    this.firstFrame = document.querySelector('.frames-list li');
-    this.framesList = document.querySelector('.frames-list ul');
+    this.store = {};
+    this.framesWrap = document.querySelector('.frames-list');
   }
 
   logic() {
-    let result = this.putSession;
-    window.addEventListener('beforeunload', (e) => {
-      e.preventDefault();
-      e.returnValue = '';
-      result = e.returnValue;
-      console.log('result', result);
-      return result;
+    if (localStorage.getItem('storeKey')) {
+      this.putImage();
+    }
+
+    window.addEventListener('beforeunload', () => {
+      this.framesStore();
     });
   }
 
-  putStore() {
-    if (this.framesData) this.putImage(this.firstFrame);
-  }
-
-  putImage(frame) {
-    const [...framesData] = this.framesData;
-    frame.putImageData(framesData[0], 0, 0);
-
-    if (framesData.length > 1) {
-      for (let i = 1; i < framesData.length; i += 1) {
-        const currentFrame = this.createFrame();
-        const currentCtx = currentFrame.getContext('2d');
-        currentCtx.putImageData(framesData[i], 0, 0);
-      }
-    }
-  }
-
-  createFrame() {
-    this.framesList.insertAdjacentHTML('beforeend',
-      `<li class="frame-wrap">
-      <p class="frame-num"></p>
-      <canvas class="frame-unit" width="700" height="700"></canvas>
-      <div class="frame-tools" style="display: none;">
-        <button class="frame-duplicate"><i class="fas fa-clone"></i></button>
-        <button class="frame-delete"><i class="fas fa-trash-alt"></i></button>
-        <button class="frame-move"><i class="fas fa-arrows-alt-v"></i></button>
-      </div>
-    </li>`);
-    const lastFrame = document.querySelector('.frames-list li:last-child');
-    return lastFrame;
-  }
-
-  static framesStore() {
-    const frames = document.querySelectorAll('.frames-list li');
+  framesStore() {
+    const canvasList = document.querySelectorAll('.frames-list canvas');
     const framesData = [];
 
-    for (let i = 0; i < frames.length; i += 1) {
-      const frameCtx = frames[i].getContext('2d');
-      framesData.push(frameCtx.getImageData(0, 0, frames[i].width, frames[i].height));
+    for (let i = 0; i < canvasList.length; i += 1) {
+      const frame = canvasList[i];
+      const frameCtx = frame.getContext('2d');
+      framesData.push(frameCtx.getImageData(0, 0, frame.width, frame.height));
     }
+    const framesWrap = document.querySelector('.frames-list ul');
+    this.store.framesWrap = framesWrap.outerHTML;
+    // this.store.framesData = framesData;
 
-    this.framesData = framesData;
+    const storeObj = JSON.stringify(this.store);
+    localStorage.setItem('storeKey', storeObj);
   }
+
+  putImage() {
+    const storeObj = JSON.parse(localStorage.getItem('storeKey'));
+    const framesStoreUl = storeObj.framesWrap;
+    const frameslist = this.framesWrap;
+    frameslist.innerHTML = framesStoreUl;
+
+    const frames = document.querySelectorAll('.frames-list li');
+    frames[0].remove();
+    const lookFrameStyle = document.querySelector('.frames-list li[style]');
+    if (lookFrameStyle) lookFrameStyle.style = '';
+
+    // const images = storeObj.framesData;
+    // const canvasList = document.querySelectorAll('.frames-list canvas');
+
+    // for (let i = 0; i < images.length; i += 1) {
+    //   const currentCtx = canvasList[i].getContext('2d');
+    //   currentCtx.putImageData(images[i], 0, 0);
+    // }
+  }
+
+  // createFrame() {
+  //   this.framesUl.insertAdjacentHTML('beforeend',
+  //     `<li class="frame-wrap">
+  //     <p class="frame-num"></p>
+  //     <canvas class="frame-unit" width="700" height="700"></canvas>
+  //     <div class="frame-tools" style="display: none;">
+  //       <button class="frame-duplicate"><i class="fas fa-clone"></i></button>
+  //       <button class="frame-delete"><i class="fas fa-trash-alt"></i></button>
+  //       <button class="frame-move"><i class="fas fa-arrows-alt-v"></i></button>
+  //     </div>
+  //   </li>`);
+  //   const lastFrame = document.querySelector('.frames-list li:last-child');
+  //   return lastFrame;
+  // }
 }

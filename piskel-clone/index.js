@@ -3,6 +3,9 @@ import Preview from './modules/Preview';
 import Tools from './modules/Tools';
 import Storage from './modules/Storage';
 
+const storage = new Storage();
+storage.logic();
+
 const frames = new Frames();
 frames.logic();
 
@@ -11,6 +14,3 @@ preview.initAnimation();
 
 const tools = new Tools();
 tools.logic();
-
-const storage = new Storage();
-storage.logic();
