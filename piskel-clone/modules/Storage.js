@@ -12,6 +12,7 @@ export default class Storage {
     this.fpsButton = document.querySelector('.preview_input-range input');
     this.colorPrimary = document.querySelector('.wrap_color-section button:first-child');
     this.colorSecondary = document.querySelector('.wrap_color-section button:nth-child(2)');
+    this.thicknessTools = document.querySelector('.thickness-tool');
   }
 
   logic() {
@@ -25,6 +26,11 @@ export default class Storage {
       this.colorPrimary.style.backgroundColor = storeObj.colorPrimary;
       this.colorSecondary.style.backgroundColor = storeObj.colorSecondary;
       this.tools.setColor();
+
+      // thickness restore
+      const currentBtn = storeObj.currentThickBtn;
+      const thickness = storeObj.currentThickness;
+      this.tools.activeThick(currentBtn, thickness);
     };
 
     window.onload = () => {
@@ -49,10 +55,20 @@ export default class Storage {
       this.framesStore();
       this.fps();
       this.color();
+      this.thickness();
 
       const storeObj = JSON.stringify(this.store);
       localStorage.setItem('storeKey', storeObj);
     });
+  }
+
+  thickness() {
+    const currentBtn = this.thicknessTools.querySelector('li[style*="rgb(255, 237, 21)"]');
+    const currentBtnClass = currentBtn.className;
+    const currentThickness = currentBtn.dataset.thick;
+
+    this.store.currentThickBtn = currentBtnClass;
+    this.store.currentThickness = currentThickness;
   }
 
   color() {
