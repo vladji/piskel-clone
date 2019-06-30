@@ -6,7 +6,7 @@ export default class Preview {
     this.img = null;
     this.displayFps = document.querySelector('.fps-range');
     this.fpsDisplay(this.fps);
-    this.setFps();
+    this.setFps(3);
   }
 
   initAnimation() {
@@ -26,7 +26,7 @@ export default class Preview {
     return this.fps;
   }
 
-  setFps() {
+  setFps(number) {
     const fpsBtn = this.fpsButton;
 
     const actualFps = () => {
@@ -34,6 +34,11 @@ export default class Preview {
       this.fps = +valueFps;
       this.fpsDisplay(this.fps);
     };
+
+    if (number) {
+      fpsBtn.value = number;
+      actualFps();
+    }
 
     fpsBtn.addEventListener('mousedown', () => {
       fpsBtn.addEventListener('mousemove', actualFps);

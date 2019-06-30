@@ -154,6 +154,7 @@ ul {
 .wrap_palette {
   position: absolute;
   top: 70px;
+  z-index: 199;
 }
 
 .wrap_palette img {

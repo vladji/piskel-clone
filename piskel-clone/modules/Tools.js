@@ -11,6 +11,7 @@ export default class Tools {
     this.eraserDetect = {};
     this.defaultTool = document.querySelector('.btn_pen');
     this.currentColor = null;
+    this.setColor();
     this.chooseColor();
     this.chooseThickness();
   }
@@ -126,24 +127,23 @@ export default class Tools {
     activeThick(firstThick);
   }
 
-  chooseColor() {
+  setColor() {
     const canvasInit = this.canvasStart;
-    let primaryBtn = null;
+    const primaryBtn = document.querySelector('.wrap_color-section button:first-child');
+    const primBtnStyle = getComputedStyle(primaryBtn);
+    const color = primBtnStyle.backgroundColor;
+
+    this.currentColor = color;
+    canvasInit.prepareData(color);
+  }
+
+  chooseColor() {
     const paletteWrap = document.querySelector('.wrap_palette');
     const colorSection = document.querySelector('.wrap_color-section');
     const colorPalette = document.querySelector('.wrap_palette img');
     const colorCanvas = document.querySelector('.wrap_palette canvas');
     const colorContext = colorCanvas.getContext('2d');
     let currentColorBtn = null;
-
-    const setColor = () => {
-      primaryBtn = document.querySelector('.wrap_color-section button:first-child');
-      const primBtnStyle = getComputedStyle(primaryBtn);
-      const color = primBtnStyle.backgroundColor;
-
-      this.currentColor = color;
-      canvasInit.prepareData(color);
-    };
 
     colorSection.addEventListener('click', (e) => {
       const targetBtn = e.target;
@@ -154,10 +154,10 @@ export default class Tools {
       }
 
       if (targetBtn.closest('.color-switch')) {
-        primaryBtn = document.querySelector('.wrap_color-section button:first-child');
+        const primaryBtn = document.querySelector('.wrap_color-section button:first-child');
         const secondaryBtn = document.querySelector('.wrap_color-section button:nth-child(2)');
         colorSection.insertBefore(secondaryBtn, primaryBtn);
-        setColor();
+        this.setColor();
       }
 
       if (targetBtn.closest('.wrap_close-btn')) paletteWrap.hidden = true;
@@ -172,11 +172,9 @@ export default class Tools {
       colorCanvas.addEventListener('mousemove', palettePicker);
       colorCanvas.addEventListener('mouseup', () => {
         colorCanvas.removeEventListener('mousemove', palettePicker);
-        setColor();
+        this.setColor();
       });
     });
-
-    setColor();
   }
 
   activeToolState(tool) {

@@ -9,9 +9,24 @@ export default class Storage {
     this.tools = null;
     this.store = {};
     this.framesWrap = document.querySelector('.frames-list');
+    this.fpsButton = document.querySelector('.preview_input-range input');
+    this.colorPrimary = document.querySelector('.wrap_color-section button:first-child');
+    this.colorSecondary = document.querySelector('.wrap_color-section button:nth-child(2)');
   }
 
   logic() {
+    const renewalData = () => {
+      const storeObj = JSON.parse(localStorage.getItem('storeKey'));
+
+      // fps restore
+      this.preview.setFps(storeObj.fps);
+
+      // color restore
+      this.colorPrimary.style.backgroundColor = storeObj.colorPrimary;
+      this.colorSecondary.style.backgroundColor = storeObj.colorSecondary;
+      this.tools.setColor();
+    };
+
     window.onload = () => {
       this.frames = new Frames();
       this.frames.logic();
@@ -21,15 +36,32 @@ export default class Storage {
 
       this.tools = new Tools();
       this.tools.logic();
+
+      if (localStorage.getItem('storeKey')) renewalData();
     };
 
     if (localStorage.getItem('storeKey')) {
-      this.putImage();
+      // frames restore
+      this.putFrames();
     }
 
     window.addEventListener('beforeunload', () => {
       this.framesStore();
+      this.fps();
+      this.color();
+
+      const storeObj = JSON.stringify(this.store);
+      localStorage.setItem('storeKey', storeObj);
     });
+  }
+
+  color() {
+    this.store.colorPrimary = this.colorPrimary.style.backgroundColor;
+    this.store.colorSecondary = this.colorSecondary.style.backgroundColor;
+  }
+
+  fps() {
+    this.store.fps = this.fpsButton.value;
   }
 
   framesStore() {
@@ -44,19 +76,13 @@ export default class Storage {
     const framesWrap = document.querySelector('.frames-list ul');
     this.store.framesWrap = framesWrap.outerHTML;
     this.store.framesData = framesData;
-
-    const storeObj = JSON.stringify(this.store);
-    localStorage.setItem('storeKey', storeObj);
   }
 
-  putImage() {
+  putFrames() {
     const storeObj = JSON.parse(localStorage.getItem('storeKey'));
     const framesStoreUl = storeObj.framesWrap;
     const frameslist = this.framesWrap;
     frameslist.innerHTML = framesStoreUl;
-
-    // const lookActiveFrame = document.querySelector('.frames-list li[style*="border"]');
-    // if (lookActiveFrame) lookActiveFrame.style = '';
 
     const images = storeObj.framesData;
     const canvasList = document.querySelectorAll('.frames-list canvas');
