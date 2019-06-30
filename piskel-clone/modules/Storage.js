@@ -1,13 +1,31 @@
+import Frames from './Frames';
+import Preview from './Preview';
+import Tools from './Tools';
+
 export default class Storage {
   constructor() {
+    this.frames = null;
+    this.preview = null;
+    this.tools = null;
     this.store = {};
     this.framesWrap = document.querySelector('.frames-list');
   }
 
   logic() {
-    // if (localStorage.getItem('storeKey')) {
-    //   this.putImage();
-    // }
+    window.onload = () => {
+      this.frames = new Frames();
+      this.frames.logic();
+
+      this.preview = new Preview();
+      this.preview.initAnimation();
+
+      this.tools = new Tools();
+      this.tools.logic();
+    };
+
+    if (localStorage.getItem('storeKey')) {
+      this.putImage();
+    }
 
     window.addEventListener('beforeunload', () => {
       this.framesStore();
@@ -37,8 +55,8 @@ export default class Storage {
     const frameslist = this.framesWrap;
     frameslist.innerHTML = framesStoreUl;
 
-    const lookActiveFrame = document.querySelector('.frames-list li[style*="border"]');
-    if (lookActiveFrame) lookActiveFrame.style = '';
+    // const lookActiveFrame = document.querySelector('.frames-list li[style*="border"]');
+    // if (lookActiveFrame) lookActiveFrame.style = '';
 
     const images = storeObj.framesData;
     const canvasList = document.querySelectorAll('.frames-list canvas');

@@ -4,7 +4,7 @@ export default class Frames {
   constructor() {
     this.framesBlock = document.querySelector('#frames-block');
     this.framesList = document.querySelector('.frames-list ul');
-    this.currentFrame = document.querySelector('.frames-list canvas');
+    this.currentFrame = null;
     this.framesUnits = () => document.querySelectorAll('.frames-list li');
     this.addFrame = () => {
       if (this.framesUnits().length === 0) Frames.addNewFrame(this.framesList);
@@ -17,10 +17,16 @@ export default class Frames {
   logic() {
     const framesWrap = this.framesBlock;
     this.addFrame();
+
+    this.currentFrame = document.querySelector('.frames-list li[style*="border"] canvas') || document.querySelector('.frames-list canvas');
+
     this.frameHover();
     this.countFrames();
     this.frameDragDrop();
     this.activeFrameState(this.currentFrame);
+
+    Frames.setFrame(this.currentFrame);
+    Preview.setSlides();
 
     framesWrap.addEventListener('click', (e) => {
       let frameHighlited = null;
@@ -48,86 +54,6 @@ export default class Frames {
         Preview.setSlides();
         this.countFrames();
       }
-    });
-  }
-
-  frameDragDrop() {
-    const allFrames = this.framesList;
-    let targetFrameLi = null;
-    const frameParam = {};
-
-    const framesLayout = () => {
-      const frames = this.framesUnits();
-      for (let i = 0; i < frames.length; i += 1) {
-        frames[i].style.zIndex = '11';
-      }
-    };
-
-    const chekElement = (evt) => {
-      const dropElemProxy = frameParam.proxy;
-
-      frameParam.previousSibling = dropElemProxy.previousElementSibling;
-      frameParam.nextSibling = dropElemProxy.nextElementSibling;
-
-      targetFrameLi.style.zIndex = '-1';
-      const elem = document.elementFromPoint(evt.clientX, evt.clientY);
-      const replaceFrame = elem.closest('li');
-
-      // eslint-disable-next-line max-len
-      if (frameParam.nextSibling && replaceFrame === frameParam.nextSibling) replaceFrame.after(dropElemProxy);
-      // eslint-disable-next-line max-len
-      if (frameParam.previousSibling && replaceFrame === frameParam.previousSibling) replaceFrame.before(dropElemProxy);
-      targetFrameLi.style.zIndex = '99';
-    };
-
-    const startMove = () => {
-      framesLayout();
-      const dropElemProxy = document.createElement('li');
-      dropElemProxy.className = 'drop-elem-proxy frame-wrap';
-
-      targetFrameLi.style.zIndex = '99';
-      targetFrameLi.style.top = `${frameParam.startTop}px`;
-      targetFrameLi.style.left = `${frameParam.startLeft}px`;
-      targetFrameLi.style.position = 'absolute';
-      targetFrameLi.after(dropElemProxy);
-      document.body.appendChild(targetFrameLi);
-      return dropElemProxy;
-    };
-
-    const frameMove = (evt) => {
-      if (!frameParam.proxy) {
-        frameParam.proxy = startMove();
-      }
-
-      const startY = frameParam.startTop;
-      const firstTouch = frameParam.firstTouchY;
-      const moveY = (firstTouch - evt.clientY) - startY;
-      targetFrameLi.style.top = `${-moveY}px`;
-
-      setInterval(chekElement(evt), 1000);
-    };
-
-    allFrames.addEventListener('mousedown', (e) => {
-      if (this.framesUnits().length === 1) return;
-      targetFrameLi = e.target.closest('li');
-
-      frameParam.firstTouchY = e.clientY;
-      frameParam.startTop = targetFrameLi.offsetTop;
-      frameParam.startLeft = targetFrameLi.offsetLeft;
-
-      targetFrameLi.addEventListener('mousemove', frameMove);
-
-      targetFrameLi.addEventListener('mouseup', () => {
-        targetFrameLi.removeEventListener('mousemove', frameMove);
-
-        if (frameParam.proxy) frameParam.proxy.replaceWith(targetFrameLi);
-        frameParam.proxy = null;
-        targetFrameLi.style.position = 'relative';
-        targetFrameLi.style.top = '';
-        targetFrameLi.style.left = '';
-        Preview.setSlides();
-        this.countFrames();
-      });
     });
   }
 
@@ -231,7 +157,7 @@ export default class Frames {
     this.framesStates.push(activeFrameLi);
 
     const prevFrame = this.framesStates.shift();
-    prevFrame.style.border = '';
+    if (prevFrame) prevFrame.style.border = '';
 
     const currentFrame = this.framesStates[0];
     currentFrame.style.border = '5px solid #ffed15';
@@ -261,6 +187,86 @@ export default class Frames {
         const activeFrame = this.currentFrame.closest('li');
         if (targetLi !== activeFrame) targetLi.style.border = '';
       }
+    });
+  }
+
+  frameDragDrop() {
+    const allFrames = this.framesList;
+    let targetFrameLi = null;
+    const frameParam = {};
+
+    const framesLayout = () => {
+      const frames = this.framesUnits();
+      for (let i = 0; i < frames.length; i += 1) {
+        frames[i].style.zIndex = '11';
+      }
+    };
+
+    const chekElement = (evt) => {
+      const dropElemProxy = frameParam.proxy;
+
+      frameParam.previousSibling = dropElemProxy.previousElementSibling;
+      frameParam.nextSibling = dropElemProxy.nextElementSibling;
+
+      targetFrameLi.style.zIndex = '-1';
+      const elem = document.elementFromPoint(evt.clientX, evt.clientY);
+      const replaceFrame = elem.closest('li');
+
+      // eslint-disable-next-line max-len
+      if (frameParam.nextSibling && replaceFrame === frameParam.nextSibling) replaceFrame.after(dropElemProxy);
+      // eslint-disable-next-line max-len
+      if (frameParam.previousSibling && replaceFrame === frameParam.previousSibling) replaceFrame.before(dropElemProxy);
+      targetFrameLi.style.zIndex = '99';
+    };
+
+    const startMove = () => {
+      framesLayout();
+      const dropElemProxy = document.createElement('li');
+      dropElemProxy.className = 'drop-elem-proxy frame-wrap';
+
+      targetFrameLi.style.zIndex = '99';
+      targetFrameLi.style.top = `${frameParam.startTop}px`;
+      targetFrameLi.style.left = `${frameParam.startLeft}px`;
+      targetFrameLi.style.position = 'absolute';
+      targetFrameLi.after(dropElemProxy);
+      document.body.appendChild(targetFrameLi);
+      return dropElemProxy;
+    };
+
+    const frameMove = (evt) => {
+      if (!frameParam.proxy) {
+        frameParam.proxy = startMove();
+      }
+
+      const startY = frameParam.startTop;
+      const firstTouch = frameParam.firstTouchY;
+      const moveY = (firstTouch - evt.clientY) - startY;
+      targetFrameLi.style.top = `${-moveY}px`;
+
+      setInterval(chekElement(evt), 1000);
+    };
+
+    allFrames.addEventListener('mousedown', (e) => {
+      if (this.framesUnits().length === 1) return;
+      targetFrameLi = e.target.closest('li');
+
+      frameParam.firstTouchY = e.clientY;
+      frameParam.startTop = targetFrameLi.offsetTop;
+      frameParam.startLeft = targetFrameLi.offsetLeft;
+
+      targetFrameLi.addEventListener('mousemove', frameMove);
+
+      targetFrameLi.addEventListener('mouseup', () => {
+        targetFrameLi.removeEventListener('mousemove', frameMove);
+
+        if (frameParam.proxy) frameParam.proxy.replaceWith(targetFrameLi);
+        frameParam.proxy = null;
+        targetFrameLi.style.position = 'relative';
+        targetFrameLi.style.top = '';
+        targetFrameLi.style.left = '';
+        Preview.setSlides();
+        this.countFrames();
+      });
     });
   }
 }
