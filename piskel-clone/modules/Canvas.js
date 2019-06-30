@@ -10,11 +10,13 @@ export default class Canvas {
     this.saveColor = null;
     this.thikness = null;
     this.saveThickness = null;
+    this.tool = null;
   }
 
   prepareData(...args) {
     const color = args[0];
     const thikness = args[1];
+    const tool = args[2];
 
     let currentFrame = Frames.getFrame();
     if (!currentFrame) currentFrame = document.querySelector('.frame-unit');
@@ -23,6 +25,7 @@ export default class Canvas {
 
     if (color) this.contextCanvas.fillStyle = color;
     if (thikness) this.thikness = thikness;
+    this.tool = tool;
   }
 
   penToolDefault(evt) {
@@ -40,10 +43,19 @@ export default class Canvas {
       const pointWidth = moveX - pointShiftX;
       const pointHeight = moveY - pointShiftY;
 
-      ctxCanvas.fillRect(pointWidth, pointHeight, lineFat, lineFat);
+      if (this.tool === 'eraser') {
+        this.canvasData = ctxCanvas.getImageData(pointWidth, pointHeight, lineFat, lineFat);
+        for (let i = 3; i < this.canvasData.data.length; i += 4) {
+          this.canvasData.data[i] = 0;
+        }
+        ctxCanvas.putImageData(this.canvasData, pointWidth, pointHeight);
+        this.contextFrame.putImageData(this.canvasData, pointWidth, pointHeight);
+      } else {
+        ctxCanvas.fillRect(pointWidth, pointHeight, lineFat, lineFat);
 
-      this.canvasData = ctxCanvas.getImageData(0, 0, canvas.width, canvas.height);
-      this.contextFrame.putImageData(this.canvasData, 0, 0);
+        this.canvasData = ctxCanvas.getImageData(0, 0, canvas.width, canvas.height);
+        this.contextFrame.putImageData(this.canvasData, 0, 0);
+      }
     }
   }
 

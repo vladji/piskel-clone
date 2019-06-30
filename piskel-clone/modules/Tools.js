@@ -8,7 +8,6 @@ export default class Tools {
     this.canvasDraw = document.getElementById('canvas');
     this.btnPanel = document.querySelector('#draw-tools');
     this.btnStates = [];
-    this.eraserDetect = {};
     this.defaultTool = document.querySelector('.btn_pen');
     this.currentColor = null;
     this.setColor();
@@ -21,7 +20,6 @@ export default class Tools {
 
     const canvas = this.canvasDraw;
     const btnPanelTools = this.btnPanel;
-    const canvasInit = this.canvasStart;
     let currentTool = null;
 
     const removeAction = () => {
@@ -31,7 +29,6 @@ export default class Tools {
     };
 
     canvas.addEventListener('mousedown', (e) => {
-      canvasInit.prepareData();
       currentTool = this.getTool();
 
       if (currentTool.name === 'bound bucketTool') {
@@ -57,24 +54,23 @@ export default class Tools {
     const penToolDefault = canvasInit.penToolDefault.bind(canvasInit);
     const bucketTool = canvasInit.bucketTool.bind(canvasInit);
 
-    if (this.currentTool === 'btn_eraser') {
-      this.eraserDetect.eraser = 'btn_eraser';
-    } else if (this.eraserDetect.eraser) {
-      this.eraserDetect.eraser = null;
-      canvasInit.prepareData(this.currentColor);
-    }
-
     switch (this.currentTool) {
       case 'btn_bucket':
         currentTool = bucketTool;
         break;
       case 'btn_eraser':
-        canvasInit.prepareData('#fff');
         currentTool = penToolDefault;
         break;
       default:
         currentTool = penToolDefault;
     }
+
+    if (this.currentTool === 'btn_eraser') {
+      canvasInit.prepareData(null, null, 'eraser');
+    } else {
+      canvasInit.prepareData();
+    }
+
     return currentTool;
   }
 
