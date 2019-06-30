@@ -56,8 +56,11 @@ export default class Storage {
   }
 
   color() {
-    this.store.colorPrimary = this.colorPrimary.style.backgroundColor;
-    this.store.colorSecondary = this.colorSecondary.style.backgroundColor;
+    const colorPrimary = document.querySelector('.wrap_color-section button:first-child');
+    const colorSecondary = document.querySelector('.wrap_color-section button:nth-child(2)');
+
+    this.store.colorPrimary = colorPrimary.style.backgroundColor;
+    this.store.colorSecondary = colorSecondary.style.backgroundColor;
   }
 
   fps() {

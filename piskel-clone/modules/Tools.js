@@ -13,7 +13,7 @@ export default class Tools {
     this.currentColor = null;
     this.setColor();
     this.chooseColor();
-    this.firstThick = document.querySelector('.thickness-1').className;
+    this.firstThick = document.querySelector('.thickness-tool li').className;
     this.chooseThickness();
     this.activeThick(this.firstThick, 20);
   }
@@ -94,30 +94,14 @@ export default class Tools {
   }
 
   chooseThickness() {
-    let thicknessBtn = null;
-    let lineFat = null;
-
     const thicknessPanel = document.querySelector('.thickness-tool');
 
     this.thiscknessState.push(this.firstThick);
 
     thicknessPanel.addEventListener('click', (e) => {
       if (e.target.closest('li')) {
-        thicknessBtn = e.target.closest('li').className;
-
-        switch (thicknessBtn) {
-          case 'thickness-1':
-            lineFat = 20;
-            break;
-          case 'thickness-2':
-            lineFat = 30;
-            break;
-          case 'thickness-3':
-            lineFat = 40;
-            break;
-          default:
-            lineFat = 20;
-        }
+        const thicknessBtn = e.target.closest('li').className;
+        const lineFat = e.target.closest('li').dataset.thick;
         this.activeThick(thicknessBtn, lineFat);
       }
     });
