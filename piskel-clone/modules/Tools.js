@@ -8,11 +8,14 @@ export default class Tools {
     this.canvasDraw = document.getElementById('canvas');
     this.btnPanel = document.querySelector('#draw-tools');
     this.btnStates = [];
+    this.thiscknessState = [];
     this.defaultTool = document.querySelector('.btn_pen');
     this.currentColor = null;
     this.setColor();
     this.chooseColor();
+    this.firstThick = document.querySelector('.thickness-1').className;
     this.chooseThickness();
+    this.activeThick(this.firstThick, 20);
   }
 
   logic() {
@@ -74,28 +77,29 @@ export default class Tools {
     return currentTool;
   }
 
-  chooseThickness() {
+  activeThick(btn, thick) {
     const canvasInit = this.canvasStart;
+
+    this.thiscknessState.push(btn);
+
+    const prevState = this.thiscknessState.shift();
+    const prevThick = document.querySelector(`.${prevState}`);
+    prevThick.style.border = '2px solid #a7a79d';
+
+    const currentState = this.thiscknessState[0];
+    const currentThick = document.querySelector(`.${currentState}`);
+    currentThick.style.border = '2px solid #ffed15';
+
+    canvasInit.prepareData(null, thick);
+  }
+
+  chooseThickness() {
     let thicknessBtn = null;
-    let lineFat = 20;
+    let lineFat = null;
 
     const thicknessPanel = document.querySelector('.thickness-tool');
 
-    const thiscknessState = [];
-    const firstThick = document.querySelector('.thickness-1').className;
-    thiscknessState.push(firstThick);
-
-    const activeThick = (btn) => {
-      thiscknessState.push(btn);
-
-      const prevState = thiscknessState.shift();
-      const prevThick = document.querySelector(`.${prevState}`);
-      prevThick.style.border = '2px solid #a7a79d';
-
-      const currentState = thiscknessState[0];
-      const currentThick = document.querySelector(`.${currentState}`);
-      currentThick.style.border = '2px solid #ffed15';
-    };
+    this.thiscknessState.push(this.firstThick);
 
     thicknessPanel.addEventListener('click', (e) => {
       if (e.target.closest('li')) {
@@ -114,13 +118,9 @@ export default class Tools {
           default:
             lineFat = 20;
         }
-        canvasInit.prepareData(null, lineFat);
-        activeThick(thicknessBtn);
+        this.activeThick(thicknessBtn, lineFat);
       }
     });
-
-    canvasInit.prepareData(null, lineFat);
-    activeThick(firstThick);
   }
 
   setColor() {
