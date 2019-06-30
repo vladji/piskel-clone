@@ -20,9 +20,15 @@
       <div class="wrap_draw-panel">
         <div class="thickness-tool">
           <ul>
-            <li></li>
-            <li></li>
-            <li></li>
+            <li class="thickness-1" data-thick="20">
+              <div></div>
+            </li>
+            <li class="thickness-2" data-thick="30">
+              <div></div>
+            </li>
+            <li class="thickness-3" data-thick="40">
+              <div></div>
+            </li>
           </ul>
         </div>
         <nav id="draw-tools">
@@ -30,23 +36,32 @@
             <li class="btn_pen">
               <div><i class="fas fa-pencil-alt"></i></div>
             </li>
-            <li class="btn_bucket">
-              <div><i class="fas fa-fill-drip"></i></div>
-            </li>
-            <li class="btn_choose-color">
-              <div><i class="fas fa-eye-dropper"></i></div>
-            </li>
             <li class="btn_eraser">
               <div><i class="fas fa-eraser"></i></div>
             </li>
+            <li class="btn_color-detect">
+              <div><i class="fas fa-eye-dropper"></i></div>
+            </li>
+            <li class="btn_bucket">
+              <div><i class="fas fa-fill-drip"></i></div>
+            </li>
           </ul>
         </nav>
+        <div class="wrap_color-section">
+          <button class="choose-color-btn" style="background-color: #15e015;"></button>
+          <button class="choose-color-btn" style="background-color: #646464;"></button>
+          <button class="color-switch"><i class="fas fa-retweet"></i></button>
+          <div class="wrap_palette" hidden>
+            <div class="wrap_close-btn"><button><i class="far fa-window-close"></i></button></div>
+            <canvas width="320" height="219"></canvas>
+            <img src="../piskel-clone/img/beauty_palette_w350.jpg" alt="palette" width="320" height="219">
+          </div>
+        </div>
       </div>
       <div class="wrap_frames-block">
         <div id="frames-block">
           <div class="frames-list">
             <ul>
-              <li><canvas class="frame-unit" width="700" height="700"></canvas></li>
             </ul>
           </div>
           <div class="add-frame">

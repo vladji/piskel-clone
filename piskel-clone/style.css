@@ -144,9 +144,9 @@ ul {
 }
 
 .color-switch {
-  position: relative;
-  top: 25px;
-  right: 52px;
+  position: absolute;
+  top: 55px;
+  left: 4px;
   font-size: 18px;
   color: rgb(196, 192, 192);
 }
