@@ -7,9 +7,9 @@ export default class Canvas {
     this.canvasData = null;
     this.contextFrame = null;
     this.contextCanvas.fillStyle = null;
-    this.saveColor = null;
+    // this.saveColor = null;
     this.thikness = null;
-    this.saveThickness = null;
+    // this.saveThickness = null;
     this.tool = null;
   }
 
@@ -61,13 +61,19 @@ export default class Canvas {
 
   bucketTool(evt) {
     const canvas = this.canvasDraw;
-
     const ctxCanvas = this.contextCanvas;
 
     let startX = evt.pageX - canvas.offsetLeft;
     const startY = evt.pageY - canvas.offsetTop;
 
     const pixelDefault = ctxCanvas.getImageData(startX, startY, 1, 1).data.join('');
+
+    const toCompareData = ctxCanvas.getImageData(startX, startY, 1, 1).data.join(', ');
+    const colorBtn = document.querySelector('.choose-color-btn');
+    const color = colorBtn.style.backgroundColor;
+    const toCompareColor = `${color.slice(4, -1)}, 255`;
+
+    if (toCompareData === toCompareColor) return;
 
     const shiftX = startX % 10;
     startX -= shiftX;

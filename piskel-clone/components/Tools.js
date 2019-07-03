@@ -109,10 +109,8 @@ export default class Tools {
 
   setColor() {
     const canvasInit = this.canvasStart;
-    const primaryBtn = document.querySelector('.wrap_color-section button:first-child');
-    const primBtnStyle = getComputedStyle(primaryBtn);
-    const color = primBtnStyle.backgroundColor;
-
+    const primaryBtn = document.querySelector('.choose-color-btn');
+    const color = primaryBtn.style.backgroundColor;
     this.currentColor = color;
     canvasInit.prepareData(color);
   }
