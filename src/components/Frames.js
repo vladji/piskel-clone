@@ -51,6 +51,10 @@ export default class Frames {
           this.frameDuplicate(e);
         }
 
+        // if (e.target.closest('.frame-move')) {
+        //   this.frameDragDrop();
+        // }
+
         Preview.setSlides();
         this.countFrames();
       }
@@ -120,6 +124,7 @@ export default class Frames {
 
     targetFrameLi.after(cloneFrameLi);
 
+    cloneFrameLi.style.border = '';
     const frameTools = cloneFrameLi.querySelector('.frame-tools');
     frameTools.style.display = 'none';
     this.chekFrameTools(frameTools);
@@ -234,16 +239,17 @@ export default class Frames {
     };
 
     const frameMove = (evt) => {
-      if (!frameParam.proxy) {
-        frameParam.proxy = startMove();
-      }
-
       const startY = frameParam.startTop;
       const firstTouch = frameParam.firstTouchY;
       const moveY = (firstTouch - evt.clientY) - startY;
-      targetFrameLi.style.top = `${-moveY}px`;
+      if (Math.abs(moveY) > 3) {
+        if (!frameParam.proxy) {
+          frameParam.proxy = startMove();
+        }
 
-      setInterval(chekElement(evt), 1000);
+        targetFrameLi.style.top = `${-moveY}px`;
+        setInterval(chekElement(evt), 1000);
+      }
     };
 
     allFrames.addEventListener('mousedown', (e) => {

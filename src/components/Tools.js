@@ -11,6 +11,8 @@ export default class Tools {
     this.thiscknessState = [];
     this.defaultTool = document.querySelector('.btn_pen');
     this.currentColor = null;
+    this.primaryColorBtn = document.querySelector('.wrap_color-section button:first-child');
+    this.secondaryColorBtn = document.querySelector('.wrap_color-section button:nth-child(2)');
     this.setColor();
     this.chooseColor();
     this.firstThick = document.querySelector('.thickness-tool li').className;
@@ -108,6 +110,10 @@ export default class Tools {
   }
 
   setColor() {
+    if (!localStorage.getItem('storeKey')) {
+      this.primaryColorBtn.style.backgroundColor = '#15e015';
+      this.secondaryColorBtn.style.backgroundColor = '#646464';
+    }
     const canvasInit = this.canvasStart;
     const primaryBtn = document.querySelector('.choose-color-btn');
     const color = primaryBtn.style.backgroundColor;
