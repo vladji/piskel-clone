@@ -7,9 +7,7 @@ export default class Canvas {
     this.canvasData = null;
     this.contextFrame = null;
     this.contextCanvas.fillStyle = null;
-    // this.saveColor = null;
     this.thikness = null;
-    // this.saveThickness = null;
     this.tool = null;
   }
 
@@ -36,12 +34,16 @@ export default class Canvas {
     if (canvas.getContext) {
       const moveX = evt.pageX - canvas.offsetLeft;
       const moveY = evt.pageY - canvas.offsetTop;
+      // console.log('canvas.offsetLeft', canvas.offsetLeft);
+      // console.log('evt.pageX', evt.pageX);
+      // console.log('moveX', moveX);
 
       const pointShiftX = moveX % lineFat;
       const pointShiftY = moveY % lineFat;
 
       const pointWidth = moveX - pointShiftX;
       const pointHeight = moveY - pointShiftY;
+      // console.log('pointWidth', pointWidth);
 
       if (this.tool === 'eraser') {
         this.canvasData = ctxCanvas.getImageData(pointWidth, pointHeight, lineFat, lineFat);
@@ -51,7 +53,10 @@ export default class Canvas {
         ctxCanvas.putImageData(this.canvasData, pointWidth, pointHeight);
         this.contextFrame.putImageData(this.canvasData, pointWidth, pointHeight);
       } else {
+        // ctxCanvas.save();
+        // ctxCanvas.scale(2, 2);
         ctxCanvas.fillRect(pointWidth, pointHeight, lineFat, lineFat);
+        // ctxCanvas.restore();
 
         this.canvasData = ctxCanvas.getImageData(0, 0, canvas.width, canvas.height);
         this.contextFrame.putImageData(this.canvasData, 0, 0);

@@ -33,6 +33,8 @@ export default class GifExport {
         quality: 10,
         workerScript: '../../dist/gif.worker.js',
         transparent: '0x000000',
+        // width: 128,
+        // height: 128,
       });
       framePrepare();
 
