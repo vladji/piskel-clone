@@ -7,7 +7,9 @@ export default class Storage {
     this.frames = null;
     this.preview = null;
     this.tools = null;
+    this.canvasSize = null;
     this.store = {};
+    this.canvasWrap = document.querySelector('.canvas-wrapper');
     this.framesWrap = document.querySelector('.frames-list');
     this.fpsButton = document.querySelector('.preview_input-range input');
     this.colorPrimary = document.querySelector('.wrap_color-section button:first-child');
@@ -28,12 +30,12 @@ export default class Storage {
       this.tools.setColor();
 
       // thickness restore
-      const currentBtn = storeObj.currentThickBtn;
-      const thickness = storeObj.currentThickness;
-      this.tools.activeThick(currentBtn, thickness);
+      // const currentBtn = storeObj.currentThickBtn;
+      // const thickness = storeObj.currentThickness;
+      // this.tools.activeThick(currentBtn, thickness);
     };
 
-    window.onload = () => {
+    window.addEventListener('load', () => {
       this.frames = new Frames();
       this.frames.logic();
 
@@ -44,25 +46,27 @@ export default class Storage {
       this.tools.logic();
 
       if (localStorage.getItem('storeKey')) renewalData();
-    };
+    });
 
     if (localStorage.getItem('storeKey')) {
       // frames restore
+      this.putCanvas();
       this.putFrames();
     }
 
-    window.addEventListener('beforeunload', () => {
-      this.framesStore();
-      this.fps();
-      this.color();
-      this.thickness();
+    // window.addEventListener('beforeunload', () => {
+    //   this.grabCanvas();
+    //   this.grabFrames();
+    //   this.fps();
+    //   this.color();
+    //   this.canvasSize();
 
-      const storeObj = JSON.stringify(this.store);
-      localStorage.setItem('storeKey', storeObj);
-    });
+    //   const storeObj = JSON.stringify(this.store);
+    //   localStorage.setItem('storeKey', storeObj);
+    // });
   }
 
-  thickness() {
+  canvasSize() {
     const currentBtn = this.thicknessTools.querySelector('li[style*="rgb(255, 237, 21)"]');
     const currentBtnClass = currentBtn.className;
     const currentThickness = currentBtn.dataset.thick;
@@ -83,7 +87,17 @@ export default class Storage {
     this.store.fps = this.fpsButton.value;
   }
 
-  framesStore() {
+  grabCanvas() {
+    this.canvasWrap = document.querySelector('.canvas-wrapper');
+    this.store.canvasDraw = this.canvasWrap.innerHTML;
+  }
+
+  putCanvas() {
+    const storeObj = JSON.parse(localStorage.getItem('storeKey'));
+    this.canvasWrap.innerHTML = storeObj.canvasDraw;
+  }
+
+  grabFrames() {
     const canvasList = document.querySelectorAll('.frames-list canvas');
     const framesData = [];
 

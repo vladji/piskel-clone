@@ -30,8 +30,8 @@ button:focus {
   outline: none;
 }
 
-canvas {
-  background-color: #fff;
+canvas, .preview_screen-inner {
+  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAABlBMVEVMTExVVVUnhsEkAAAAHUlEQVR4AWOAAUYoQOePEAUj3v9oYDQ9gMBoegAAJFwCAbLaTIMAAAAASUVORK5CYII=') repeat;
 }
 
 header h1 {
@@ -51,7 +51,7 @@ ul {
 
 .wrap_tools {
   display: flex;
-  flex-grow: 2;
+  flex-grow: 1;
   justify-content: space-between;
 }
 
@@ -172,13 +172,8 @@ ul {
 
 /* Frames block */
 
-.wrap_frames-block {
-  height: 700px;
-}
-
 #frames-block {
   width: 160px;
-  height: 100%;
   padding-right: 15px;
   overflow-y: scroll;
 }
@@ -263,22 +258,22 @@ li.drop-elem-proxy {
   background: #323;
 }
 
-/* CANVAS SECTION */
+/* CANVAS DRAW */
 
 .canvas-wrapper {
   flex-grow: 3;
+  margin: 0 20px;
   text-align: center;
+  background-color: #b7b5b5;
 }
 
 #canvas {
-  /* width: 700px;
-  height: 700px; */
   border: solid 1px #ccc;
 }
 
-/* UTILS SECTION */
+/* SERVICE SECTION */
 
-#utils {
+#service-section {
   flex-grow: 1;
 }
 
@@ -295,7 +290,6 @@ li.drop-elem-proxy {
   margin: 0 auto;
   border: 1px solid grey;
   background-size: contain;
-  background-color: #fff;
 }
 
 .preview_input-range {
@@ -317,17 +311,76 @@ li.drop-elem-proxy {
   cursor: pointer;
 }
 
-/* Service button */
+/* Service buttons */
 
-.wrap_btn {
+.canvas-manager, .wrap_btn {
   margin-top: 30px;
 }
 
-.service-btn {
+.canvas-manager {
+  width: 202px;
+}
+
+.canvas-manager p {
+  cursor: default;
+}
+
+.canvas-manager button {
+  width: 57px;
+  height: 34px;
+  border: 2px solid #a7a79d;
+  color: #f7f7f7;
+  background-color: #323232;
+  cursor: pointer;
+}
+
+.wrap_size-btn {
+  display: flex;
+  margin-top: 10px;
+  justify-content: space-between;
+}
+
+.export-btn {
+  margin-top: 10px;
+  padding: 5px 10px;
+  border: 2px solid #00bbff;
+  background-color: #ccc;
+}
+
+/* Canvas size block (Form) */
+
+/* .service-btn {
   width: 95px;
   height: 30px;
   border: 2px solid #ccc;
   color: #fff;
   background-color: #888;
   box-shadow: 0px 0px 2px 2px rgba(255, 255, 255, 0.5)
+} */
+
+/* .canvas_size {
+  width: 200px;
+  height: 100px;
+  margin-top: 30px;
 }
+
+.canvas_size p {
+  cursor: default;
+}
+
+.canvas_size div {
+  display: flex;
+  margin-top: 10px;
+}
+
+.canvas_size div p {
+  margin-left: 15px;
+  line-height: 1.5;
+}
+
+.canvas_size input {
+  width: 50px;
+  height: 20px;
+} */
+
+/* Export result block */

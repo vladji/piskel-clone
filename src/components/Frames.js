@@ -2,7 +2,7 @@ import Preview from './Preview';
 
 export default class Frames {
   constructor() {
-    this.framesBlock = document.querySelector('#frames-block');
+    this.framesBlock = document.getElementById('frames-block');
     this.framesList = document.querySelector('.frames-list ul');
     this.currentFrame = null;
     this.framesUnits = () => document.querySelectorAll('.frames-list li');
@@ -51,10 +51,6 @@ export default class Frames {
           this.frameDuplicate(e);
         }
 
-        // if (e.target.closest('.frame-move')) {
-        //   this.frameDragDrop();
-        // }
-
         Preview.setSlides();
         this.countFrames();
       }
@@ -80,10 +76,15 @@ export default class Frames {
   }
 
   static addNewFrame(framesList) {
+    const framesBlock = document.getElementById('frames-block');
+    const canvasDraw = document.getElementById('canvas');
+    framesBlock.style.height = `${canvasDraw.height}px`;
+
+    const dimension = 640;
     framesList.insertAdjacentHTML('beforeend',
       `<li class="frame-wrap">
         <p class="frame-num"></p>
-        <canvas class="frame-unit" width="700" height="700"></canvas>
+        <canvas class="frame-unit" width="${dimension}" height="${dimension}"></canvas>
         <div class="frame-tools" style="display: none;">
           <button class="frame-duplicate"><i class="fas fa-clone"></i></button>
           <button class="frame-delete"><i class="fas fa-trash-alt"></i></button>

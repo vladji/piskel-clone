@@ -1,4 +1,5 @@
 import Canvas from './Canvas';
+import CanvasSize from './CavasSize';
 import Preview from './Preview';
 
 export default class Tools {
@@ -13,11 +14,10 @@ export default class Tools {
     this.currentColor = null;
     this.primaryColorBtn = document.querySelector('.wrap_color-section button:first-child');
     this.secondaryColorBtn = document.querySelector('.wrap_color-section button:nth-child(2)');
-    this.setColor();
     this.chooseColor();
     this.firstThick = document.querySelector('.thickness-tool li').className;
     this.chooseThickness();
-    this.activeThick(this.firstThick, 20);
+    this.activeThick(this.firstThick);
   }
 
   logic() {
@@ -51,6 +51,16 @@ export default class Tools {
       this.currentTool = tool;
       this.activeToolState(tool);
     });
+
+    if (!localStorage.getItem('storeKey')) {
+      this.primaryColorBtn.style.backgroundColor = '#15e015';
+      this.secondaryColorBtn.style.backgroundColor = '#646464';
+    }
+    this.setColor();
+
+    // bind Canvas.prepareData to window
+    window.prepareCanvas = this.canvasStart.prepareData.bind(this.canvasStart);
+    this.canvasSize = new CanvasSize();
   }
 
   getTool() {
@@ -81,7 +91,6 @@ export default class Tools {
 
   activeThick(btn, thick) {
     const canvasInit = this.canvasStart;
-
     this.thiscknessState.push(btn);
 
     const prevState = this.thiscknessState.shift();
@@ -92,12 +101,11 @@ export default class Tools {
     const currentThick = document.querySelector(`.${currentState}`);
     currentThick.style.border = '2px solid #ffed15';
 
-    canvasInit.prepareData(null, thick);
+    if (thick) canvasInit.prepareData(null, thick);
   }
 
   chooseThickness() {
     const thicknessPanel = document.querySelector('.thickness-tool');
-
     this.thiscknessState.push(this.firstThick);
 
     thicknessPanel.addEventListener('click', (e) => {
@@ -110,10 +118,6 @@ export default class Tools {
   }
 
   setColor() {
-    if (!localStorage.getItem('storeKey')) {
-      this.primaryColorBtn.style.backgroundColor = '#15e015';
-      this.secondaryColorBtn.style.backgroundColor = '#646464';
-    }
     const canvasInit = this.canvasStart;
     const primaryBtn = document.querySelector('.choose-color-btn');
     const color = primaryBtn.style.backgroundColor;

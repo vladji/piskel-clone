@@ -21,13 +21,13 @@
       <div class="wrap_draw-panel">
         <div class="thickness-tool">
           <ul>
-            <li class="thickness-1" data-thick="2">
+            <li class="thickness-1" data-thick="1">
               <div></div>
             </li>
-            <li class="thickness-2" data-thick="4">
+            <li class="thickness-2" data-thick="2">
               <div></div>
             </li>
-            <li class="thickness-3" data-thick="6">
+            <li class="thickness-3" data-thick="3">
               <div></div>
             </li>
           </ul>
@@ -59,26 +59,26 @@
           </div>
         </div>
       </div>
-      <div class="wrap_frames-block">
-        <div id="frames-block">
-          <div class="frames-list">
-            <ul>
-            </ul>
-          </div>
-          <div class="add-frame">
-            <p>Add Frame</p>
-          </div>
+      <!-- Frames block -->
+      <div id="frames-block">
+        <div class="frames-list">
+          <ul>
+          </ul>
+        </div>
+        <div class="add-frame">
+          <p>Add Frame</p>
         </div>
       </div>
     </div>
-
+    <!-- Canvas Draw -->
     <div class="canvas-wrapper">
-      <canvas id="canvas" width="700" height="700"></canvas>
+      <canvas id="canvas" width="640" height="640"></canvas>
     </div>
-
-    <div id="utils">
+    <!-- Service section -->
+    <div id="service-section">
       <div id="preview-wrapper">
-        <div class="preview_screen">
+        <div class="preview_screen-inner">
+          <div class="preview_screen"></div>
         </div>
         <div class="preview_input-range">
           <div class="fps-range"></div>
@@ -86,8 +86,17 @@
           <input type="range" min="1" max="24">
         </div>
       </div>
+      <!-- Service buttons -->
+      <div class="canvas-manager">
+        <p>Canvas size:</p>
+        <div class="wrap_size-btn">
+          <button class="small-canvas" data-pen-size="20">32px</button>
+          <button class="medium-canvas" data-pen-size="10">64px</button>
+          <button class="large-canvas" data-pen-size="5">128px</button>
+        </div>
+      </div>
       <div class="wrap_btn">
-        <button class="service-btn">create GIF</button>
+        <button class="export-btn">create GIF</button>
       </div>
     </div>
   </main>
