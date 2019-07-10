@@ -66,6 +66,7 @@ export default class Tools {
     const canvasInit = this.canvasStart;
     const penToolDefault = canvasInit.penToolDefault.bind(canvasInit);
     const bucketTool = canvasInit.bucketTool.bind(canvasInit);
+    const colorPicker = canvasInit.colorPicker.bind(canvasInit);
 
     switch (this.currentTool) {
       case 'btn_bucket':
@@ -73,6 +74,9 @@ export default class Tools {
         break;
       case 'btn_eraser':
         currentTool = penToolDefault;
+        break;
+      case 'btn_color-picker':
+        currentTool = colorPicker;
         break;
       default:
         currentTool = penToolDefault;

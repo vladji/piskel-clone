@@ -57,6 +57,20 @@ export default class Canvas {
     }
   }
 
+  colorPicker(evt) {
+    const canvas = this.canvasDraw;
+    const pontX = (evt.pageX - canvas.offsetLeft) * 2;
+    const pointY = (evt.pageY - canvas.offsetTop) * 2;
+
+    const colorData = this.contextCanvas.getImageData(pontX, pointY, 1, 1).data.join(', ');
+    const colorCSS = `rgba(${colorData})`;
+
+    const primaryColorBtn = document.querySelector('.wrap_color-section button:first-child');
+
+    primaryColorBtn.style.backgroundColor = colorCSS;
+    this.prepareData(colorCSS);
+  }
+
   bucketTool(evt) {
     const canvas = this.canvasDraw;
     const ctxCanvas = this.contextCanvas;
