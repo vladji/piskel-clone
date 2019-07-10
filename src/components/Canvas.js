@@ -34,17 +34,20 @@ export default class Canvas {
     if (canvas.getContext) {
       const moveX = evt.pageX - canvas.offsetLeft;
       const moveY = evt.pageY - canvas.offsetTop;
-      // console.log('canvas.offsetLeft', canvas.offsetLeft);
-      // console.log('evt.pageX', evt.pageX);
-      // console.log('moveX', moveX);
+      console.log('canvas.offsetLeft', canvas.offsetLeft);
+      console.log('evt.pageX', evt.pageX);
+      console.log('moveX', moveX);
 
       const pointShiftX = moveX % lineFat;
       const pointShiftY = moveY % lineFat;
+      console.log('lineFat', lineFat);
 
       const pointWidth = moveX - pointShiftX;
       const pointHeight = moveY - pointShiftY;
-      // console.log('pointWidth', pointWidth);
+      console.log('pointWidth', pointWidth);
 
+      // ctxCanvas.save();
+      // ctxCanvas.scale(5, 5);
       if (this.tool === 'eraser') {
         this.canvasData = ctxCanvas.getImageData(pointWidth, pointHeight, lineFat, lineFat);
         for (let i = 3; i < this.canvasData.data.length; i += 4) {
@@ -55,6 +58,7 @@ export default class Canvas {
       } else {
         ctxCanvas.fillRect(pointWidth, pointHeight, lineFat, lineFat);
 
+        // ctxCanvas.restore();
         this.canvasData = ctxCanvas.getImageData(0, 0, canvas.width, canvas.height);
         this.contextFrame.putImageData(this.canvasData, 0, 0);
       }
@@ -77,7 +81,7 @@ export default class Canvas {
 
     if (toCompareData === toCompareColor) return;
 
-    const shiftX = startX % 5;
+    const shiftX = startX % 10;
     startX -= shiftX;
     const pixelStack = [[startX, startY]];
 
@@ -89,7 +93,7 @@ export default class Canvas {
     };
 
     const paintPixel = (posX, posY) => {
-      ctxCanvas.fillRect(posX, posY, 5, 5);
+      ctxCanvas.fillRect(posX, posY, 10, 10);
     };
 
     while (pixelStack.length) {
@@ -110,9 +114,9 @@ export default class Canvas {
 
         //  LOOK to the RIGHT
         if (x < canvas.width) {
-          if (checkPixel(x + 5, y)) {
+          if (checkPixel(x + 10, y)) {
             if (!reachRight) {
-              pixelStack.push([x + 5, y]);
+              pixelStack.push([x + 10, y]);
               reachRight = true;
             }
           } else if (reachRight) {
@@ -122,9 +126,9 @@ export default class Canvas {
 
         //  LOOK to the LEFT
         if (x > 0) {
-          if (checkPixel(x - 5, y)) {
+          if (checkPixel(x - 10, y)) {
             if (!reachLeft) {
-              pixelStack.push([x - 5, y]);
+              pixelStack.push([x - 10, y]);
               reachLeft = true;
             }
           } else if (reachLeft) {
@@ -132,7 +136,7 @@ export default class Canvas {
           }
         }
 
-        y += 5;
+        y += 10;
       } while (y !== canvas.height && checkPixel(x, y));
     }
 

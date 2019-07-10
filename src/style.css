@@ -268,6 +268,8 @@ li.drop-elem-proxy {
 }
 
 #canvas {
+  width: 640px;
+  height: 640px;
   border: solid 1px #ccc;
 }
 
