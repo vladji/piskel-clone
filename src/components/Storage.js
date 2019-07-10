@@ -1,6 +1,7 @@
 import Frames from './Frames';
 import Preview from './Preview';
 import Tools from './Tools';
+import CanvasSize from './CavasSize';
 
 export default class Storage {
   constructor() {
@@ -15,6 +16,8 @@ export default class Storage {
     this.colorPrimary = document.querySelector('.wrap_color-section button:first-child');
     this.colorSecondary = document.querySelector('.wrap_color-section button:nth-child(2)');
     this.thicknessTools = document.querySelector('.thickness-tool');
+    this.thickBtns = document.querySelectorAll('.thickness-tool li');
+    this.sizeService = document.querySelector('.wrap_size-btn');
   }
 
   logic() {
@@ -29,10 +32,16 @@ export default class Storage {
       this.colorSecondary.style.backgroundColor = storeObj.colorSecondary;
       this.tools.setColor();
 
-      // thickness restore
-      // const currentBtn = storeObj.currentThickBtn;
-      // const thickness = storeObj.currentThickness;
-      // this.tools.activeThick(currentBtn, thickness);
+      // active thickness restore
+      const currentBtn = storeObj.currentThickBtn;
+      const thickness = storeObj.currentThickness;
+      this.tools.activeThick(currentBtn, thickness);
+
+      // recalc thickness-tbn value
+      for (let i = 0; i < this.thickBtns.length; i += 1) {
+        const size = storeObj.thickBuffer.shift();
+        this.thickBtns[i].dataset.thick = size;
+      }
     };
 
     window.addEventListener('load', () => {
@@ -45,6 +54,8 @@ export default class Storage {
       this.tools = new Tools();
       this.tools.logic();
 
+      this.canvasSize = new CanvasSize();
+
       if (localStorage.getItem('storeKey')) renewalData();
     });
 
@@ -54,19 +65,32 @@ export default class Storage {
       this.putFrames();
     }
 
-    // window.addEventListener('beforeunload', () => {
-    //   this.grabCanvas();
-    //   this.grabFrames();
-    //   this.fps();
-    //   this.color();
-    //   this.canvasSize();
+    window.addEventListener('beforeunload', () => {
+      this.grabCanvas();
+      this.grabFrames();
+      this.fps();
+      this.color();
+      this.currentThick();
+      this.currentSize();
 
-    //   const storeObj = JSON.stringify(this.store);
-    //   localStorage.setItem('storeKey', storeObj);
-    // });
+      const storeObj = JSON.stringify(this.store);
+      localStorage.setItem('storeKey', storeObj);
+    });
   }
 
-  canvasSize() {
+  currentSize() {
+    const currentSizeBtn = this.sizeService.querySelector('button[style*="rgb(255, 237, 21)"]');
+    this.store.currentSize = currentSizeBtn.className;
+
+    const thickBuffer = [];
+    for (let i = 0; i < this.thickBtns.length; i += 1) {
+      thickBuffer.push(this.thickBtns[i].dataset.thick);
+    }
+
+    this.store.thickBuffer = thickBuffer;
+  }
+
+  currentThick() {
     const currentBtn = this.thicknessTools.querySelector('li[style*="rgb(255, 237, 21)"]');
     const currentBtnClass = currentBtn.className;
     const currentThickness = currentBtn.dataset.thick;

@@ -1,5 +1,4 @@
 import Canvas from './Canvas';
-import CanvasSize from './CavasSize';
 import Preview from './Preview';
 
 export default class Tools {
@@ -60,7 +59,6 @@ export default class Tools {
 
     // bind Canvas.prepareData to window
     window.prepareCanvas = this.canvasStart.prepareData.bind(this.canvasStart);
-    this.canvasSize = new CanvasSize();
   }
 
   getTool() {

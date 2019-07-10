@@ -76,11 +76,7 @@ export default class Frames {
   }
 
   static addNewFrame(framesList) {
-    const framesBlock = document.getElementById('frames-block');
-    const canvasDraw = document.getElementById('canvas');
-    framesBlock.style.height = `${canvasDraw.height}px`;
-
-    const dimension = 640;
+    const dimension = 1280;
     framesList.insertAdjacentHTML('beforeend',
       `<li class="frame-wrap">
         <p class="frame-num"></p>

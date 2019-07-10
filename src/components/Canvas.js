@@ -32,22 +32,15 @@ export default class Canvas {
     const lineFat = this.thikness;
 
     if (canvas.getContext) {
-      const moveX = evt.pageX - canvas.offsetLeft;
-      const moveY = evt.pageY - canvas.offsetTop;
-      console.log('canvas.offsetLeft', canvas.offsetLeft);
-      console.log('evt.pageX', evt.pageX);
-      console.log('moveX', moveX);
+      const moveX = (evt.pageX - canvas.offsetLeft) * 2;
+      const moveY = (evt.pageY - canvas.offsetTop) * 2;
 
       const pointShiftX = moveX % lineFat;
       const pointShiftY = moveY % lineFat;
-      console.log('lineFat', lineFat);
 
       const pointWidth = moveX - pointShiftX;
       const pointHeight = moveY - pointShiftY;
-      console.log('pointWidth', pointWidth);
 
-      // ctxCanvas.save();
-      // ctxCanvas.scale(5, 5);
       if (this.tool === 'eraser') {
         this.canvasData = ctxCanvas.getImageData(pointWidth, pointHeight, lineFat, lineFat);
         for (let i = 3; i < this.canvasData.data.length; i += 4) {
@@ -58,7 +51,6 @@ export default class Canvas {
       } else {
         ctxCanvas.fillRect(pointWidth, pointHeight, lineFat, lineFat);
 
-        // ctxCanvas.restore();
         this.canvasData = ctxCanvas.getImageData(0, 0, canvas.width, canvas.height);
         this.contextFrame.putImageData(this.canvasData, 0, 0);
       }

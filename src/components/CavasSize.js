@@ -1,6 +1,9 @@
+import Preview from './Preview';
+
 export default class CanvasSize {
   constructor() {
     this.canvasDraw = document.getElementById('canvas');
+    this.canvasDraft = document.createElement('canvas');
     this.thicknessTools = document.querySelectorAll('.thickness-tool li');
     this.wrapSizeBtn = document.querySelector('.wrap_size-btn');
     this.defaultSizeBtn = document.querySelector('.large-canvas').className;
@@ -13,7 +16,8 @@ export default class CanvasSize {
     let sizeBtn = this.defaultSizeBtn;
     if (localStorage.getItem('storeKey')) {
       const storeObj = JSON.parse(localStorage.getItem('storeKey'));
-      sizeBtn = storeObj.canvasSize;
+      this.stateBuffer = [storeObj.currentSize];
+      sizeBtn = storeObj.currentSize;
     }
 
     this.activeSize(sizeBtn);
@@ -44,7 +48,6 @@ export default class CanvasSize {
     const currentSize = document.querySelector(`.${currentState}`);
     currentSize.style.border = '2px solid #ffed15';
 
-
     if (prevState !== currentState) this.recalcThick(currentSize);
   }
 
@@ -59,29 +62,45 @@ export default class CanvasSize {
     const currentThickBtn = document.querySelector('.thickness-tool li[style*="rgb(255, 237, 21)"]');
     window.prepareCanvas(null, currentThickBtn.dataset.thick);
 
-    // this.redrawCanvas();
+    this.redrawCanvas();
   }
 
   redrawCanvas() {
+    const buffer = this.redrawStateBuffer;
+    const nextVar = buffer.pop();
+    const presentVar = buffer.pop();
+    const nextBtn = document.querySelector(`.${nextVar}`);
+    const presentBtn = document.querySelector(`.${presentVar}`);
+    const nextSize = nextBtn.dataset.penSize;
+    const presentSize = presentBtn.dataset.penSize;
+
+    const scaleValue = nextSize / presentSize;
     const canvas = this.canvasDraw;
-    const tempCanvas = document.createElement('canvas');
-    tempCanvas.width = canvas.width;
-    tempCanvas.height = canvas.height;
 
-    // const wrap = document.querySelector('.canvas-wrapper');
-    // wrap.appendChild(tempCanvas);
+    const redraw = (unit) => {
+      const tempCanvas = this.canvasDraft;
+      tempCanvas.width = unit.width;
+      tempCanvas.height = unit.height;
+      const tmpCanvCtx = tempCanvas.getContext('2d');
+      tmpCanvCtx.imageSmoothingEnabled = false;
+      tmpCanvCtx.webkitImageSmoothingEnabled = false;
+      tmpCanvCtx.mozImageSmoothingEnabled = false;
+      tmpCanvCtx.scale(scaleValue, scaleValue);
 
-    const canvCtx = canvas.getContext('2d');
-    let canvData = canvCtx.getImageData(0, 0, canvas.width, canvas.height);
-    canvCtx.save();
-    canvCtx.scale(2, 2);
-    canvCtx.putImageData(canvData, 0, 0);
-    canvData = canvCtx.getImageData(0, 0, canvas.width, canvas.height);
+      tmpCanvCtx.drawImage(unit, 0, 0);
 
-    const tmpCanvCtx = tempCanvas.getContext('2d');
-    tmpCanvCtx.scale(2, 2);
-    tmpCanvCtx.putImageData(canvData, 0, 0);
+      const canvCtx = unit.getContext('2d');
+      canvCtx.clearRect(0, 0, unit.width, unit.height);
+      canvCtx.drawImage(tempCanvas, 0, 0);
+    };
 
-    // canvCtx.restore();
+    redraw(canvas);
+
+    const framesCanvas = document.querySelectorAll('.frames-list canvas');
+    for (let i = 0; i < framesCanvas.length; i += 1) {
+      redraw(framesCanvas[i]);
+    }
+
+    Preview.setSlides();
   }
 }
