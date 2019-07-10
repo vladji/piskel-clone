@@ -1,12 +1,14 @@
 export default class Preview {
   constructor() {
     this.animationView = document.querySelector('.preview_screen');
+    this.previewWrap = document.querySelector('.preview_screen-inner');
     this.fpsButton = document.querySelector('.preview_input-range input');
     this.fps = 12;
     this.img = null;
     this.displayFps = document.querySelector('.fps-range');
     this.fpsDisplay(this.fps);
     this.setFps(3);
+    this.fullScreen();
   }
 
   initAnimation() {
@@ -75,5 +77,21 @@ export default class Preview {
 
     actionScreen.style.backgroundImage = `url("${obj[i % obj.length]}")`;
     actionScreen.style.backgroundSize = 'contain';
+  }
+
+  fullScreen() {
+    const btn = document.querySelector('.full-screen');
+    btn.addEventListener('click', () => {
+      this.animationView.style.width = '100vw';
+      this.animationView.style.height = '100vh';
+      this.previewWrap.requestFullscreen();
+    });
+
+    document.addEventListener('fullscreenchange', () => {
+      if (!document.fullscreenElement) {
+        this.animationView.style.width = '';
+        this.animationView.style.height = '';
+      }
+    });
   }
 }

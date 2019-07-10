@@ -283,6 +283,7 @@ li.drop-elem-proxy {
 /* Preview block */
 
 #preview-wrapper {
+  position: relative;
   width: 202px;
   background-color: #888;
 }
@@ -293,6 +294,16 @@ li.drop-elem-proxy {
   margin: 0 auto;
   border: 1px solid grey;
   background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.full-screen {
+  position: absolute;
+  right: 20px;
+  bottom: 47px;
+  font-size: 25px;
+  color: #fff;
 }
 
 .preview_input-range {
