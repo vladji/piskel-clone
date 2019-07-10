@@ -13,12 +13,14 @@ export default class GifExport {
 
     const framePrepare = () => {
       const fps = this.fpsButton.value;
+      const currentSizeBtn = document.querySelector('.wrap_size-btn button[style*="rgb(255, 237, 21)"]');
+      const sizeVar = currentSizeBtn.dataset.penSize;
 
       const frames = this.framesCanvases();
       for (let i = 0; i < frames.length; i += 1) {
         const tempCanvas = document.createElement('canvas');
-        tempCanvas.width = frames[i].width * 0.1;
-        tempCanvas.height = frames[i].height * 0.1;
+        tempCanvas.width = frames[i].width / sizeVar;
+        tempCanvas.height = frames[i].height / sizeVar;
         const ctxTempCanvas = tempCanvas.getContext('2d');
         // eslint-disable-next-line max-len
         ctxTempCanvas.drawImage(frames[i], 0, 0, frames[i].width, frames[i].height, 0, 0, tempCanvas.width, tempCanvas.height);
@@ -41,7 +43,7 @@ export default class GifExport {
         workers: 2,
         quality: 10,
         workerScript: '../../dist/gif.worker.js',
-        // transparent: '0x000000',
+        transparent: '0x000000',
       });
       framePrepare();
 

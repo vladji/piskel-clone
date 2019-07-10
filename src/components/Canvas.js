@@ -61,8 +61,8 @@ export default class Canvas {
     const canvas = this.canvasDraw;
     const ctxCanvas = this.contextCanvas;
 
-    let startX = evt.pageX - canvas.offsetLeft;
-    const startY = evt.pageY - canvas.offsetTop;
+    let startX = (evt.pageX - canvas.offsetLeft) * 2;
+    const startY = (evt.pageY - canvas.offsetTop) * 2;
 
     const pixelDefault = ctxCanvas.getImageData(startX, startY, 1, 1).data.join('');
 
