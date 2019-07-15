@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="../src/style.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
     integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Chakra+Petch:300,600&display=swap" rel="stylesheet">
   <script src="../dist/gif.js" async></script>
 <script type="text/javascript" src="app.bundle.js" async></script></head>
 
@@ -21,13 +22,13 @@
       <div class="wrap_draw-panel">
         <div class="thickness-tool">
           <ul>
-            <li class="thickness-1" data-thick="20">
+            <li class="thickness-1" data-thick="1">
               <div></div>
             </li>
-            <li class="thickness-2" data-thick="30">
+            <li class="thickness-2" data-thick="2">
               <div></div>
             </li>
-            <li class="thickness-3" data-thick="40">
+            <li class="thickness-3" data-thick="3">
               <div></div>
             </li>
           </ul>
@@ -40,7 +41,7 @@
             <li class="btn_eraser">
               <div><i class="fas fa-eraser"></i></div>
             </li>
-            <li class="btn_color-detect">
+            <li class="btn_color-picker">
               <div><i class="fas fa-eye-dropper"></i></div>
             </li>
             <li class="btn_bucket">
@@ -49,8 +50,8 @@
           </ul>
         </nav>
         <div class="wrap_color-section">
-          <button class="choose-color-btn" style="background-color: #15e015;"></button>
-          <button class="choose-color-btn" style="background-color: #646464;"></button>
+          <button class="choose-color-btn"></button>
+          <button class="choose-color-btn"></button>
           <button class="color-switch"><i class="fas fa-retweet"></i></button>
           <div class="wrap_palette" hidden>
             <div class="wrap_close-btn"><button><i class="far fa-window-close"></i></button></div>
@@ -59,35 +60,46 @@
           </div>
         </div>
       </div>
-      <div class="wrap_frames-block">
-        <div id="frames-block">
-          <div class="frames-list">
-            <ul>
-            </ul>
-          </div>
-          <div class="add-frame">
-            <p>Add Frame</p>
-          </div>
+      <!-- Frames block -->
+      <div id="frames-block">
+        <div class="frames-list">
+          <ul>
+          </ul>
+        </div>
+        <div class="add-frame">
+          <p>Add Frame</p>
         </div>
       </div>
     </div>
-
+    <!-- Canvas Draw -->
     <div class="canvas-wrapper">
-      <canvas id="canvas" width="700" height="700"></canvas>
+      <canvas id="canvas" width="1280" height="1280"></canvas>
     </div>
-
-    <div id="utils">
+    <!-- Service section -->
+    <div id="service-section">
+      <!-- Preview -->
       <div id="preview-wrapper">
-        <div class="preview_screen">
+        <div class="preview_screen-inner">
+          <div class="preview_screen"></div>
         </div>
+        <button class="full-screen"><i class="fas fa-compress"></i></button>
         <div class="preview_input-range">
           <div class="fps-range"></div>
           <div>FPS</div>
           <input type="range" min="1" max="24">
         </div>
       </div>
+      <!-- Service buttons -->
+      <div class="canvas-manager">
+        <p>Canvas size:</p>
+        <div class="wrap_size-btn">
+          <button class="small-canvas" data-pen-size="40">32px</button>
+          <button class="medium-canvas" data-pen-size="20">64px</button>
+          <button class="large-canvas" data-pen-size="10">128px</button>
+        </div>
+      </div>
       <div class="wrap_btn">
-        <button class="service-btn">create GIF</button>
+        <button class="export-btn">create GIF</button>
       </div>
     </div>
   </main>
