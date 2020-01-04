@@ -2,13 +2,11 @@ import Preview from './Preview';
 
 export default class Frames {
   constructor() {
+    this.DIMENSION = 1280;
     this.framesBlock = document.getElementById('frames-block');
-    this.framesList = document.querySelector('.frames-list ul');
+    this.framesList = document.querySelector('.frames-list');
     this.currentFrame = null;
     this.framesUnits = () => document.querySelectorAll('.frames-list li');
-    this.addFrame = () => {
-      if (this.framesUnits().length === 0) Frames.addNewFrame(this.framesList);
-    };
     this.lastFrame = () => document.querySelector('.frames-list li:last-child canvas');
     this.frameTools = () => document.querySelector('.frame-tools');
     this.framesStates = [this.currentFrame];
@@ -16,7 +14,6 @@ export default class Frames {
 
   logic() {
     const framesWrap = this.framesBlock;
-    this.addFrame();
 
     this.currentFrame = document.querySelector('.frames-list li[style*="border"] canvas') || document.querySelector('.frames-list canvas');
 
@@ -37,7 +34,7 @@ export default class Frames {
         this.currentFrame = frameHighlited;
       } else {
         if (e.target.closest('.add-frame')) {
-          Frames.addNewFrame(this.framesList);
+          this.addNewFrame(this.framesList);
           frameHighlited = Frames.setFrame(this.lastFrame());
           this.activeFrameState(frameHighlited);
           this.currentFrame = frameHighlited;
@@ -58,6 +55,7 @@ export default class Frames {
   }
 
   static setFrame(e) {
+    console.log('set frame');
     const targetFrame = e.target || e;
     this.currentFrame = targetFrame;
 
@@ -75,18 +73,21 @@ export default class Frames {
     return this.currentFrame;
   }
 
-  static addNewFrame(framesList) {
-    const dimension = 1280;
+  addNewFrame(framesList) {
     framesList.insertAdjacentHTML('beforeend',
       `<li class="frame-wrap">
         <p class="frame-num"></p>
-        <canvas class="frame-unit" width="${dimension}" height="${dimension}"></canvas>
+        <canvas class="frame-unit" width="${this.DIMENSION}" height="${this.DIMENSION}"></canvas>
         <div class="frame-tools" style="display: none;">
           <button class="frame-duplicate"><i class="fas fa-clone"></i></button>
           <button class="frame-delete"><i class="fas fa-trash-alt"></i></button>
           <button class="frame-move"><i class="fas fa-arrows-alt-v"></i></button>
         </div>
       </li>`);
+    const canvasList = document.querySelectorAll('.frames-list li');
+    console.log('canvasList', canvasList);
+    const [...units] = canvasList;
+    console.log('units', units);
   }
 
   frameDelete(e) {

@@ -1,3 +1,4 @@
+import './style.css';
 import Storage from './components/Storage';
 import GifExport from './components/Gif';
 

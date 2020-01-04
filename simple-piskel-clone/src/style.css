@@ -212,6 +212,10 @@ ul {
   border: 5px solid #fff;
 }
 
+.frame-tools {
+  display: none;
+}
+
 .frame-tools i {
   font-size: 16px;
   color: #808080;

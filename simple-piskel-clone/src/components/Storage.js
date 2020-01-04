@@ -122,35 +122,35 @@ export default class Storage {
   }
 
   grabFrames() {
-    const canvasList = document.querySelectorAll('.frames-list canvas');
+    const framesCanvases = document.querySelectorAll('.frames-list canvas');
     const framesData = [];
 
-    for (let i = 0; i < canvasList.length; i += 1) {
-      const frame = canvasList[i];
-      framesData.push(frame.toDataURL());
+    for (let i = 0; i < framesCanvases.length; i += 1) {
+      const frameCanvas = framesCanvases[i];
+      framesData.push(frameCanvas.toDataURL());
     }
 
-    const framesWrap = document.querySelector('.frames-list ul');
-    this.store.framesWrap = framesWrap.outerHTML;
+    const framesMarkup = this.framesWrap.innerHTML;
+    this.store.framesMarkup = framesMarkup;
     this.store.framesData = framesData;
   }
 
   putFrames() {
     const storeObj = JSON.parse(localStorage.getItem('storeKey'));
-    const framesStoreUl = storeObj.framesWrap;
-    const frameslist = this.framesWrap;
-    frameslist.innerHTML = framesStoreUl;
 
-    const images = storeObj.framesData;
-    const canvasList = document.querySelectorAll('.frames-list canvas');
+    const framesHTML = storeObj.framesMarkup;
+    this.framesWrap.innerHTML = framesHTML;
 
-    for (let i = 0; i < images.length; i += 1) {
-      const currentCtx = canvasList[i].getContext('2d');
+    const imageData = storeObj.framesData;
+    const framesCanvases = document.querySelectorAll('.frames-list canvas');
+
+    for (let i = 0; i < framesCanvases.length; i += 1) {
+      const frameCtx = framesCanvases[i].getContext('2d');
       const image = new Image();
       image.onload = () => {
-        currentCtx.drawImage(image, 0, 0);
+        frameCtx.drawImage(image, 0, 0);
       };
-      image.src = images[i];
+      image.src = imageData[i];
     }
   }
 }

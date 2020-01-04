@@ -1,0 +1,38 @@
+{
+  "name": "simple-piskel-clone",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/core": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "babel-loader": "^8.0.6",
+    "css-loader": "^3.4.1",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-loader": "^3.0.3",
+    "eslint-plugin-import": "^2.19.1",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.9.0",
+    "script-ext-html-webpack-plugin": "^2.1.4",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.10.1"
+  },
+  "scripts": {
+    "dev": "webpack-dev-server --mode development --watch",
+    "build": "webpack --mode production",
+    "lint": "eslint src/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rolling-scopes-school/vladji-RS2019Q3.git"
+  },
+  "author": "Vladislav Priakhine",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rolling-scopes-school/vladji-RS2019Q3/issues"
+  },
+  "homepage": "https://github.com/rolling-scopes-school/vladji-RS2019Q3#readme"
+}
