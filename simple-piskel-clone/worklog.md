@@ -1,4 +1,5 @@
 # Worklog  
+## 2019
 <table>
   <thead>
     <tr>
@@ -74,7 +75,7 @@
       <td>Jun 24</td>
       <td>Jun 24</td>
       <td>3</td>
-      <td>Fixing bugs of frameDuplicate(), show/hide tools on the 1st frame. Addon chekFrameTools() function</td>
+      <td>Fixing bugs of Frames.frameDuplicate(), show/hide tools on the 1st frame. Addon chekFrameTools() function</td>
     </tr>
     <tr>
       <td>Jun 25</td>
@@ -129,3 +130,23 @@
 </table>
 
 Total: 91h
+
+## 2020
+<table>
+  <thead>
+    <tr>
+      <th>Start time</th>
+      <th>End time</th>
+      <th>time spent</th>
+      <th>Feature</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Jan 04</td>
+      <td>Jan 05</td>
+      <td>7</td>
+      <td>Refactoring code: Storage and Frames components</td>
+    </tr>
+  </tbody>
+</table>

@@ -212,10 +212,6 @@ ul {
   border: 5px solid #fff;
 }
 
-.frame-tools {
-  display: none;
-}
-
 .frame-tools i {
   font-size: 16px;
   color: #808080;
@@ -266,6 +262,14 @@ li.drop-elem-proxy {
   border: 4px dashed #ffed15;
   border-radius: 3px;
   background: #323;
+}
+
+.frame-hover {
+  border: 5px solid #888;
+}
+
+.active-frame {
+  border: 5px solid #ffed15;
 }
 
 /* CANVAS DRAW */

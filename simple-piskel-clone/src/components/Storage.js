@@ -1,16 +1,7 @@
-import Frames from './Frames';
-import Preview from './Preview';
-import Tools from './Tools';
-import CanvasSize from './CavasSize';
-
 export default class Storage {
   constructor() {
-    this.frames = null;
-    this.preview = null;
-    this.tools = null;
-    this.canvasSize = null;
     this.store = {};
-    this.canvasWrap = document.querySelector('.canvas-wrapper');
+    this.canvas = document.querySelector('#canvas');
     this.framesWrap = document.querySelector('.frames-list');
     this.fpsButton = document.querySelector('.preview_input-range input');
     this.colorPrimary = document.querySelector('.wrap_color-section button:first-child');
@@ -20,51 +11,31 @@ export default class Storage {
     this.sizeService = document.querySelector('.wrap_size-btn');
   }
 
-  logic() {
-    const renewalData = () => {
-      const storeObj = JSON.parse(localStorage.getItem('storeKey'));
+  loadSession(frames, preview, tools) {
+    console.log('load frames', frames);
+    const storeLoad = JSON.parse(localStorage.getItem('piskel-session-store'));
 
-      // fps restore
-      this.preview.setFps(storeObj.fps);
+    this.putCanvas(storeLoad);
+    this.putFrames(storeLoad);
+    preview.setFps(storeLoad.fps);
 
-      // color restore
-      this.colorPrimary.style.backgroundColor = storeObj.colorPrimary;
-      this.colorSecondary.style.backgroundColor = storeObj.colorSecondary;
-      this.tools.setColor();
+    // color restore
+    this.colorPrimary.style.backgroundColor = storeLoad.colorPrimary;
+    this.colorSecondary.style.backgroundColor = storeLoad.colorSecondary;
+    tools.setColor();
 
-      // active thickness restore
-      const currentBtn = storeObj.currentThickBtn;
-      const thickness = storeObj.currentThickness;
-      this.tools.activeThick(currentBtn, thickness);
+    const currentBtn = storeLoad.currentThickBtn;
+    const thickness = storeLoad.currentThickness;
+    tools.activeThick(currentBtn, thickness);
 
-      // recalc thickness-tbn value
-      for (let i = 0; i < this.thickBtns.length; i += 1) {
-        const size = storeObj.thickBuffer.shift();
-        this.thickBtns[i].dataset.thick = size;
-      }
-    };
-
-    window.addEventListener('load', () => {
-      this.frames = new Frames();
-      this.frames.logic();
-
-      this.preview = new Preview();
-      this.preview.initAnimation();
-
-      this.tools = new Tools();
-      this.tools.logic();
-
-      this.canvasSize = new CanvasSize();
-
-      if (localStorage.getItem('storeKey')) renewalData();
-    });
-
-    if (localStorage.getItem('storeKey')) {
-      // frames restore
-      this.putCanvas();
-      this.putFrames();
+    // recalc thickness-tbn value
+    for (let i = 0; i < this.thickBtns.length; i += 1) {
+      const size = storeLoad.thickBuffer.shift();
+      this.thickBtns[i].dataset.thick = size;
     }
+  }
 
+  saveSession() {
     window.addEventListener('beforeunload', () => {
       this.grabCanvas();
       this.grabFrames();
@@ -73,8 +44,7 @@ export default class Storage {
       this.currentThick();
       this.currentSize();
 
-      const storeObj = JSON.stringify(this.store);
-      localStorage.setItem('storeKey', storeObj);
+      localStorage.setItem('piskel-session-store', JSON.stringify(this.store));
     });
   }
 
@@ -112,13 +82,17 @@ export default class Storage {
   }
 
   grabCanvas() {
-    this.canvasWrap = document.querySelector('.canvas-wrapper');
-    this.store.canvasDraw = this.canvasWrap.innerHTML;
+    this.store.canvasData = this.canvas.toDataURL();
   }
 
-  putCanvas() {
-    const storeObj = JSON.parse(localStorage.getItem('storeKey'));
-    this.canvasWrap.innerHTML = storeObj.canvasDraw;
+  putCanvas(storeLoad) {
+    const canvasCtx = this.canvas.getContext('2d');
+    const imageData = storeLoad.canvasData;
+    const image = new Image();
+    image.onload = () => {
+      canvasCtx.drawImage(image, 0, 0);
+    };
+    image.src = imageData;
   }
 
   grabFrames() {
@@ -126,8 +100,7 @@ export default class Storage {
     const framesData = [];
 
     for (let i = 0; i < framesCanvases.length; i += 1) {
-      const frameCanvas = framesCanvases[i];
-      framesData.push(frameCanvas.toDataURL());
+      framesData.push(framesCanvases[i].toDataURL());
     }
 
     const framesMarkup = this.framesWrap.innerHTML;
@@ -135,13 +108,11 @@ export default class Storage {
     this.store.framesData = framesData;
   }
 
-  putFrames() {
-    const storeObj = JSON.parse(localStorage.getItem('storeKey'));
-
-    const framesHTML = storeObj.framesMarkup;
+  putFrames(storeLoad) {
+    const framesHTML = storeLoad.framesMarkup;
     this.framesWrap.innerHTML = framesHTML;
 
-    const imageData = storeObj.framesData;
+    const imageData = storeLoad.framesData;
     const framesCanvases = document.querySelectorAll('.frames-list canvas');
 
     for (let i = 0; i < framesCanvases.length; i += 1) {

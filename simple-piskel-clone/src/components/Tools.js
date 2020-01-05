@@ -1,9 +1,9 @@
-import Canvas from './Canvas';
+
 import Preview from './Preview';
 
 export default class Tools {
-  constructor() {
-    this.canvasStart = new Canvas();
+  constructor(canvas) {
+    this.canvasMain = canvas;
     this.currentTool = 'btn_pen';
     this.canvasDraw = document.getElementById('canvas');
     this.btnPanel = document.querySelector('#draw-tools');
@@ -51,19 +51,19 @@ export default class Tools {
       this.activeToolState(tool);
     });
 
-    if (!localStorage.getItem('storeKey')) {
+    if (!localStorage.getItem('piskel-session-store')) {
       this.primaryColorBtn.style.backgroundColor = '#15e015';
       this.secondaryColorBtn.style.backgroundColor = '#646464';
     }
     this.setColor();
 
     // bind Canvas.prepareData to window
-    window.prepareCanvas = this.canvasStart.prepareData.bind(this.canvasStart);
+    window.prepareCanvas = this.canvasMain.prepareData.bind(this.canvasMain);
   }
 
   getTool() {
     let currentTool = null;
-    const canvasInit = this.canvasStart;
+    const canvasInit = this.canvasMain;
     const penToolDefault = canvasInit.penToolDefault.bind(canvasInit);
     const bucketTool = canvasInit.bucketTool.bind(canvasInit);
     const colorPicker = canvasInit.colorPicker.bind(canvasInit);
@@ -92,7 +92,7 @@ export default class Tools {
   }
 
   activeThick(btn, thick) {
-    const canvasInit = this.canvasStart;
+    const canvasInit = this.canvasMain;
     this.thiscknessState.push(btn);
 
     const prevState = this.thiscknessState.shift();
@@ -120,7 +120,7 @@ export default class Tools {
   }
 
   setColor() {
-    const canvasInit = this.canvasStart;
+    const canvasInit = this.canvasMain;
     const primaryBtn = document.querySelector('.choose-color-btn');
     const color = primaryBtn.style.backgroundColor;
     this.currentColor = color;

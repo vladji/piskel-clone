@@ -9,15 +9,14 @@ export default class CanvasSize {
     this.defaultSizeBtn = document.querySelector('.large-canvas').className;
     this.stateBuffer = [this.defaultSizeBtn];
     this.redrawStateBuffer = [];
-    this.logic();
   }
 
   logic() {
     let sizeBtn = this.defaultSizeBtn;
-    if (localStorage.getItem('storeKey')) {
-      const storeObj = JSON.parse(localStorage.getItem('storeKey'));
-      this.stateBuffer = [storeObj.currentSize];
-      sizeBtn = storeObj.currentSize;
+    if (localStorage.getItem('piskel-session-store')) {
+      const storeLoad = JSON.parse(localStorage.getItem('piskel-session-store'));
+      this.stateBuffer = [storeLoad.currentSize];
+      sizeBtn = storeLoad.currentSize;
     }
 
     this.activeSize(sizeBtn);

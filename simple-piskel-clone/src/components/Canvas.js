@@ -1,7 +1,6 @@
-import Frames from './Frames';
-
 export default class Canvas {
-  constructor() {
+  constructor(frames) {
+    this.frames = frames;
     this.canvasDraw = document.getElementById('canvas');
     this.contextCanvas = this.canvasDraw.getContext('2d');
     this.canvasData = null;
@@ -16,7 +15,7 @@ export default class Canvas {
     const thikness = args[1];
     const tool = args[2];
 
-    let currentFrame = Frames.getFrame();
+    let currentFrame = this.frames.getFrameCanvas();
     if (!currentFrame) currentFrame = document.querySelector('.frame-unit');
     const ctxFrame = currentFrame.getContext('2d');
     this.contextFrame = ctxFrame;

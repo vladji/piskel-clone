@@ -5,132 +5,120 @@ export default class Frames {
     this.DIMENSION = 1280;
     this.framesBlock = document.getElementById('frames-block');
     this.framesList = document.querySelector('.frames-list');
-    this.currentFrame = null;
     this.framesUnits = () => document.querySelectorAll('.frames-list li');
     this.lastFrame = () => document.querySelector('.frames-list li:last-child canvas');
-    this.frameTools = () => document.querySelector('.frame-tools');
-    this.framesStates = [this.currentFrame];
   }
 
-  logic() {
-    const framesWrap = this.framesBlock;
-
-    this.currentFrame = document.querySelector('.frames-list li[style*="border"] canvas') || document.querySelector('.frames-list canvas');
-
+  controller() {
     this.frameHover();
-    this.countFrames();
     this.frameDragDrop();
-    this.activeFrameState(this.currentFrame);
-
-    Frames.setFrame(this.currentFrame);
+    this.countFrames();
     Preview.setSlides();
 
-    framesWrap.addEventListener('click', (e) => {
-      let frameHighlited = null;
+    const framesObj = this;
+    const frameEvents = {
+      addFrame() {
+        framesObj.addNewFrame();
+      },
+      frameDelete(e) {
+        framesObj.frameDelete(e);
+      },
+      frameDuplicate(e) {
+        Frames.frameDuplicate(e);
+      },
+    };
 
-      if (e.target.closest('canvas')) {
-        frameHighlited = Frames.setFrame(e);
-        this.activeFrameState(frameHighlited);
-        this.currentFrame = frameHighlited;
-      } else {
-        if (e.target.closest('.add-frame')) {
-          this.addNewFrame(this.framesList);
-          frameHighlited = Frames.setFrame(this.lastFrame());
-          this.activeFrameState(frameHighlited);
-          this.currentFrame = frameHighlited;
-        }
+    this.framesBlock.addEventListener('click', (e) => {
+      if (e.target.closest('[data-frame-action]')) {
+        const actionElem = e.target.closest('[data-frame-action]');
+        const action = actionElem.dataset.frameAction;
+        frameEvents[action](e);
 
-        if (e.target.closest('.frame-delete')) {
-          this.frameDelete(e);
-        }
-
-        if (e.target.closest('.frame-duplicate')) {
-          this.frameDuplicate(e);
-        }
-
-        Preview.setSlides();
         this.countFrames();
+        Preview.setSlides();
+      }
+
+      if (e.target.closest('.frame-wrap') && !e.target.closest('[data-frame-action]')) {
+        const activeFrame = e.target.closest('.frame-wrap');
+        const frameCanvas = activeFrame.querySelector('canvas');
+        Frames.putFrameData(frameCanvas);
+        this.activeFrame(activeFrame);
       }
     });
   }
 
-  static setFrame(e) {
-    console.log('set frame');
-    const targetFrame = e.target || e;
-    this.currentFrame = targetFrame;
-
-    const ctxFrame = targetFrame.getContext('2d');
-    const frameData = ctxFrame.getImageData(0, 0, targetFrame.width, targetFrame.height);
+  static putFrameData(frameCanvas) {
+    const ctxFrame = frameCanvas.getContext('2d');
+    const frameData = ctxFrame.getImageData(0, 0, frameCanvas.width, frameCanvas.height);
 
     const canvasDraw = document.getElementById('canvas');
     const ctxCanvas = canvasDraw.getContext('2d');
     ctxCanvas.putImageData(frameData, 0, 0);
-
-    return targetFrame;
   }
 
-  static getFrame() {
-    return this.currentFrame;
+  getFrameCanvas() {
+    return this.currentFrame.querySelector('.frame-unit');
   }
 
-  addNewFrame(framesList) {
-    framesList.insertAdjacentHTML('beforeend',
-      `<li class="frame-wrap">
+  addNewFrame() {
+    this.activeFrame();
+
+    this.framesList.insertAdjacentHTML('beforeend',
+      `<li class="frame-wrap active-frame">
         <p class="frame-num"></p>
         <canvas class="frame-unit" width="${this.DIMENSION}" height="${this.DIMENSION}"></canvas>
-        <div class="frame-tools" style="display: none;">
-          <button class="frame-duplicate"><i class="fas fa-clone"></i></button>
-          <button class="frame-delete"><i class="fas fa-trash-alt"></i></button>
+        <div class="frame-tools" hidden>
+          <button class="frame-duplicate" data-frame-action="frameDuplicate"><i class="fas fa-clone"></i></button>
+          <button class="frame-delete" data-frame-action="frameDelete"><i class="fas fa-trash-alt"></i></button>
           <button class="frame-move"><i class="fas fa-arrows-alt-v"></i></button>
         </div>
       </li>`);
-    const canvasList = document.querySelectorAll('.frames-list li');
-    console.log('canvasList', canvasList);
-    const [...units] = canvasList;
-    console.log('units', units);
+    this.currentFrame = document.querySelector('.active-frame');
+  }
+
+  activeFrame(frame) {
+    const prevActiveFrame = document.querySelector('.active-frame');
+    if (prevActiveFrame) prevActiveFrame.classList.remove('active-frame');
+
+    if (frame) {
+      frame.classList.add('active-frame');
+      this.currentFrame = frame;
+    }
   }
 
   frameDelete(e) {
-    const targetFrameLi = e.target.closest('li');
-    const targetCanvas = targetFrameLi.querySelector('canvas');
+    const targetFrame = e.target.closest('li');
 
-    if (targetCanvas === this.currentFrame) {
-      let nextFrameLi = targetFrameLi.previousElementSibling;
-      if (!nextFrameLi) nextFrameLi = targetFrameLi.nextElementSibling;
+    let nextFrame = targetFrame.previousElementSibling;
+    if (!nextFrame) nextFrame = targetFrame.nextElementSibling;
 
-      const nextCanvas = nextFrameLi.querySelector('canvas');
-      this.currentFrame = nextCanvas;
+    const nextCanvas = nextFrame.querySelector('canvas');
+    Frames.putFrameData(nextCanvas);
+    this.activeFrame(nextFrame);
 
-      Frames.setFrame(nextCanvas);
-      this.activeFrameState(nextCanvas);
-    }
-
-    this.framesList.removeChild(targetFrameLi);
+    targetFrame.remove();
   }
 
-  frameDuplicate(e) {
+  static frameDuplicate(e) {
     const targetFrameLi = e.target.closest('li');
     const targetCanvas = targetFrameLi.querySelector('canvas');
     const targetCanvasCtx = targetCanvas.getContext('2d');
-    // eslint-disable-next-line max-len
-    const targetCanvasData = targetCanvasCtx.getImageData(0, 0, targetCanvas.width, targetCanvas.height);
+
+    const targetCanvasData = targetCanvasCtx
+      .getImageData(0, 0, targetCanvas.width, targetCanvas.height);
 
     const cloneFrameLi = targetFrameLi.cloneNode(true);
     const cloneCanvas = cloneFrameLi.querySelector('canvas');
     const cloneCanvasCtx = cloneCanvas.getContext('2d');
     cloneCanvasCtx.putImageData(targetCanvasData, 0, 0);
 
+    cloneFrameLi.classList.remove('active-frame');
     targetFrameLi.after(cloneFrameLi);
-
-    cloneFrameLi.style.border = '';
-    const frameTools = cloneFrameLi.querySelector('.frame-tools');
-    frameTools.style.display = 'none';
-    this.chekFrameTools(frameTools);
   }
 
   countFrames() {
     const frames = this.framesUnits();
-    this.chekFrameTools(this.frameTools());
+    Frames.chekFrameTools(frames);
 
     let counter = 1;
     for (let i = 0; i < frames.length; i += 1) {
@@ -140,30 +128,17 @@ export default class Frames {
     }
   }
 
-  chekFrameTools(frameTools) {
-    const frames = this.framesUnits();
+  static chekFrameTools(frames) {
+    const delToolFirstFrame = document.querySelector('.frame-delete');
+    const moveToolFirstFrame = document.querySelector('.frame-move');
 
-    const delTool = frameTools.querySelector('.frame-delete');
-    const moveTool = frameTools.querySelector('.frame-move');
-
-    if (frames.length === 1 && delTool) {
-      delTool.remove();
-      moveTool.remove();
-    } else if (frames.length > 1 && !delTool) {
-      frameTools.insertAdjacentHTML('beforeend',
-        '<button class="frame-delete"><i class="fas fa-trash-alt"></i></button><button class="frame-move"><i class="fas fa-arrows-alt-v"></i></button>');
+    if (frames.length === 1) {
+      delToolFirstFrame.hidden = true;
+      moveToolFirstFrame.hidden = true;
+    } else {
+      delToolFirstFrame.hidden = false;
+      moveToolFirstFrame.hidden = false;
     }
-  }
-
-  activeFrameState(frame) {
-    const activeFrameLi = frame.closest('li');
-    this.framesStates.push(activeFrameLi);
-
-    const prevFrame = this.framesStates.shift();
-    if (prevFrame) prevFrame.style.border = '';
-
-    const currentFrame = this.framesStates[0];
-    currentFrame.style.border = '5px solid #ffed15';
   }
 
   frameHover() {
@@ -174,21 +149,16 @@ export default class Frames {
       if (e.target.closest('li')) {
         targetLi = e.target.closest('li');
         frameTools = targetLi.querySelector('.frame-tools');
-        // frameTools.hidden = false;
-        if (frameTools) frameTools.style.display = '';
+        frameTools.hidden = false;
 
-        const activeFrame = this.currentFrame.closest('li');
-        if (targetLi !== activeFrame) targetLi.style.border = '5px solid #888';
+        if (targetLi !== this.currentFrame) targetLi.classList.add('frame-hover');
       }
     });
 
     this.framesList.addEventListener('mouseout', () => {
       if (targetLi) {
-        // frameTools.hidden = true;
-        if (frameTools) frameTools.style.display = 'none';
-
-        const activeFrame = this.currentFrame.closest('li');
-        if (targetLi !== activeFrame) targetLi.style.border = '';
+        frameTools.hidden = true;
+        targetLi.classList.remove('frame-hover');
       }
     });
   }
@@ -215,10 +185,13 @@ export default class Frames {
       const elem = document.elementFromPoint(evt.clientX, evt.clientY);
       const replaceFrame = elem.closest('li');
 
-      // eslint-disable-next-line max-len
-      if (frameParam.nextSibling && replaceFrame === frameParam.nextSibling) replaceFrame.after(dropElemProxy);
-      // eslint-disable-next-line max-len
-      if (frameParam.previousSibling && replaceFrame === frameParam.previousSibling) replaceFrame.before(dropElemProxy);
+      if (frameParam.nextSibling && replaceFrame === frameParam.nextSibling) {
+        replaceFrame.after(dropElemProxy);
+      }
+
+      if (frameParam.previousSibling && replaceFrame === frameParam.previousSibling) {
+        replaceFrame.before(dropElemProxy);
+      }
       targetFrameLi.style.zIndex = '99';
     };
 

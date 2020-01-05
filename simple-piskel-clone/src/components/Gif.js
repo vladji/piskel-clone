@@ -42,7 +42,7 @@ export default class GifExport {
       gif = new GIF({
         workers: 2,
         quality: 10,
-        workerScript: './lib/gif.worker.js',
+        workerScript: './dist/lib/gif.worker.js',
         transparent: '0x000000',
       });
       framePrepare();

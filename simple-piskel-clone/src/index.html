@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
     integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
   <link href="https://fonts.googleapis.com/css?family=Chakra+Petch:300,600&display=swap" rel="stylesheet">
-  <script src="./lib/gif.js" async></script>
+  <script src="./dist/lib/gif.js" async></script>
 </head>
 
 <body>
@@ -62,17 +62,8 @@
       <!-- Frames block -->
       <div id="frames-block">
         <ul class="frames-list">
-          <li class="frame-wrap">
-            <p class="frame-num"></p>
-            <canvas class="frame-unit" width="1280" height="1280"></canvas>
-            <div class="frame-tools">
-              <button class="frame-duplicate"><i class="fas fa-clone"></i></button>
-              <button class="frame-delete"><i class="fas fa-trash-alt"></i></button>
-              <button class="frame-move"><i class="fas fa-arrows-alt-v"></i></button>
-            </div>
-          </li>
         </ul>
-        <div class="add-frame">
+        <div class="add-frame" data-frame-action="addFrame">
           <p>Add Frame</p>
         </div>
       </div>
