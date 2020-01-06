@@ -6,33 +6,27 @@ export default class Storage {
     this.fpsButton = document.querySelector('.preview_input-range input');
     this.colorPrimary = document.querySelector('.wrap_color-section button:first-child');
     this.colorSecondary = document.querySelector('.wrap_color-section button:nth-child(2)');
-    this.thicknessTools = document.querySelector('.thickness-tool');
-    this.thickBtns = document.querySelectorAll('.thickness-tool li');
-    this.sizeService = document.querySelector('.wrap_size-btn');
   }
 
-  loadSession(frames, preview, tools) {
+  loadSession(frames, preview, tools, canvasSize) {
     console.log('load frames', frames);
+
     const storeLoad = JSON.parse(localStorage.getItem('piskel-session-store'));
+    console.log('storeLoad', storeLoad);
 
     this.putCanvas(storeLoad);
     this.putFrames(storeLoad);
     preview.setFps(storeLoad.fps);
 
-    // color restore
     this.colorPrimary.style.backgroundColor = storeLoad.colorPrimary;
     this.colorSecondary.style.backgroundColor = storeLoad.colorSecondary;
     tools.setColor();
 
-    const currentBtn = storeLoad.currentThickBtn;
-    const thickness = storeLoad.currentThickness;
-    tools.activeThick(currentBtn, thickness);
+    const thickBtn = document.querySelector(`[data-thick-id="${storeLoad.currentThick}"]`);
+    tools.activeThick(thickBtn);
 
-    // recalc thickness-tbn value
-    for (let i = 0; i < this.thickBtns.length; i += 1) {
-      const size = storeLoad.thickBuffer.shift();
-      this.thickBtns[i].dataset.thick = size;
-    }
+    const sizeBtn = document.querySelector(`[data-pen-var="${storeLoad.currentSize}"]`);
+    canvasSize.activeSize(sizeBtn);
   }
 
   saveSession() {
@@ -49,24 +43,13 @@ export default class Storage {
   }
 
   currentSize() {
-    const currentSizeBtn = this.sizeService.querySelector('button[style*="rgb(255, 237, 21)"]');
-    this.store.currentSize = currentSizeBtn.className;
-
-    const thickBuffer = [];
-    for (let i = 0; i < this.thickBtns.length; i += 1) {
-      thickBuffer.push(this.thickBtns[i].dataset.thick);
-    }
-
-    this.store.thickBuffer = thickBuffer;
+    const currentSize = document.querySelector('.active-canvas-size').dataset.penVar;
+    this.store.currentSize = currentSize;
   }
 
   currentThick() {
-    const currentBtn = this.thicknessTools.querySelector('li[style*="rgb(255, 237, 21)"]');
-    const currentBtnClass = currentBtn.className;
-    const currentThickness = currentBtn.dataset.thick;
-
-    this.store.currentThickBtn = currentBtnClass;
-    this.store.currentThickness = currentThickness;
+    const currentThick = document.querySelector('.active-thick').dataset.thickId;
+    this.store.currentThick = currentThick;
   }
 
   color() {

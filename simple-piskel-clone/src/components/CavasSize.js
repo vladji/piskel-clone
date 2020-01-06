@@ -1,79 +1,53 @@
 import Preview from './Preview';
 
 export default class CanvasSize {
-  constructor() {
+  constructor(canvas) {
+    this.canvas = canvas;
     this.canvasDraw = document.getElementById('canvas');
     this.canvasDraft = document.createElement('canvas');
+    this.canvasManager = document.querySelector('.canvas-manager');
     this.thicknessTools = document.querySelectorAll('.thickness-tool li');
-    this.wrapSizeBtn = document.querySelector('.wrap_size-btn');
-    this.defaultSizeBtn = document.querySelector('.large-canvas').className;
-    this.stateBuffer = [this.defaultSizeBtn];
-    this.redrawStateBuffer = [];
+    this.listeners();
   }
 
-  logic() {
-    let sizeBtn = this.defaultSizeBtn;
-    if (localStorage.getItem('piskel-session-store')) {
-      const storeLoad = JSON.parse(localStorage.getItem('piskel-session-store'));
-      this.stateBuffer = [storeLoad.currentSize];
-      sizeBtn = storeLoad.currentSize;
-    }
-
-    this.activeSize(sizeBtn);
-    this.chooseSize();
-
-    const startSizeBtn = document.querySelector('.large-canvas');
-    this.recalcThick(startSizeBtn);
-  }
-
-  chooseSize() {
-    this.wrapSizeBtn.addEventListener('click', (e) => {
-      if (e.target.closest('button')) {
-        const target = e.target.className;
-        this.activeSize(target);
+  listeners() {
+    this.canvasManager.addEventListener('click', (e) => {
+      if (e.target.closest('[data-event]')) {
+        const btn = e.target.closest('[data-event]');
+        const btnEvent = btn.dataset.event;
+        this[btnEvent](btn);
       }
     });
   }
 
-  activeSize(sizeBtn) {
-    this.stateBuffer.push(sizeBtn);
-    this.redrawStateBuffer = this.stateBuffer.slice(0, this.stateBuffer.length);
+  activeSize(btn) {
+    this.prevBtnSize = document.querySelector('.active-canvas-size');
+    if (this.prevBtnSize) this.prevBtnSize.classList.remove('active-canvas-size');
 
-    const prevState = this.stateBuffer.shift();
-    const prevSize = document.querySelector(`.${prevState}`);
-    prevSize.style.border = '2px solid #a7a79d';
+    btn.classList.add('active-canvas-size');
+    this.newBtnSize = btn;
 
-    const currentState = this.stateBuffer[0];
-    const currentSize = document.querySelector(`.${currentState}`);
-    currentSize.style.border = '2px solid #ffed15';
-
-    if (prevState !== currentState) this.recalcThick(currentSize);
+    this.recalcThick(btn);
+    if (this.prevBtnSize) this.redrawCanvas();
   }
 
-  recalcThick(currentSize) {
-    const thickVar = currentSize.dataset.penSize;
+  recalcThick(btn) {
+    const thickVar = btn.dataset.penVar;
 
     for (let i = 0; i < this.thicknessTools.length; i += 1) {
       const resizeThick = (i + 1) * thickVar;
       this.thicknessTools[i].dataset.thick = resizeThick;
     }
 
-    const currentThickBtn = document.querySelector('.thickness-tool li[style*="rgb(255, 237, 21)"]');
-    window.prepareCanvas(null, currentThickBtn.dataset.thick);
-
-    this.redrawCanvas();
+    const currentThickBtn = document.querySelector('.active-thick');
+    this.canvas.thick = currentThickBtn.dataset.thick;
   }
 
   redrawCanvas() {
-    const buffer = this.redrawStateBuffer;
-    const nextVar = buffer.pop();
-    const presentVar = buffer.pop();
-    const nextBtn = document.querySelector(`.${nextVar}`);
-    const presentBtn = document.querySelector(`.${presentVar}`);
-    const nextSize = nextBtn.dataset.penSize;
-    const presentSize = presentBtn.dataset.penSize;
+    const newSize = this.newBtnSize.dataset.penVar;
+    const prevSize = this.prevBtnSize.dataset.penVar;
 
-    const scaleValue = nextSize / presentSize;
+    const scaleValue = newSize / prevSize;
     const canvas = this.canvasDraw;
 
     const redraw = (unit) => {

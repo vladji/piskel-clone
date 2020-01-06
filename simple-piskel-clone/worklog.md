@@ -27,7 +27,7 @@
       <td>Jun 14</td>
       <td>Jun 16</td>
       <td>4</td>
-      <td>Change penToolDefault code (apply 'bind'). Implement preview slide mode</td>
+      <td>Change penTool code (apply 'bind'). Implement preview slide mode</td>
     </tr>
     <tr>
       <td>Jun 16</td>
@@ -145,8 +145,14 @@ Total: 91h
     <tr>
       <td>Jan 04</td>
       <td>Jan 05</td>
-      <td>7</td>
-      <td>Refactoring code: Storage and Frames components</td>
+      <td>10</td>
+      <td>Refactoring code: Storage, Frames and little bit other components<br>Feat: initDefault function</td>
+    </tr>
+    <tr>
+      <td>Jan 05</td>
+      <td>Jan 05</td>
+      <td>3</td>
+      <td>Refactoring code: Storage, CanvasSize, Canvas and Tools components</td>
     </tr>
   </tbody>
 </table>

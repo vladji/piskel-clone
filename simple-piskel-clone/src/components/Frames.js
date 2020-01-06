@@ -5,11 +5,14 @@ export default class Frames {
     this.DIMENSION = 1280;
     this.framesBlock = document.getElementById('frames-block');
     this.framesList = document.querySelector('.frames-list');
+    this.ctxCanvas = document.getElementById('canvas').getContext('2d');
     this.framesUnits = () => document.querySelectorAll('.frames-list li');
     this.lastFrame = () => document.querySelector('.frames-list li:last-child canvas');
+    this.currentFrame = () => document.querySelector('.active-frame');
   }
 
   controller() {
+    this.currentFrame();
     this.frameHover();
     this.frameDragDrop();
     this.countFrames();
@@ -41,23 +44,21 @@ export default class Frames {
       if (e.target.closest('.frame-wrap') && !e.target.closest('[data-frame-action]')) {
         const activeFrame = e.target.closest('.frame-wrap');
         const frameCanvas = activeFrame.querySelector('canvas');
-        Frames.putFrameData(frameCanvas);
+        this.putFrameData(frameCanvas);
         this.activeFrame(activeFrame);
       }
     });
   }
 
-  static putFrameData(frameCanvas) {
+  putFrameData(frameCanvas) {
     const ctxFrame = frameCanvas.getContext('2d');
     const frameData = ctxFrame.getImageData(0, 0, frameCanvas.width, frameCanvas.height);
 
-    const canvasDraw = document.getElementById('canvas');
-    const ctxCanvas = canvasDraw.getContext('2d');
-    ctxCanvas.putImageData(frameData, 0, 0);
+    this.ctxCanvas.putImageData(frameData, 0, 0);
   }
 
   getFrameCanvas() {
-    return this.currentFrame.querySelector('.frame-unit');
+    return this.currentFrame().querySelector('.frame-canvas');
   }
 
   addNewFrame() {
@@ -66,23 +67,25 @@ export default class Frames {
     this.framesList.insertAdjacentHTML('beforeend',
       `<li class="frame-wrap active-frame">
         <p class="frame-num"></p>
-        <canvas class="frame-unit" width="${this.DIMENSION}" height="${this.DIMENSION}"></canvas>
+        <canvas class="frame-canvas" width="${this.DIMENSION}" height="${this.DIMENSION}"></canvas>
         <div class="frame-tools" hidden>
           <button class="frame-duplicate" data-frame-action="frameDuplicate"><i class="fas fa-clone"></i></button>
           <button class="frame-delete" data-frame-action="frameDelete"><i class="fas fa-trash-alt"></i></button>
           <button class="frame-move"><i class="fas fa-arrows-alt-v"></i></button>
         </div>
       </li>`);
-    this.currentFrame = document.querySelector('.active-frame');
+    this.currentFrame();
+    const frameCanvas = this.currentFrame().querySelector('.frame-canvas');
+    this.putFrameData(frameCanvas);
   }
 
   activeFrame(frame) {
-    const prevActiveFrame = document.querySelector('.active-frame');
+    const prevActiveFrame = this.currentFrame();
     if (prevActiveFrame) prevActiveFrame.classList.remove('active-frame');
 
     if (frame) {
       frame.classList.add('active-frame');
-      this.currentFrame = frame;
+      this.currentFrame();
     }
   }
 
@@ -93,7 +96,7 @@ export default class Frames {
     if (!nextFrame) nextFrame = targetFrame.nextElementSibling;
 
     const nextCanvas = nextFrame.querySelector('canvas');
-    Frames.putFrameData(nextCanvas);
+    this.putFrameData(nextCanvas);
     this.activeFrame(nextFrame);
 
     targetFrame.remove();
@@ -151,7 +154,7 @@ export default class Frames {
         frameTools = targetLi.querySelector('.frame-tools');
         frameTools.hidden = false;
 
-        if (targetLi !== this.currentFrame) targetLi.classList.add('frame-hover');
+        if (targetLi !== this.currentFrame()) targetLi.classList.add('frame-hover');
       }
     });
 

@@ -3,7 +3,8 @@ import Preview from './Preview';
 
 export default class Tools {
   constructor(canvas) {
-    this.canvasMain = canvas;
+    this.canvas = canvas;
+    this.panel = document.querySelector('.wrap_draw-panel');
     this.currentTool = 'btn_pen';
     this.canvasDraw = document.getElementById('canvas');
     this.btnPanel = document.querySelector('#draw-tools');
@@ -15,8 +16,17 @@ export default class Tools {
     this.secondaryColorBtn = document.querySelector('.wrap_color-section button:nth-child(2)');
     this.chooseColor();
     this.firstThick = document.querySelector('.thickness-tool li').className;
-    this.chooseThickness();
-    this.activeThick(this.firstThick);
+    this.listeners();
+  }
+
+  listeners() {
+    this.panel.addEventListener('click', (e) => {
+      if (e.target.closest('[data-event]')) {
+        const btn = e.target.closest('[data-event]');
+        const btnEvent = btn.dataset.event;
+        this[btnEvent](btn);
+      }
+    });
   }
 
   logic() {
@@ -58,13 +68,13 @@ export default class Tools {
     this.setColor();
 
     // bind Canvas.prepareData to window
-    window.prepareCanvas = this.canvasMain.prepareData.bind(this.canvasMain);
+    window.prepareCanvas = this.canvas.prepareData.bind(this.canvas);
   }
 
   getTool() {
     let currentTool = null;
-    const canvasInit = this.canvasMain;
-    const penToolDefault = canvasInit.penToolDefault.bind(canvasInit);
+    const canvasInit = this.canvas;
+    const penTool = canvasInit.penTool.bind(canvasInit);
     const bucketTool = canvasInit.bucketTool.bind(canvasInit);
     const colorPicker = canvasInit.colorPicker.bind(canvasInit);
 
@@ -73,13 +83,13 @@ export default class Tools {
         currentTool = bucketTool;
         break;
       case 'btn_eraser':
-        currentTool = penToolDefault;
+        currentTool = penTool;
         break;
       case 'btn_color-picker':
         currentTool = colorPicker;
         break;
       default:
-        currentTool = penToolDefault;
+        currentTool = penTool;
     }
 
     if (this.currentTool === 'btn_eraser') {
@@ -91,36 +101,16 @@ export default class Tools {
     return currentTool;
   }
 
-  activeThick(btn, thick) {
-    const canvasInit = this.canvasMain;
-    this.thiscknessState.push(btn);
+  activeThick(btn) {
+    const prevElem = document.querySelector('.active-thick');
+    if (prevElem) prevElem.classList.remove('active-thick');
 
-    const prevState = this.thiscknessState.shift();
-    const prevThick = document.querySelector(`.${prevState}`);
-    prevThick.style.border = '2px solid #a7a79d';
-
-    const currentState = this.thiscknessState[0];
-    const currentThick = document.querySelector(`.${currentState}`);
-    currentThick.style.border = '2px solid #ffed15';
-
-    if (thick) canvasInit.prepareData(null, thick);
-  }
-
-  chooseThickness() {
-    const thicknessPanel = document.querySelector('.thickness-tool');
-    this.thiscknessState.push(this.firstThick);
-
-    thicknessPanel.addEventListener('click', (e) => {
-      if (e.target.closest('li')) {
-        const thicknessBtn = e.target.closest('li').className;
-        const lineFat = e.target.closest('li').dataset.thick;
-        this.activeThick(thicknessBtn, lineFat);
-      }
-    });
+    btn.classList.add('active-thick');
+    this.activeThickBtn = btn;
   }
 
   setColor() {
-    const canvasInit = this.canvasMain;
+    const canvasInit = this.canvas;
     const primaryBtn = document.querySelector('.choose-color-btn');
     const color = primaryBtn.style.backgroundColor;
     this.currentColor = color;

@@ -14,7 +14,7 @@ export default class GifExport {
     const framePrepare = () => {
       const fps = this.fpsButton.value;
       const currentSizeBtn = document.querySelector('.wrap_size-btn button[style*="rgb(255, 237, 21)"]');
-      const sizeVar = currentSizeBtn.dataset.penSize;
+      const sizeVar = currentSizeBtn.dataset.penVar;
 
       const frames = this.framesCanvases();
       for (let i = 0; i < frames.length; i += 1) {

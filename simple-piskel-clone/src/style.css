@@ -94,6 +94,10 @@ ul {
   height: 14px;
 }
 
+.thickness-tool .active-thick {
+  border: 2px solid #ffed15;
+}
+
 /* Tools block */
 
 .wrap_draw-panel {
@@ -182,7 +186,7 @@ ul {
   overflow-y: scroll;
 }
 
-.frame-unit {
+.frame-canvas {
   width: 135px;
   height: 135px;
 }
@@ -359,6 +363,10 @@ li.drop-elem-proxy {
   color: #f7f7f7;
   background-color: #323232;
   cursor: pointer;
+}
+
+.canvas-manager .active-canvas-size {
+  border: 2px solid #ffed15;
 }
 
 .wrap_size-btn {

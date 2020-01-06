@@ -6,7 +6,7 @@ export default class Canvas {
     this.canvasData = null;
     this.contextFrame = null;
     this.contextCanvas.fillStyle = null;
-    this.thikness = null;
+    this.thick = null;
     this.tool = null;
   }
 
@@ -16,44 +16,142 @@ export default class Canvas {
     const tool = args[2];
 
     let currentFrame = this.frames.getFrameCanvas();
-    if (!currentFrame) currentFrame = document.querySelector('.frame-unit');
+    if (!currentFrame) currentFrame = document.querySelector('.frame-canvas');
     const ctxFrame = currentFrame.getContext('2d');
     this.contextFrame = ctxFrame;
 
     if (color) this.contextCanvas.fillStyle = color;
-    if (thikness) this.thikness = thikness;
+    if (thikness) this.thick = thikness;
     this.tool = tool;
   }
 
-  penToolDefault(evt) {
+  getCoordinate(evt) {
     const canvas = this.canvasDraw;
-    const ctxCanvas = this.contextCanvas;
-    const lineFat = this.thikness;
 
-    if (canvas.getContext) {
-      const moveX = (evt.pageX - canvas.offsetLeft) * 2;
-      const moveY = (evt.pageY - canvas.offsetTop) * 2;
+    const moveX = (evt.pageX - canvas.offsetLeft) * 2;
+    const moveY = (evt.pageY - canvas.offsetTop) * 2;
 
-      const pointShiftX = moveX % lineFat;
-      const pointShiftY = moveY % lineFat;
+    const dotShiftX = moveX % this.thick;
+    const dotShiftY = moveY % this.thick;
 
-      const pointWidth = moveX - pointShiftX;
-      const pointHeight = moveY - pointShiftY;
+    const dotX = moveX - dotShiftX;
+    const dotY = moveY - dotShiftY;
 
-      if (this.tool === 'eraser') {
-        this.canvasData = ctxCanvas.getImageData(pointWidth, pointHeight, lineFat, lineFat);
-        for (let i = 3; i < this.canvasData.data.length; i += 4) {
-          this.canvasData.data[i] = 0;
+    return {
+      dotX,
+      dotY,
+    };
+  }
+
+  penTool(evt) {
+    const coord = this.getCoordinate(evt);
+    this.startX = coord.dotX;
+    this.startY = coord.dotY;
+    this.contextCanvas.fillRect(this.startX, this.startY, this.thick, this.thick);
+
+    const bresenham = this.bresenham.bind(this);
+
+    const remove = () => {
+      console.log('remove');
+      this.canvasDraw.removeEventListener('mousemove', bresenham);
+      document.removeEventListener('mouseup', remove);
+    };
+    this.canvasDraw.addEventListener('mousemove', bresenham);
+    document.addEventListener('mouseup', remove);
+
+    // if (this.tool === 'eraser') {
+    //   this.canvasData = ctxCanvas.getImageData(pointWidth, pointHeight, lineFat, lineFat);
+    //   for (let i = 3; i < this.canvasData.data.length; i += 4) {
+    //     this.canvasData.data[i] = 0;
+    //   }
+    //   ctxCanvas.putImageData(this.canvasData, pointWidth, pointHeight);
+    //   this.contextFrame.putImageData(this.canvasData, pointWidth, pointHeight);
+    // } else {
+    //   ctxCanvas.fillRect(pointWidth, pointHeight, lineFat, lineFat);
+
+    //   this.canvasData = ctxCanvas.getImageData(0, 0, canvas.width, canvas.height);
+    //   this.contextFrame.putImageData(this.canvasData, 0, 0);
+    // }
+  }
+
+  // Bresenham's line algorithm
+  bresenham(e) {
+    const ctx = this.contextCanvas;
+    // ctx.fillStyle = this.color;
+    const lineFat = this.thick;
+    console.log('lineFat', lineFat);
+    const coord = this.getCoordinate(e);
+
+    let dirX = coord.dotX - this.startX;
+    let dirY = coord.dotY - this.startY;
+    const lineX = Math.abs(dirX / lineFat);
+    const lineY = Math.abs(dirY / lineFat);
+
+    let pointX = this.startX;
+    let pointY = this.startY;
+
+    const dir = +lineFat;
+
+    dirX = (dirX > 0) ? dir : -dir;
+    dirY = (dirY > 0) ? dir : -dir;
+
+    let ratio = Math.abs(coord.dotY - this.startY) / Math.abs(coord.dotX - this.startX);
+    let direction = lineX;
+
+    if (lineX < lineY) {
+      direction = lineY;
+      ratio = Math.abs(coord.dotX - this.startX) / Math.abs(coord.dotY - this.startY);
+    }
+
+    const tempVal = Math.trunc(ratio);
+    ratio -= tempVal;
+
+    let breakLine = 0;
+
+    if (lineX >= lineY) {
+      for (let i = 0; i < direction; i += 1) {
+        breakLine += ratio;
+        pointX += dirX;
+
+        if (breakLine >= 0.5) {
+          pointY += dirY;
+          breakLine -= 1;
         }
-        ctxCanvas.putImageData(this.canvasData, pointWidth, pointHeight);
-        this.contextFrame.putImageData(this.canvasData, pointWidth, pointHeight);
-      } else {
-        ctxCanvas.fillRect(pointWidth, pointHeight, lineFat, lineFat);
 
-        this.canvasData = ctxCanvas.getImageData(0, 0, canvas.width, canvas.height);
-        this.contextFrame.putImageData(this.canvasData, 0, 0);
+        if (this.tool === 'eraser') {
+          const eraseCoord = {
+            pointX,
+            pointY,
+          };
+          this.eraserTool(eraseCoord);
+        } else {
+          ctx.fillRect(pointX, pointY, lineFat, lineFat);
+        }
+      }
+    } else {
+      for (let i = 0; i < direction; i += 1) {
+        breakLine += ratio;
+        pointY += dirY;
+
+        if (breakLine >= 0.5) {
+          pointX += dirX;
+          breakLine -= 1;
+        }
+
+        if (this.tool === 'eraser') {
+          const eraseCoord = {
+            pointX,
+            pointY,
+          };
+          this.eraserTool(eraseCoord);
+        } else {
+          ctx.fillRect(pointX, pointY, lineFat, lineFat);
+        }
       }
     }
+
+    this.startX = pointX;
+    this.startY = pointY;
   }
 
   colorPicker(evt) {

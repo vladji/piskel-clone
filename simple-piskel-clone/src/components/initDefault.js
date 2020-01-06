@@ -4,14 +4,15 @@ export default function initDefault(components) {
   } = components;
 
   if (localStorage.getItem('piskel-session-store')) {
-    storage.loadSession(frames, preview, tools);
+    storage.loadSession(frames, preview, tools, canvasSize);
   } else {
     frames.addNewFrame();
+    tools.activeThick(document.querySelector('.thickness-1'));
+    canvasSize.activeSize(document.querySelector('.large-canvas'));
   }
 
   frames.controller();
   preview.initAnimation();
   tools.logic();
-  canvasSize.logic();
-  // storage.saveSession();
+  storage.saveSession();
 }

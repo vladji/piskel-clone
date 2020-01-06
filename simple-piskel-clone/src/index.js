@@ -15,7 +15,7 @@ const frames = new Frames();
 const preview = new Preview();
 const canvas = new Canvas(frames);
 const tools = new Tools(canvas);
-const canvasSize = new CanvasSize();
+const canvasSize = new CanvasSize(canvas);
 
 const components = {
   frames,
