@@ -6,8 +6,8 @@ import Preview from './components/Preview';
 import Canvas from './components/Canvas';
 import Tools from './components/Tools';
 import CanvasSize from './components/CavasSize';
-import initDefault from './components/initDefault';
-import GifExport from './components/Gif';
+import initDefault from './initDefault';
+import gifExport from './components/gifExport';
 
 const storage = new Storage();
 const frames = new Frames();
@@ -25,6 +25,4 @@ const components = {
 };
 
 initDefault(components);
-
-const gifExport = new GifExport();
-gifExport.logic();
+gifExport();

@@ -172,5 +172,11 @@ Total: 91h
       <td>1</td>
       <td>refactor and perf: Preview slides component</td>
     </tr>
+    <tr>
+      <td>Jan 07</td>
+      <td>Jan 07</td>
+      <td>20min</td>
+      <td>refactor: export to Gif format</td>
+    </tr>
   </tbody>
 </table>

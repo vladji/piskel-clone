@@ -113,6 +113,7 @@ export default class Frames {
 
     toggleFrameTools(cloneFrameLi, true);
     targetFrameLi.after(cloneFrameLi);
+    this.activeFrame(cloneFrameLi);
   }
 
   countFrames() {

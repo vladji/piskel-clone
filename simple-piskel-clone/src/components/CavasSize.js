@@ -33,10 +33,11 @@ export default class CanvasSize {
 
   recalcThick(btn) {
     const thickVar = btn.dataset.penVar;
+    let INIT_THICK_VAL = 2;
 
     for (let i = 0; i < this.thicknessTools.length; i += 1) {
-      const btnThickSize = this.thicknessTools[i].dataset.thick;
-      const resize = btnThickSize * thickVar;
+      INIT_THICK_VAL *= 2;
+      const resize = INIT_THICK_VAL * thickVar;
       this.thicknessTools[i].dataset.thick = resize;
     }
 
