@@ -160,5 +160,12 @@ Total: 91h
       <td>4</td>
       <td>Refactoring code: Tools, Canvas, Storage components<br>Separate Frames component</td>
     </tr>
+    <tr>
+      <td>Jan 07</td>
+      <td>Jan 07</td>
+      <td>3</td>
+      <td>Refactoring and enhancing code: Canvas (implement Bresenham's line algorithm, improve working of tools),
+          Tools (simplified the logic), improved work of the Frames conponent</td>
+    </tr>
   </tbody>
 </table>

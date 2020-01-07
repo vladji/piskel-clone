@@ -20,8 +20,8 @@ export default class Canvas {
   getCoordinate(evt) {
     const canvas = this.canvasDraw;
 
-    const moveX = (evt.pageX - canvas.offsetLeft) * 2;
-    const moveY = (evt.pageY - canvas.offsetTop) * 2;
+    const moveX = evt.pageX - canvas.offsetLeft;
+    const moveY = evt.pageY - canvas.offsetTop;
 
     const dotShiftX = moveX % this.thick;
     const dotShiftY = moveY % this.thick;
@@ -46,17 +46,22 @@ export default class Canvas {
 
     this[tool](this.startX, this.startY);
 
-    const finishDraw = () => {
+    const endDraw = () => {
       this.canvasData = this.contextCanvas.getImageData(0, 0, canvas.width, canvas.height);
       ctxFrame.putImageData(this.canvasData, 0, 0);
+    };
 
+    const removeEvent = () => {
       this.canvasDraw.removeEventListener('mousemove', bresenham);
-      document.removeEventListener('mouseup', finishDraw);
+      document.removeEventListener('mouseup', removeEvent);
+      endDraw();
     };
 
     if (tool === 'pen' || tool === 'eraser') {
       this.canvasDraw.addEventListener('mousemove', bresenham);
-      document.addEventListener('mouseup', finishDraw);
+      document.addEventListener('mouseup', removeEvent);
+    } else {
+      endDraw();
     }
   }
 
@@ -155,8 +160,6 @@ export default class Canvas {
 
     const startX = dotX;
     const startY = dotY;
-    // let startX = (evt.pageX - canvas.offsetLeft) * 2;
-    // const startY = (evt.pageY - canvas.offsetTop) * 2;
 
     const pixelDefault = ctxCanvas.getImageData(startX, startY, 1, 1).data.join('');
 
@@ -167,13 +170,9 @@ export default class Canvas {
 
     if (toCompareData === toCompareColor) return;
 
-    // const shiftX = startX % 10;
-    // startX -= shiftX;
     const pixelStack = [[startX, startY]];
 
     const checkPixel = (posX, posY) => {
-      // const chekX = posX;
-      // const chekY = posY;
       const nextPixel = ctxCanvas.getImageData(posX, posY, 1, 1).data.join('');
       return nextPixel === pixelDefault;
     };
@@ -223,10 +222,7 @@ export default class Canvas {
         }
 
         y += dot;
-      } while ((checkPixel(x, y)) && (y !== canvas.height));
+      } while (checkPixel(x, y) && y !== canvas.height);
     }
-
-    this.canvasData = ctxCanvas.getImageData(0, 0, canvas.width, canvas.height);
-    this.contextFrame.putImageData(this.canvasData, 0, 0);
   }
 }

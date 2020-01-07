@@ -35,8 +35,9 @@ export default class CanvasSize {
     const thickVar = btn.dataset.penVar;
 
     for (let i = 0; i < this.thicknessTools.length; i += 1) {
-      const resizeThick = (i + 1) * thickVar;
-      this.thicknessTools[i].dataset.thick = resizeThick;
+      const btnThickSize = this.thicknessTools[i].dataset.thick;
+      const resize = btnThickSize * thickVar;
+      this.thicknessTools[i].dataset.thick = resize;
     }
 
     const currentThickBtn = document.querySelector('.active-thick');

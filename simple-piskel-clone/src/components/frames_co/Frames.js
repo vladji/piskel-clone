@@ -3,7 +3,7 @@ import { firstFrameTools, toggleFrameTools } from './firstFrameTools';
 
 export default class Frames {
   constructor() {
-    this.DIMENSION = 1280;
+    this.DIMENSION = 512;
     this.framesBlock = document.getElementById('frames-block');
     this.framesList = document.querySelector('.frames-list');
     this.ctxCanvas = document.getElementById('canvas').getContext('2d');
