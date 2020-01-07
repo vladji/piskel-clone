@@ -4,26 +4,22 @@ export default class Storage {
     this.canvas = document.querySelector('#canvas');
     this.framesWrap = document.querySelector('.frames-list');
     this.fpsButton = document.querySelector('.preview_input-range input');
-    this.colorPrimary = document.querySelector('.wrap_color-section button:first-child');
-    this.colorSecondary = document.querySelector('.wrap_color-section button:nth-child(2)');
   }
 
-  loadSession(frames, preview, tools, canvasSize) {
-    console.log('load frames', frames);
-
+  loadSession(preview, tools, canvasSize) {
     const storeLoad = JSON.parse(localStorage.getItem('piskel-session-store'));
-    console.log('storeLoad', storeLoad);
 
     this.putCanvas(storeLoad);
     this.putFrames(storeLoad);
     preview.setFps(storeLoad.fps);
 
-    this.colorPrimary.style.backgroundColor = storeLoad.colorPrimary;
-    this.colorSecondary.style.backgroundColor = storeLoad.colorSecondary;
-    tools.setColor();
-
     const thickBtn = document.querySelector(`[data-thick-id="${storeLoad.currentThick}"]`);
     tools.activeThick(thickBtn);
+
+    const toolBtn = document.querySelector(`[data-tool-type="${storeLoad.currentTool}"]`);
+    tools.activeTool(toolBtn);
+
+    tools.initColor(storeLoad.colorPrimary, storeLoad.colorSecondary);
 
     const sizeBtn = document.querySelector(`[data-pen-var="${storeLoad.currentSize}"]`);
     canvasSize.activeSize(sizeBtn);
@@ -34,8 +30,9 @@ export default class Storage {
       this.grabCanvas();
       this.grabFrames();
       this.fps();
-      this.color();
       this.currentThick();
+      this.currentTool();
+      this.color();
       this.currentSize();
 
       localStorage.setItem('piskel-session-store', JSON.stringify(this.store));
@@ -52,12 +49,17 @@ export default class Storage {
     this.store.currentThick = currentThick;
   }
 
-  color() {
-    const colorPrimary = document.querySelector('.wrap_color-section button:first-child');
-    const colorSecondary = document.querySelector('.wrap_color-section button:nth-child(2)');
+  currentTool() {
+    const currentTool = document.querySelector('.active-tool').dataset.toolType;
+    this.store.currentTool = currentTool;
+  }
 
-    this.store.colorPrimary = colorPrimary.style.backgroundColor;
-    this.store.colorSecondary = colorSecondary.style.backgroundColor;
+  color() {
+    const colorPrimary = document.querySelector('.color-tools__select:first-child');
+    const colorSecondary = document.querySelector('.color-tools__select:nth-child(2)');
+
+    this.store.colorPrimary = colorPrimary.value;
+    this.store.colorSecondary = colorSecondary.value;
   }
 
   fps() {

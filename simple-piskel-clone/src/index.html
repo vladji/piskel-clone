@@ -32,31 +32,26 @@
             </li>
           </ul>
         </div>
-        <nav id="draw-tools">
+        <div id="draw-tools">
           <ul>
-            <li class="btn_pen">
+            <li class="btn_pen" data-event="activeTool" data-tool-type="pen">
               <div><i class="fas fa-pencil-alt"></i></div>
             </li>
-            <li class="btn_eraser">
+            <li class="btn_eraser" data-event="activeTool" data-tool-type="eraser">
               <div><i class="fas fa-eraser"></i></div>
             </li>
-            <li class="btn_color-picker">
+            <li class="btn_color-picker" data-event="activeTool" data-tool-type="colorPicker">
               <div><i class="fas fa-eye-dropper"></i></div>
             </li>
-            <li class="btn_bucket">
+            <li class="btn_bucket" data-event="activeTool" data-tool-type="bucket">
               <div><i class="fas fa-fill-drip"></i></div>
             </li>
           </ul>
-        </nav>
-        <div class="wrap_color-section">
-          <button class="choose-color-btn"></button>
-          <button class="choose-color-btn"></button>
-          <button class="color-switch"><i class="fas fa-retweet"></i></button>
-          <div class="wrap_palette" hidden>
-            <div class="wrap_close-btn"><button><i class="far fa-window-close"></i></button></div>
-            <canvas width="320" height="219"></canvas>
-            <img src="../src/img/beauty_palette_w350.jpg" alt="palette" width="320" height="219">
-          </div>
+        </div>
+        <div class="color-tools">
+          <input type="color" class="color-tools__select">
+          <input type="color" class="color-tools__select">
+          <button class="color-tools__switch" data-event="switchColor"><i class="fas fa-retweet"></i></button>
         </div>
       </div>
       <!-- Frames block -->

@@ -3,26 +3,18 @@ export default class Canvas {
     this.frames = frames;
     this.canvasDraw = document.getElementById('canvas');
     this.contextCanvas = this.canvasDraw.getContext('2d');
-    this.canvasData = null;
-    this.contextFrame = null;
+    this.frame = null;
     this.contextCanvas.fillStyle = null;
     this.thick = null;
     this.tool = null;
+    this.controller();
   }
 
-  prepareData(...args) {
-    const color = args[0];
-    const thikness = args[1];
-    const tool = args[2];
-
-    let currentFrame = this.frames.getFrameCanvas();
-    if (!currentFrame) currentFrame = document.querySelector('.frame-canvas');
-    const ctxFrame = currentFrame.getContext('2d');
-    this.contextFrame = ctxFrame;
-
-    if (color) this.contextCanvas.fillStyle = color;
-    if (thikness) this.thick = thikness;
-    this.tool = tool;
+  controller() {
+    this.canvasDraw.addEventListener('mousedown', (evt) => {
+      this.frame = this.frames.getFrameCanvas();
+      this.startDraw(evt, this.tool);
+    });
   }
 
   getCoordinate(evt) {
@@ -43,47 +35,51 @@ export default class Canvas {
     };
   }
 
-  penTool(evt) {
+  startDraw(evt, tool) {
+    const canvas = this.canvasDraw;
+    const ctxFrame = this.frame.getContext('2d');
+    const bresenham = this.bresenham.bind(this);
+
     const coord = this.getCoordinate(evt);
     this.startX = coord.dotX;
     this.startY = coord.dotY;
-    this.contextCanvas.fillRect(this.startX, this.startY, this.thick, this.thick);
 
-    const bresenham = this.bresenham.bind(this);
+    this[tool](this.startX, this.startY);
 
-    const remove = () => {
-      console.log('remove');
+    const finishDraw = () => {
+      this.canvasData = this.contextCanvas.getImageData(0, 0, canvas.width, canvas.height);
+      ctxFrame.putImageData(this.canvasData, 0, 0);
+
       this.canvasDraw.removeEventListener('mousemove', bresenham);
-      document.removeEventListener('mouseup', remove);
+      document.removeEventListener('mouseup', finishDraw);
     };
-    this.canvasDraw.addEventListener('mousemove', bresenham);
-    document.addEventListener('mouseup', remove);
 
-    // if (this.tool === 'eraser') {
-    //   this.canvasData = ctxCanvas.getImageData(pointWidth, pointHeight, lineFat, lineFat);
-    //   for (let i = 3; i < this.canvasData.data.length; i += 4) {
-    //     this.canvasData.data[i] = 0;
-    //   }
-    //   ctxCanvas.putImageData(this.canvasData, pointWidth, pointHeight);
-    //   this.contextFrame.putImageData(this.canvasData, pointWidth, pointHeight);
-    // } else {
-    //   ctxCanvas.fillRect(pointWidth, pointHeight, lineFat, lineFat);
+    if (tool === 'pen' || tool === 'eraser') {
+      this.canvasDraw.addEventListener('mousemove', bresenham);
+      document.addEventListener('mouseup', finishDraw);
+    }
+  }
 
-    //   this.canvasData = ctxCanvas.getImageData(0, 0, canvas.width, canvas.height);
-    //   this.contextFrame.putImageData(this.canvasData, 0, 0);
-    // }
+  pen(dotX, dotY) {
+    this.contextCanvas.fillRect(dotX, dotY, this.thick, this.thick);
+  }
+
+  eraser(dotX, dotY) {
+    this.canvasData = this.contextCanvas.getImageData(dotX, dotY, this.thick, this.thick);
+    for (let i = 3; i < this.canvasData.data.length; i += 4) {
+      this.canvasData.data[i] = 0;
+    }
+    this.contextCanvas.putImageData(this.canvasData, dotX, dotY);
   }
 
   // Bresenham's line algorithm
   bresenham(e) {
-    const ctx = this.contextCanvas;
-    // ctx.fillStyle = this.color;
     const lineFat = this.thick;
-    console.log('lineFat', lineFat);
     const coord = this.getCoordinate(e);
 
     let dirX = coord.dotX - this.startX;
     let dirY = coord.dotY - this.startY;
+
     const lineX = Math.abs(dirX / lineFat);
     const lineY = Math.abs(dirY / lineFat);
 
@@ -95,17 +91,19 @@ export default class Canvas {
     dirX = (dirX > 0) ? dir : -dir;
     dirY = (dirY > 0) ? dir : -dir;
 
-    let ratio = Math.abs(coord.dotY - this.startY) / Math.abs(coord.dotX - this.startX);
-    let direction = lineX;
+    let ratio;
+    let direction;
 
-    if (lineX < lineY) {
-      direction = lineY;
+    if (lineX >= lineY) {
+      ratio = Math.abs(coord.dotY - this.startY) / Math.abs(coord.dotX - this.startX);
+      direction = lineX;
+    } else {
       ratio = Math.abs(coord.dotX - this.startX) / Math.abs(coord.dotY - this.startY);
+      direction = lineY;
     }
 
     const tempVal = Math.trunc(ratio);
     ratio -= tempVal;
-
     let breakLine = 0;
 
     if (lineX >= lineY) {
@@ -118,15 +116,7 @@ export default class Canvas {
           breakLine -= 1;
         }
 
-        if (this.tool === 'eraser') {
-          const eraseCoord = {
-            pointX,
-            pointY,
-          };
-          this.eraserTool(eraseCoord);
-        } else {
-          ctx.fillRect(pointX, pointY, lineFat, lineFat);
-        }
+        this[this.tool](pointX, pointY);
       }
     } else {
       for (let i = 0; i < direction; i += 1) {
@@ -137,19 +127,9 @@ export default class Canvas {
           pointX += dirX;
           breakLine -= 1;
         }
-
-        if (this.tool === 'eraser') {
-          const eraseCoord = {
-            pointX,
-            pointY,
-          };
-          this.eraserTool(eraseCoord);
-        } else {
-          ctx.fillRect(pointX, pointY, lineFat, lineFat);
-        }
+        this[this.tool](pointX, pointY);
       }
     }
-
     this.startX = pointX;
     this.startY = pointY;
   }
@@ -168,35 +148,38 @@ export default class Canvas {
     this.prepareData(colorCSS);
   }
 
-  bucketTool(evt) {
+  bucket(dotX, dotY) {
     const canvas = this.canvasDraw;
     const ctxCanvas = this.contextCanvas;
+    const dot = +this.thick;
 
-    let startX = (evt.pageX - canvas.offsetLeft) * 2;
-    const startY = (evt.pageY - canvas.offsetTop) * 2;
+    const startX = dotX;
+    const startY = dotY;
+    // let startX = (evt.pageX - canvas.offsetLeft) * 2;
+    // const startY = (evt.pageY - canvas.offsetTop) * 2;
 
     const pixelDefault = ctxCanvas.getImageData(startX, startY, 1, 1).data.join('');
 
     const toCompareData = ctxCanvas.getImageData(startX, startY, 1, 1).data.join(', ');
-    const colorBtn = document.querySelector('.choose-color-btn');
-    const color = colorBtn.style.backgroundColor;
-    const toCompareColor = `${color.slice(4, -1)}, 255`;
+    const currentColorBtn = document.querySelector('.color-tools__select:first-child');
+    currentColorBtn.style.backgroundColor = this.contextCanvas.fillStyle;
+    const toCompareColor = `${currentColorBtn.style.backgroundColor.slice(4, -1)}, 255`;
 
     if (toCompareData === toCompareColor) return;
 
-    const shiftX = startX % 10;
-    startX -= shiftX;
+    // const shiftX = startX % 10;
+    // startX -= shiftX;
     const pixelStack = [[startX, startY]];
 
     const checkPixel = (posX, posY) => {
-      const chekX = posX;
-      const chekY = posY;
-      const nextPixel = ctxCanvas.getImageData(chekX, chekY, 1, 1).data.join('');
+      // const chekX = posX;
+      // const chekY = posY;
+      const nextPixel = ctxCanvas.getImageData(posX, posY, 1, 1).data.join('');
       return nextPixel === pixelDefault;
     };
 
     const paintPixel = (posX, posY) => {
-      ctxCanvas.fillRect(posX, posY, 10, 10);
+      ctxCanvas.fillRect(posX, posY, dot, dot);
     };
 
     while (pixelStack.length) {
@@ -206,9 +189,9 @@ export default class Canvas {
 
       // GO UP
       do {
-        y -= 1;
+        y -= dot;
       } while (y >= 0 && checkPixel(x, y));
-      y += 1;
+      y += dot;
 
       let reachRight = false;
       let reachLeft = false;
@@ -217,9 +200,9 @@ export default class Canvas {
 
         //  LOOK to the RIGHT
         if (x < canvas.width) {
-          if (checkPixel(x + 10, y)) {
+          if (checkPixel(x + dot, y)) {
             if (!reachRight) {
-              pixelStack.push([x + 10, y]);
+              pixelStack.push([x + dot, y]);
               reachRight = true;
             }
           } else if (reachRight) {
@@ -229,9 +212,9 @@ export default class Canvas {
 
         //  LOOK to the LEFT
         if (x > 0) {
-          if (checkPixel(x - 10, y)) {
+          if (checkPixel(x - dot, y)) {
             if (!reachLeft) {
-              pixelStack.push([x - 10, y]);
+              pixelStack.push([x - dot, y]);
               reachLeft = true;
             }
           } else if (reachLeft) {
@@ -239,8 +222,8 @@ export default class Canvas {
           }
         }
 
-        y += 10;
-      } while (y !== canvas.height && checkPixel(x, y));
+        y += dot;
+      } while ((checkPixel(x, y)) && (y !== canvas.height));
     }
 
     this.canvasData = ctxCanvas.getImageData(0, 0, canvas.width, canvas.height);

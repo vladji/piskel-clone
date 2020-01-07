@@ -1,13 +1,12 @@
 import './style.css';
 
 import Storage from './components/Storage';
-import Frames from './components/Frames';
+import Frames from './components/frames_co/Frames';
 import Preview from './components/Preview';
 import Canvas from './components/Canvas';
 import Tools from './components/Tools';
 import CanvasSize from './components/CavasSize';
 import initDefault from './components/initDefault';
-
 import GifExport from './components/Gif';
 
 const storage = new Storage();

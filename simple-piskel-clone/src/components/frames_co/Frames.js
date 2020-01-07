@@ -1,4 +1,5 @@
-import Preview from './Preview';
+import Preview from '../Preview';
+import { firstFrameTools, toggleFrameTools } from './firstFrameTools';
 
 export default class Frames {
   constructor() {
@@ -12,7 +13,6 @@ export default class Frames {
   }
 
   controller() {
-    this.currentFrame();
     this.frameHover();
     this.frameDragDrop();
     this.countFrames();
@@ -27,7 +27,7 @@ export default class Frames {
         framesObj.frameDelete(e);
       },
       frameDuplicate(e) {
-        Frames.frameDuplicate(e);
+        framesObj.frameDuplicate(e);
       },
     };
 
@@ -62,7 +62,8 @@ export default class Frames {
   }
 
   addNewFrame() {
-    this.activeFrame();
+    const prevActiveFrame = this.currentFrame();
+    if (prevActiveFrame) prevActiveFrame.classList.remove('active-frame');
 
     this.framesList.insertAdjacentHTML('beforeend',
       `<li class="frame-wrap active-frame">
@@ -74,19 +75,14 @@ export default class Frames {
           <button class="frame-move"><i class="fas fa-arrows-alt-v"></i></button>
         </div>
       </li>`);
-    this.currentFrame();
+
     const frameCanvas = this.currentFrame().querySelector('.frame-canvas');
     this.putFrameData(frameCanvas);
   }
 
   activeFrame(frame) {
-    const prevActiveFrame = this.currentFrame();
-    if (prevActiveFrame) prevActiveFrame.classList.remove('active-frame');
-
-    if (frame) {
-      frame.classList.add('active-frame');
-      this.currentFrame();
-    }
+    this.currentFrame().classList.remove('active-frame');
+    frame.classList.add('active-frame');
   }
 
   frameDelete(e) {
@@ -102,13 +98,12 @@ export default class Frames {
     targetFrame.remove();
   }
 
-  static frameDuplicate(e) {
+  frameDuplicate(e) {
+    if (this.framesUnits().length === 1) firstFrameTools(false);
+
     const targetFrameLi = e.target.closest('li');
     const targetCanvas = targetFrameLi.querySelector('canvas');
-    const targetCanvasCtx = targetCanvas.getContext('2d');
-
-    const targetCanvasData = targetCanvasCtx
-      .getImageData(0, 0, targetCanvas.width, targetCanvas.height);
+    const targetCanvasData = targetCanvas.getContext('2d').getImageData(0, 0, targetCanvas.width, targetCanvas.height);
 
     const cloneFrameLi = targetFrameLi.cloneNode(true);
     const cloneCanvas = cloneFrameLi.querySelector('canvas');
@@ -116,12 +111,18 @@ export default class Frames {
     cloneCanvasCtx.putImageData(targetCanvasData, 0, 0);
 
     cloneFrameLi.classList.remove('active-frame');
+
+    toggleFrameTools(cloneFrameLi, true);
     targetFrameLi.after(cloneFrameLi);
   }
 
   countFrames() {
     const frames = this.framesUnits();
-    Frames.chekFrameTools(frames);
+    if (frames.length === 1) {
+      firstFrameTools(true);
+    } else {
+      firstFrameTools(false);
+    }
 
     let counter = 1;
     for (let i = 0; i < frames.length; i += 1) {
@@ -131,37 +132,16 @@ export default class Frames {
     }
   }
 
-  static chekFrameTools(frames) {
-    const delToolFirstFrame = document.querySelector('.frame-delete');
-    const moveToolFirstFrame = document.querySelector('.frame-move');
-
-    if (frames.length === 1) {
-      delToolFirstFrame.hidden = true;
-      moveToolFirstFrame.hidden = true;
-    } else {
-      delToolFirstFrame.hidden = false;
-      moveToolFirstFrame.hidden = false;
-    }
-  }
-
   frameHover() {
-    let frameTools;
-    let targetLi;
-
     this.framesList.addEventListener('mouseover', (e) => {
       if (e.target.closest('li')) {
-        targetLi = e.target.closest('li');
-        frameTools = targetLi.querySelector('.frame-tools');
-        frameTools.hidden = false;
-
-        if (targetLi !== this.currentFrame()) targetLi.classList.add('frame-hover');
+        toggleFrameTools(e.target.closest('li'), false, this.currentFrame());
       }
     });
 
-    this.framesList.addEventListener('mouseout', () => {
-      if (targetLi) {
-        frameTools.hidden = true;
-        targetLi.classList.remove('frame-hover');
+    this.framesList.addEventListener('mouseout', (e) => {
+      if (e.target.closest('li')) {
+        toggleFrameTools(e.target.closest('li'), true);
       }
     });
   }

@@ -151,8 +151,14 @@ Total: 91h
     <tr>
       <td>Jan 05</td>
       <td>Jan 05</td>
-      <td>3</td>
+      <td>4</td>
       <td>Refactoring code: Storage, CanvasSize, Canvas and Tools components</td>
+    </tr>
+    <tr>
+      <td>Jan 06</td>
+      <td>Jan 06</td>
+      <td>4</td>
+      <td>Refactoring code: Tools, Canvas, Storage components<br>Separate Frames component</td>
     </tr>
   </tbody>
 </table>
