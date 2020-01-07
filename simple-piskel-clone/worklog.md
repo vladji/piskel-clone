@@ -163,9 +163,14 @@ Total: 91h
     <tr>
       <td>Jan 07</td>
       <td>Jan 07</td>
-      <td>3</td>
-      <td>Refactoring and enhancing code: Canvas (implement Bresenham's line algorithm, improve working of tools),
-          Tools (simplified the logic), improved work of the Frames conponent</td>
+      <td>5</td>
+      <td>Refactoring and enhancing code: embed the Bresenham's line algorithm, improved the performance and simplified the logic of the tools and the Frames components</td>
+    </tr>
+    <tr>
+      <td>Jan 07</td>
+      <td>Jan 07</td>
+      <td>1</td>
+      <td>refactor and perf: Preview slides component</td>
     </tr>
   </tbody>
 </table>

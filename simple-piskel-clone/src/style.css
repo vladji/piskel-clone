@@ -270,8 +270,6 @@ li.drop-elem-proxy {
 }
 
 #canvas {
-  /* width: 640px;
-  height: 640px; */
   border: solid 1px #ccc;
 }
 
@@ -305,6 +303,11 @@ li.drop-elem-proxy {
   bottom: 47px;
   font-size: 25px;
   color: #fff;
+}
+
+.full-screen_active {
+  width: 100vw;
+  height: 100vh;
 }
 
 .preview_input-range {

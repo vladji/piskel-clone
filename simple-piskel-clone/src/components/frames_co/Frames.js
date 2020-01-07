@@ -16,7 +16,6 @@ export default class Frames {
     this.frameHover();
     this.frameDragDrop();
     this.countFrames();
-    Preview.setSlides();
 
     const framesObj = this;
     const frameEvents = {
@@ -57,6 +56,11 @@ export default class Frames {
     this.ctxCanvas.putImageData(frameData, 0, 0);
   }
 
+  activeFrame(frame) {
+    this.currentFrame().classList.remove('active-frame');
+    frame.classList.add('active-frame');
+  }
+
   getFrameCanvas() {
     return this.currentFrame().querySelector('.frame-canvas');
   }
@@ -78,11 +82,6 @@ export default class Frames {
 
     const frameCanvas = this.currentFrame().querySelector('.frame-canvas');
     this.putFrameData(frameCanvas);
-  }
-
-  activeFrame(frame) {
-    this.currentFrame().classList.remove('active-frame');
-    frame.classList.add('active-frame');
   }
 
   frameDelete(e) {

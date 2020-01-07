@@ -1,3 +1,6 @@
+import Preview from './Preview';
+import colorConverter from '../utils/colorConvert';
+
 export default class Canvas {
   constructor(frames) {
     this.frames = frames;
@@ -49,6 +52,7 @@ export default class Canvas {
     const endDraw = () => {
       this.canvasData = this.contextCanvas.getImageData(0, 0, canvas.width, canvas.height);
       ctxFrame.putImageData(this.canvasData, 0, 0);
+      Preview.setSlides();
     };
 
     const removeEvent = () => {
@@ -139,18 +143,13 @@ export default class Canvas {
     this.startY = pointY;
   }
 
-  colorPicker(evt) {
-    const canvas = this.canvasDraw;
-    const pontX = (evt.pageX - canvas.offsetLeft) * 2;
-    const pointY = (evt.pageY - canvas.offsetTop) * 2;
+  colorPicker(dotX, dotY) {
+    const colorData = this.contextCanvas.getImageData(dotX, dotY, 1, 1).data.join(', ');
 
-    const colorData = this.contextCanvas.getImageData(pontX, pointY, 1, 1).data.join(', ');
-    const colorCSS = `rgba(${colorData})`;
-
-    const primaryColorBtn = document.querySelector('.wrap_color-section button:first-child');
-
-    primaryColorBtn.style.backgroundColor = colorCSS;
-    this.prepareData(colorCSS);
+    const hexColor = colorConverter(colorData);
+    const primaryColorBtn = document.querySelector('.color-tools__select:first-child');
+    primaryColorBtn.value = hexColor;
+    this.contextCanvas.fillStyle = hexColor;
   }
 
   bucket(dotX, dotY) {
@@ -164,9 +163,9 @@ export default class Canvas {
     const pixelDefault = ctxCanvas.getImageData(startX, startY, 1, 1).data.join('');
 
     const toCompareData = ctxCanvas.getImageData(startX, startY, 1, 1).data.join(', ');
-    const currentColorBtn = document.querySelector('.color-tools__select:first-child');
-    currentColorBtn.style.backgroundColor = this.contextCanvas.fillStyle;
-    const toCompareColor = `${currentColorBtn.style.backgroundColor.slice(4, -1)}, 255`;
+    const primaryColorBtn = document.querySelector('.color-tools__select:first-child');
+    primaryColorBtn.style.backgroundColor = this.contextCanvas.fillStyle;
+    const toCompareColor = `${primaryColorBtn.style.backgroundColor.slice(4, -1)}, 255`;
 
     if (toCompareData === toCompareColor) return;
 

@@ -11,6 +11,7 @@ export default function initDefault(components) {
     tools.activeTool(document.querySelector('.btn_pen'));
     tools.initColor('#0cf513', '#0a8ee6');
     canvasSize.activeSize(document.querySelector('.large-canvas'));
+    preview.setFps(3);
   }
 
   frames.controller();

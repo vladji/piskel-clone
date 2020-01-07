@@ -3,24 +3,25 @@ export default class Preview {
     this.animationView = document.querySelector('.preview_screen');
     this.previewWrap = document.querySelector('.preview_screen-inner');
     this.fpsButton = document.querySelector('.preview_input-range input');
-    this.fps = 12;
-    this.img = null;
     this.displayFps = document.querySelector('.fps-range');
-    this.fpsDisplay(this.fps);
-    this.setFps(3);
     this.fullScreen();
   }
 
   initAnimation() {
-    let i = 0;
-    const getFpsRange = this.getFps.bind(this);
+    setTimeout(() => {
+      let i = 0;
+      let fpsVal = this.fps;
+      document.querySelector('.input-range').addEventListener('change', (e) => {
+        fpsVal = e.currentTarget.value;
+      });
 
-    setTimeout(function run() {
-      this.fps = getFpsRange();
-      const workSlides = Preview.getSlides() || [''];
-      Preview.putSlide(workSlides, i);
-      setTimeout(run, 1000 / this.fps);
-      i += 1;
+      function run() {
+        const slides = Preview.getSlides() || [''];
+        Preview.putSlide(slides, i);
+        i += 1;
+        setTimeout(run, 1000 / fpsVal);
+      }
+      run();
     }, 1000 / this.fps);
   }
 
@@ -28,31 +29,24 @@ export default class Preview {
     return this.fps;
   }
 
-  setFps(number) {
+  setFps(val) {
     const fpsBtn = this.fpsButton;
 
-    const actualFps = () => {
-      const valueFps = fpsBtn.value;
-      this.fps = +valueFps;
-      this.fpsDisplay(this.fps);
+    const displayFps = () => {
+      this.fps = +fpsBtn.value;
+      this.displayFps.innerHTML = this.fps;
     };
 
-    if (number) {
-      fpsBtn.value = number;
-      actualFps();
-    }
+    fpsBtn.value = val;
+    displayFps();
 
     fpsBtn.addEventListener('mousedown', () => {
-      fpsBtn.addEventListener('mousemove', actualFps);
+      fpsBtn.addEventListener('mousemove', displayFps);
     });
-    fpsBtn.addEventListener('mouseup', () => {
-      actualFps();
-      fpsBtn.removeEventListener('mousemove', actualFps);
-    });
-  }
 
-  fpsDisplay(fps) {
-    this.displayFps.innerHTML = `${fps}`;
+    fpsBtn.addEventListener('mouseup', () => {
+      fpsBtn.removeEventListener('mousemove', displayFps);
+    });
   }
 
   static getSlides() {
@@ -60,9 +54,9 @@ export default class Preview {
   }
 
   static setSlides() {
-    let workSlides = document.querySelectorAll('.frames-list canvas');
-    workSlides = Array.prototype.slice.call(workSlides);
     const imgArr = [];
+    let workSlides = document.querySelectorAll('.frame-canvas');
+    workSlides = Array.from(workSlides);
 
     workSlides.forEach((frame) => {
       const imgData = frame.toDataURL();
@@ -72,25 +66,21 @@ export default class Preview {
     this.img = imgArr;
   }
 
-  static putSlide(obj, i) {
+  static putSlide(slides, i) {
     const actionScreen = document.querySelector('.preview_screen');
-
-    actionScreen.style.backgroundImage = `url("${obj[i % obj.length]}")`;
-    actionScreen.style.backgroundSize = 'contain';
+    actionScreen.style.backgroundImage = `url("${slides[i % slides.length]}")`;
   }
 
   fullScreen() {
     const btn = document.querySelector('.full-screen');
     btn.addEventListener('click', () => {
-      this.animationView.style.width = '100vw';
-      this.animationView.style.height = '100vh';
+      this.animationView.classList.add('full-screen_active');
       this.previewWrap.requestFullscreen();
     });
 
     document.addEventListener('fullscreenchange', () => {
       if (!document.fullscreenElement) {
-        this.animationView.style.width = '';
-        this.animationView.style.height = '';
+        this.animationView.classList.remove('full-screen_active');
       }
     });
   }

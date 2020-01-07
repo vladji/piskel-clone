@@ -74,7 +74,6 @@ export default class CanvasSize {
     for (let i = 0; i < framesCanvas.length; i += 1) {
       redraw(framesCanvas[i]);
     }
-
     Preview.setSlides();
   }
 }
