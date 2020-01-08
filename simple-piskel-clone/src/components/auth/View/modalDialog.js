@@ -1,4 +1,4 @@
-function renderModal() {
+export default function renderModal() {
   const modalContent = `
     <div class="modal-box">
       <div class="modal-close-btn">&times;</div>
@@ -14,14 +14,4 @@ function renderModal() {
   const modalDialogBox = document.createElement('div');
   modalDialogBox.innerHTML = modalContent;
   document.body.append(modalDialogBox);
-}
-
-export default function modalEvents() {
-  console.log('modal');
-  document.body.addEventListener('click', (e) => {
-    if (e.target.closest('.log-in')) renderModal();
-    if (e.target.closest('.modal-close-btn')) {
-      document.querySelector('.modal-box').remove();
-    }
-  });
 }

@@ -7,7 +7,7 @@ import Canvas from './components/Canvas';
 import Tools from './components/Tools';
 import CanvasSize from './components/CavasSize';
 import initDefault from './initDefault';
-import authModalDialog from './components/auth/modalDialog';
+import googleAuth from './components/auth/googleAuth';
 import gifExport from './components/gifExport';
 
 const storage = new Storage();
@@ -26,5 +26,5 @@ const components = {
 };
 
 initDefault(components);
-authModalDialog();
+googleAuth();
 gifExport();

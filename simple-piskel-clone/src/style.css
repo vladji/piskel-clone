@@ -6,7 +6,7 @@
 body {
   color: #f7f7f7;
   background-color: #374848;
-  font-family: 'Chakra Petch', sans-serif;
+  font-family: "Chakra Petch", sans-serif;
 }
 
 li {
@@ -29,7 +29,7 @@ button {
   background: none;
   border: none;
   cursor: pointer;
-  font-family: 'Chakra Petch', sans-serif;
+  font-family: "Chakra Petch", sans-serif;
   font-weight: 600;
 }
 
@@ -37,19 +37,17 @@ button:focus {
   outline: none;
 }
 
-canvas, .preview_screen-inner {
-  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAABlBMVEVMTExVVVUnhsEkAAAAHUlEQVR4AWOAAUYoQOePEAUj3v9oYDQ9gMBoegAAJFwCAbLaTIMAAAAASUVORK5CYII=') repeat;
+canvas,
+.preview_screen-inner {
+  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAABlBMVEVMTExVVVUnhsEkAAAAHUlEQVR4AWOAAUYoQOePEAUj3v9oYDQ9gMBoegAAJFwCAbLaTIMAAAAASUVORK5CYII=")
+    repeat;
 }
 
 header h1 {
-  font-family: 'Chakra Petch', sans-serif;
+  font-family: "Chakra Petch", sans-serif;
 }
 
-.auth-wrapper {
-  display: flex;
-}
-
-.auth-wrapper button {
+.auth-block button {
   color: #fff;
   font-size: 1.2rem;
 }
@@ -87,7 +85,9 @@ ul {
   cursor: pointer;
 }
 
-.thickness-1 div, .thickness-2 div, .thickness-3 div {
+.thickness-1 div,
+.thickness-2 div,
+.thickness-3 div {
   background-color: #ffed15;
 }
 
@@ -173,16 +173,16 @@ ul {
 }
 
 input[type="color"] {
-	-webkit-appearance: none;
-	border: none;
+  -webkit-appearance: none;
+  border: none;
 }
 
 input[type="color"]::-webkit-color-swatch-wrapper {
-	padding: 0;
+  padding: 0;
 }
 
 input[type="color"]::-webkit-color-swatch {
-	border: none;
+  border: none;
 }
 
 /* Frames block */
@@ -207,7 +207,8 @@ input[type="color"]::-webkit-color-swatch {
   background-color: #323232;
 }
 
-.add-frame:active, .add-frame:hover {
+.add-frame:active,
+.add-frame:hover {
   border: 2px solid #ffed15;
 }
 
@@ -229,7 +230,10 @@ input[type="color"]::-webkit-color-swatch {
   color: #808080;
 }
 
-.frame-num, .frame-duplicate, .frame-delete, .frame-move {
+.frame-num,
+.frame-duplicate,
+.frame-delete,
+.frame-move {
   position: absolute;
 }
 
@@ -342,7 +346,8 @@ li.drop-elem-proxy {
 
 /* Service buttons */
 
-.canvas-manager, .wrap_btn {
+.canvas-manager,
+.wrap_btn {
   margin-top: 30px;
 }
 
@@ -380,7 +385,29 @@ li.drop-elem-proxy {
   background-color: #ccc;
 }
 
-/* Auth Modal */
+/* Auth user info */
+
+.auth-inner {
+  display: flex;
+  justify-content: space-between;
+}
+
+.user-info {
+  display: flex;
+}
+
+.user-info p {
+  display: flex;
+  align-items: center;
+  margin-right: 15px;
+}
+
+.user-info img {
+  width: 40px;
+  height: 40px;
+}
+
+/* Auth by Email Modal Dialog */
 
 .modal-box {
   position: absolute;

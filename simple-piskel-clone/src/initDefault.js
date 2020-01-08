@@ -16,5 +16,5 @@ export default function initDefault(components) {
 
   frames.controller();
   preview.initAnimation();
-  // storage.saveSession();
+  storage.saveSession();
 }

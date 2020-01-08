@@ -178,5 +178,17 @@ Total: 91h
       <td>20min</td>
       <td>refactor: export to Gif format</td>
     </tr>
+    <tr>
+      <td>Jan 07</td>
+      <td>Jan 07</td>
+      <td>2h</td>
+      <td>perf: CSS style<br>Create layuot for login panel (js, CSS, HTML)</td>
+    </tr>
+    <tr>
+      <td>Jan 08</td>
+      <td>Jan 08</td>
+      <td>2h</td>
+      <td>feat: add logIn via Google account</td>
+    </tr>
   </tbody>
 </table>
