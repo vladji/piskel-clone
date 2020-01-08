@@ -14,84 +14,95 @@
 
 <body>
   <header>
-    <h1>Piskel-clone</h1>
+    <div class="content-wrapper">
+      <h1>Piskel-clone</h1>
+      <div class="auth-wrapper">
+        <div class="user-info" hidden>
+          <p></p>
+        </div>
+        <button class="log-in">Log in&nbsp;<i class="fas fa-sign-in-alt"></i></button>
+        <button class="log-out" hidden>Log out&nbsp;<i class="fas fa-sign-out-alt"></i></button>
+      </div>
+    </div>
   </header>
   <main>
-    <div class="wrap_tools">
-      <div class="wrap_draw-panel">
-        <div class="thickness-tool">
-          <ul>
-            <li class="thickness-1" data-thick="4" data-event="activeThick" data-thick-id="thick-1">
-              <div></div>
-            </li>
-            <li class="thickness-2" data-thick="8" data-event="activeThick" data-thick-id="thick-2">
-              <div></div>
-            </li>
-            <li class="thickness-3" data-thick="16" data-event="activeThick" data-thick-id="thick-3">
-              <div></div>
-            </li>
+    <div class="content-wrapper">
+      <div class="wrap_tools">
+        <div class="wrap_draw-panel">
+          <div class="thickness-tool">
+            <ul>
+              <li class="thickness-1" data-thick="4" data-event="activeThick" data-thick-id="thick-1">
+                <div></div>
+              </li>
+              <li class="thickness-2" data-thick="8" data-event="activeThick" data-thick-id="thick-2">
+                <div></div>
+              </li>
+              <li class="thickness-3" data-thick="16" data-event="activeThick" data-thick-id="thick-3">
+                <div></div>
+              </li>
+            </ul>
+          </div>
+          <div id="draw-tools">
+            <ul>
+              <li class="btn_pen" data-event="activeTool" data-tool-type="pen">
+                <div><i class="fas fa-pencil-alt"></i></div>
+              </li>
+              <li class="btn_eraser" data-event="activeTool" data-tool-type="eraser">
+                <div><i class="fas fa-eraser"></i></div>
+              </li>
+              <li class="btn_color-picker" data-event="activeTool" data-tool-type="colorPicker">
+                <div><i class="fas fa-eye-dropper"></i></div>
+              </li>
+              <li class="btn_bucket" data-event="activeTool" data-tool-type="bucket">
+                <div><i class="fas fa-fill-drip"></i></div>
+              </li>
+            </ul>
+          </div>
+          <div class="color-tools">
+            <input type="color" class="color-tools__select">
+            <input type="color" class="color-tools__select">
+            <button class="color-tools__switch" data-event="switchColor"><i class="fas fa-retweet"></i></button>
+          </div>
+        </div>
+        <!-- Frames block -->
+        <div id="frames-block">
+          <ul class="frames-list">
           </ul>
-        </div>
-        <div id="draw-tools">
-          <ul>
-            <li class="btn_pen" data-event="activeTool" data-tool-type="pen">
-              <div><i class="fas fa-pencil-alt"></i></div>
-            </li>
-            <li class="btn_eraser" data-event="activeTool" data-tool-type="eraser">
-              <div><i class="fas fa-eraser"></i></div>
-            </li>
-            <li class="btn_color-picker" data-event="activeTool" data-tool-type="colorPicker">
-              <div><i class="fas fa-eye-dropper"></i></div>
-            </li>
-            <li class="btn_bucket" data-event="activeTool" data-tool-type="bucket">
-              <div><i class="fas fa-fill-drip"></i></div>
-            </li>
-          </ul>
-        </div>
-        <div class="color-tools">
-          <input type="color" class="color-tools__select">
-          <input type="color" class="color-tools__select">
-          <button class="color-tools__switch" data-event="switchColor"><i class="fas fa-retweet"></i></button>
+          <div class="add-frame" data-frame-action="addFrame">
+            <p>Add Frame</p>
+          </div>
         </div>
       </div>
-      <!-- Frames block -->
-      <div id="frames-block">
-        <ul class="frames-list">
-        </ul>
-        <div class="add-frame" data-frame-action="addFrame">
-          <p>Add Frame</p>
-        </div>
+      <!-- Canvas Draw -->
+      <div class="canvas-wrapper">
+        <canvas id="canvas" width="512" height="512"></canvas>
       </div>
-    </div>
-    <!-- Canvas Draw -->
-    <div class="canvas-wrapper">
-      <canvas id="canvas" width="512" height="512"></canvas>
-    </div>
-    <!-- Service section -->
-    <div id="service-section">
-      <!-- Preview -->
-      <div id="preview-wrapper">
-        <div class="preview_screen-inner">
-          <div class="preview_screen"></div>
+      <!-- Service section -->
+      <div id="service-section">
+        <!-- Preview -->
+        <div id="preview-wrapper">
+          <div class="preview_screen-inner">
+            <div class="preview_screen"></div>
+          </div>
+          <button class="full-screen"><i class="fas fa-compress"></i></button>
+          <div class="preview_input-range">
+            <div class="fps-range"></div>
+            <div>FPS</div>
+            <input type="range" min="1" max="24" class="input-range">
+          </div>
         </div>
-        <button class="full-screen"><i class="fas fa-compress"></i></button>
-        <div class="preview_input-range">
-          <div class="fps-range"></div>
-          <div>FPS</div>
-          <input type="range" min="1" max="24" class="input-range">
+        <!-- Service buttons -->
+        <div class="canvas-manager">
+          <p>Canvas size:</p>
+          <div class="wrap_size-btn">
+            <button class="small-canvas" data-pen-var="4" data-event="activeSize">32px</button>
+            <button class="medium-canvas" data-pen-var="2" data-event="activeSize">64px</button>
+            <button class="large-canvas" data-pen-var="1" data-event="activeSize">128px</button>
+          </div>
         </div>
-      </div>
-      <!-- Service buttons -->
-      <div class="canvas-manager">
-        <p>Canvas size:</p>
-        <div class="wrap_size-btn">
-          <button class="small-canvas" data-pen-var="4" data-event="activeSize">32px</button>
-          <button class="medium-canvas" data-pen-var="2" data-event="activeSize">64px</button>
-          <button class="large-canvas" data-pen-var="1" data-event="activeSize">128px</button>
+        <div class="wrap_btn">
+          <button class="export-btn">create GIF</button>
         </div>
-      </div>
-      <div class="wrap_btn">
-        <button class="export-btn">create GIF</button>
       </div>
     </div>
   </main>

@@ -147,7 +147,7 @@ export default class Frames {
   }
 
   frameDragDrop() {
-    const allFrames = this.framesList;
+    const frameList = this.framesList;
     let targetFrameLi = null;
     const frameParam = {};
 
@@ -206,12 +206,13 @@ export default class Frames {
       }
     };
 
-    allFrames.addEventListener('mousedown', (e) => {
+    frameList.addEventListener('mousedown', (e) => {
+      const framesWrap = document.querySelector('#frames-block');
       if (this.framesUnits().length === 1) return;
       targetFrameLi = e.target.closest('li');
 
       frameParam.firstTouchY = e.clientY;
-      frameParam.startTop = targetFrameLi.offsetTop;
+      frameParam.startTop = targetFrameLi.offsetTop - framesWrap.scrollTop;
       frameParam.startLeft = targetFrameLi.offsetLeft;
 
       targetFrameLi.addEventListener('mousemove', frameMove);

@@ -1,12 +1,13 @@
 import './style.css';
 
 import Storage from './components/Storage';
-import Frames from './components/frames_co/Frames';
+import Frames from './components/frames/Frames';
 import Preview from './components/Preview';
 import Canvas from './components/Canvas';
 import Tools from './components/Tools';
 import CanvasSize from './components/CavasSize';
 import initDefault from './initDefault';
+import authModalDialog from './components/auth/modalDialog';
 import gifExport from './components/gifExport';
 
 const storage = new Storage();
@@ -25,4 +26,5 @@ const components = {
 };
 
 initDefault(components);
+authModalDialog();
 gifExport();

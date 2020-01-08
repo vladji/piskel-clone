@@ -4,8 +4,6 @@
 }
 
 body {
-  width: 100vw;
-  height: 900px;
   color: #f7f7f7;
   background-color: #374848;
   font-family: 'Chakra Petch', sans-serif;
@@ -18,6 +16,13 @@ li {
 header {
   padding: 15px 0;
   background: #17797e;
+}
+
+.content-wrapper {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1300px;
+  margin: 0 auto;
 }
 
 button {
@@ -37,12 +42,19 @@ canvas, .preview_screen-inner {
 }
 
 header h1 {
-  margin-left: 29px;
   font-family: 'Chakra Petch', sans-serif;
 }
 
-main {
+.auth-wrapper {
   display: flex;
+}
+
+.auth-wrapper button {
+  color: #fff;
+  font-size: 1.2rem;
+}
+
+main {
   margin-top: 50px;
 }
 
@@ -54,7 +66,6 @@ ul {
 
 .wrap_tools {
   display: flex;
-  flex-grow: 1;
   justify-content: space-between;
 }
 
@@ -73,6 +84,7 @@ ul {
   justify-content: center;
   align-items: center;
   border: 2px solid #a7a79d;
+  cursor: pointer;
 }
 
 .thickness-1 div, .thickness-2 div, .thickness-3 div {
@@ -101,8 +113,7 @@ ul {
 /* Tools block */
 
 .wrap_draw-panel {
-  position: relative;
-  left: 20px;
+  padding-right: 20px;
 }
 
 #draw-tools ul {
@@ -161,11 +172,24 @@ ul {
   color: #c4c0c0;
 }
 
+input[type="color"] {
+	-webkit-appearance: none;
+	border: none;
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+	padding: 0;
+}
+
+input[type="color"]::-webkit-color-swatch {
+	border: none;
+}
+
 /* Frames block */
 
 #frames-block {
   width: 160px;
-  height: 640px;
+  height: 512px;
   padding-right: 15px;
   overflow-y: scroll;
 }
@@ -260,24 +284,11 @@ li.drop-elem-proxy {
   border: 5px solid #ffed15;
 }
 
-/* CANVAS DRAW */
-
-.canvas-wrapper {
-  flex-grow: 3;
-  margin: 0 20px;
-  text-align: center;
-  background-color: #b7b5b5;
-}
-
 #canvas {
   border: solid 1px #ccc;
 }
 
 /* SERVICE SECTION */
-
-#service-section {
-  flex-grow: 1;
-}
 
 /* Preview block */
 
@@ -367,4 +378,60 @@ li.drop-elem-proxy {
   padding: 5px 10px;
   border: 2px solid #00bbff;
   background-color: #ccc;
+}
+
+/* Auth Modal */
+
+.modal-box {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30%;
+  padding: 0 20px 20px;
+  border-radius: 5px;
+  background: #fff;
+}
+
+.modal-close-btn {
+  display: inline;
+  float: right;
+  color: #000;
+  text-align: right;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.modal-form {
+  width: 80%;
+  margin: auto;
+  clear: both;
+}
+
+.modal-box input {
+  display: block;
+  width: 100%;
+  height: 20px;
+  margin-bottom: 15px;
+}
+
+.modal-box input::placeholder {
+  padding-left: 10px;
+}
+
+.modal-box button {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 7px 10px;
+  border-radius: 3px;
+  color: #fff;
+}
+
+.modal-box .modal_log-in {
+  margin-right: 20px;
+  background: #17797e;
+}
+
+.modal-box .modal_sign-in {
+  background: #d4b218;
 }
