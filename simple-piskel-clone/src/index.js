@@ -1,14 +1,14 @@
 import './style.css';
 
-import Storage from './components/Storage';
-import Frames from './components/frames/Frames';
-import Preview from './components/Preview';
-import Canvas from './components/Canvas';
-import Tools from './components/Tools';
-import CanvasSize from './components/CavasSize';
-import initDefault from './initDefault';
-import googleAuth from './components/auth/googleAuth';
-import gifExport from './components/gifExport';
+import Storage from './js/components/Storage';
+import Frames from './js/components/frames/Frames';
+import Preview from './js/components/Preview';
+import Canvas from './js/components/Canvas';
+import Tools from './js/components/Tools';
+import CanvasSize from './js/components/CavasSize';
+import initDefault from './js/initDefault';
+import googleAuth from './js/components/auth/googleAuth';
+import gifExport from './js/components/gifExport';
 
 const storage = new Storage();
 const frames = new Frames();

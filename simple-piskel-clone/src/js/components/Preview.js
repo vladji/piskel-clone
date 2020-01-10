@@ -2,8 +2,8 @@ export default class Preview {
   constructor() {
     this.animationView = document.querySelector('.preview_screen');
     this.previewWrap = document.querySelector('.preview_screen-inner');
-    this.fpsButton = document.querySelector('.preview_input-range input');
-    this.displayFps = document.querySelector('.fps-range');
+    this.fpsButton = document.querySelector('.fps-range');
+    this.displayFps = document.querySelector('.fps-display');
     this.fullScreen();
   }
 
@@ -11,7 +11,7 @@ export default class Preview {
     setTimeout(() => {
       let i = 0;
       let fpsVal = this.fps;
-      document.querySelector('.input-range').addEventListener('change', (e) => {
+      this.fpsButton.addEventListener('change', (e) => {
         fpsVal = e.currentTarget.value;
       });
 
@@ -40,13 +40,8 @@ export default class Preview {
     fpsBtn.value = val;
     displayFps();
 
-    fpsBtn.addEventListener('mousedown', () => {
-      fpsBtn.addEventListener('mousemove', displayFps);
-    });
-
-    fpsBtn.addEventListener('mouseup', () => {
-      fpsBtn.removeEventListener('mousemove', displayFps);
-    });
+    fpsBtn.addEventListener('click', displayFps);
+    fpsBtn.addEventListener('mousemove', displayFps);
   }
 
   static getSlides() {

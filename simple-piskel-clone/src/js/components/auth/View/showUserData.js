@@ -11,6 +11,7 @@ export default function showUserData(userName, userPic) {
       <p>Hello, ${userName}</p>
       <img src="${userPic}" alt="avatar ${userName}">
     </div>
+    <button class="log-out">Log out&nbsp;<i class="fas fa-sign-out-alt"></i></button>
   `;
 
   div.innerHTML = infoMarkup;

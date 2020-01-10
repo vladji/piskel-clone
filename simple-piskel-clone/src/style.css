@@ -325,22 +325,22 @@ li.drop-elem-proxy {
   height: 100vh;
 }
 
-.preview_input-range {
+.preview_fps-range {
   display: flex;
   justify-content: space-around;
   padding: 5px;
   font-size: 14px;
 }
 
-.fps-range {
+.fps-display {
   width: 15px;
 }
 
-.preview_input-range div {
+.preview_fps-range div {
   line-height: 2;
 }
 
-.preview_input-range input {
+.preview_fps-range input {
   cursor: pointer;
 }
 
@@ -394,6 +394,7 @@ li.drop-elem-proxy {
 
 .user-info {
   display: flex;
+  margin-right: 20px;
 }
 
 .user-info p {

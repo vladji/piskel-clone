@@ -7,7 +7,7 @@ function downloadGif(gifURL) {
 
 function framePrepare(gif) {
   const VAR = 4;
-  const fps = document.querySelector('.preview_input-range input').value;
+  const fps = document.querySelector('.preview_fps-range input').value;
   const currentSizeBtn = document.querySelector('.active-canvas-size');
   const sizeVar = currentSizeBtn.dataset.penVar * VAR;
   const frames = document.querySelectorAll('.frames-list canvas');
@@ -34,7 +34,7 @@ export default function gifExport() {
     const gif = new GIF({
       workers: 2,
       quality: 10,
-      workerScript: './dist/lib/gif.worker.js',
+      workerScript: './lib/gif.worker.js',
       transparent: '0x000000',
     });
 

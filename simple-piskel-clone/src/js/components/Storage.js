@@ -3,7 +3,7 @@ export default class Storage {
     this.store = {};
     this.canvas = document.querySelector('#canvas');
     this.framesWrap = document.querySelector('.frames-list');
-    this.fpsButton = document.querySelector('.preview_input-range input');
+    this.fpsButton = document.querySelector('.preview_fps-range input');
   }
 
   loadSession(preview, tools, canvasSize) {

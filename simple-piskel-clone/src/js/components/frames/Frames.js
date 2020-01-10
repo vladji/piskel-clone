@@ -114,6 +114,8 @@ export default class Frames {
     toggleFrameTools(cloneFrameLi, true);
     targetFrameLi.after(cloneFrameLi);
     this.activeFrame(cloneFrameLi);
+    const scrollX = this.framesBlock.scrollTop + 200;
+    this.framesBlock.scrollTo(0, scrollX);
   }
 
   countFrames() {
