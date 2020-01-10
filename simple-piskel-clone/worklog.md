@@ -190,5 +190,11 @@ Total: 91h
       <td>2h</td>
       <td>feat: add logIn via Google account</td>
     </tr>
+    <tr>
+      <td>Jan 09</td>
+      <td>Jan 10</td>
+      <td>5h</td>
+      <td>Creation landing page</td>
+    </tr>
   </tbody>
 </table>

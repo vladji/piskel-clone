@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,24 +10,99 @@
   <link href="https://fonts.googleapis.com/css?family=Chakra+Petch:300,600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="landing.css">
 </head>
+
 <body>
   <header>
     <div class="content-wrapper">
-      <h1>Welcome to&nbsp;the <span class="txt-emphasis">simple piskel clone</span> app</h1>
-      <h2>This is a simple clone of the original <a href="https://www.piskelapp.com/" target="_blank">piskel</a> project.</h2>
+      <h1>The <span class="txt-emphasis">simple piskel clone</span> app</h1>
+      <h2>This is a simple clone of the original <a href="https://www.piskelapp.com/" target="_blank">piskel</a>
+        project.</h2>
     </div>
   </header>
   <main>
-    <div class="content-wrapper">
-      <h3>Exapmle sprites</h3>
-      <p>Here are a few examples made at this app</p>
-      <div class="img-list">
-        <div class="img-list__item"><img src="./assets/img/giffka1.gif" alt=""></div>
-        <div class="img-list__item"><img src="./assets/img/giffka2.gif" alt=""></div>
-        <div class="img-list__item"><img src="./assets/img/giffka3.gif" alt=""></div>
-        <div class="img-list__item"><img src="./assets/img/packmen.gif" alt=""></div>
+    <section class="exapmles-section">
+      <div class="content-wrapper">
+        <div class="inline-block">
+          <h3>Exapmle sprites</h3>
+          <p>Here are a few examples made at this app</p>
+          <div class="img-list">
+            <div class="img-list__item"><img src="./assets/img/giffka1.gif" alt=""></div>
+            <div class="img-list__item"><img src="./assets/img/giffka2.gif" alt=""></div>
+            <div class="img-list__item"><img src="./assets/img/giffka3.gif" alt=""></div>
+            <div class="img-list__item"><img src="./assets/img/packmen.gif" alt=""></div>
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
+    <section class="feature-section">
+      <div class="content-wrapper">
+        <div class="feature-wrapper">
+          <ul class="feature feature_left">
+            <li class="feature__item">
+              <div class="feature__txt-wrapper">
+                <h3>Live preview</h3>
+                <p>Preview of your animation in real time. Full screen mode is available. Set FPS setting on the fly</p>
+              </div>
+              <img src="./assets/img/simple-piskel-clone_preview.png" alt="Live preview">
+            </li>
+            <li class="feature__item">
+              <div class="feature__txt-wrapper">
+                <h3>Export to GIF</h3>
+                <p>Save your project as a gif format and enjoi. Available sizes: 32px, 64px, 128px</p>
+              </div>
+              <img src="./assets/img/simple-piskel-clone_export-gif.png" alt="Export to GIF">
+            </li>
+          </ul>
+          <ul class="feature feature_right">
+            <li class="feature__item">
+              <img src="./assets/img/235px-Google_'G'_Logo.svg.png" alt="Google Log in">
+              <div class="feature__txt-wrapper">
+                <h3>Google Log in</h3>
+                <p>Log in into app via your google account</p>
+              </div>
+            </li>
+            <li class="feature__item">
+              <img src="./assets/img/git-logo.png" alt="Open Source">
+              <div class="feature__txt-wrapper">
+                <h3>Open Source</h3>
+                <p>Open source project. The code available on GitHub</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <aside class="author-section">
+      <div class="content-wrapper">
+        <div class="inline-block">
+          <h3>Author</h3>
+          <div class="author">
+            <img src="./assets/img/vladji_crop-w400.jpg" alt="author ava">
+            <ul class="author__contact">
+              <li>
+                <div class="author__email"></div>vladjislav@gmail.com
+              </li>
+              <li>
+                <div class="author__telegram"></div>@vladjislav
+              </li>
+              <li>
+                <div class="author__github"></div><a href="https://github.com/vladji/" target="_blank">@vladji</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </aside>
   </main>
+  <footer>
+    <div class="content-wrapper">
+      <p>sipmle piskel clone 2020</p>
+    </div>
+  </footer>
+  <button class="btn-redirect"><a href="/">Create Sprite</a></button>
+  <script>
+    localStorage.setItem('landing-is-visited', 'visited');
+  </script>
 </body>
+
 </html>

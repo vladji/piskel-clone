@@ -3,7 +3,9 @@ export default function initDefault(components) {
     frames, preview, storage, tools, canvasSize,
   } = components;
 
-  if (localStorage.getItem('piskel-session-store')) {
+  if (!localStorage.getItem('landing-is-visited')) {
+    window.location.href = '/landing/index.html';
+  } else if (localStorage.getItem('piskel-session-store')) {
     storage.loadSession(preview, tools, canvasSize);
   } else {
     frames.addNewFrame();
@@ -12,10 +14,9 @@ export default function initDefault(components) {
     tools.initColor('#0cf513', '#0a8ee6');
     canvasSize.activeSize(document.querySelector('.large-canvas'));
     preview.setFps(3);
-    // window.location.href = '/landing/index.html';
   }
 
   frames.controller();
   preview.initAnimation();
-  // storage.saveSession();
+  storage.saveSession();
 }

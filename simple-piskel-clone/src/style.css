@@ -60,6 +60,29 @@ ul {
   list-style: none;
 }
 
+/* Auth user info */
+
+.auth-inner {
+  display: flex;
+  justify-content: space-between;
+}
+
+.user-info {
+  display: flex;
+  margin-right: 20px;
+}
+
+.user-info p {
+  display: flex;
+  align-items: center;
+  margin-right: 15px;
+}
+
+.user-info img {
+  width: 40px;
+  height: 40px;
+}
+
 /* TOOLS SECTION */
 
 .wrap_tools {
@@ -380,32 +403,28 @@ li.drop-elem-proxy {
 
 .export-btn {
   margin-top: 10px;
-  padding: 5px 10px;
-  border: 2px solid #00bbff;
+  padding: 7px 10px;
+  border: 3px solid #000;
   background-color: #ccc;
 }
 
-/* Auth user info */
+/* Footer */
 
-.auth-inner {
-  display: flex;
-  justify-content: space-between;
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 70px;
+  background-color: #2b2b2b;
 }
 
-.user-info {
-  display: flex;
-  margin-right: 20px;
+.footer-link {
+  margin-top: 20px;
 }
 
-.user-info p {
-  display: flex;
-  align-items: center;
-  margin-right: 15px;
-}
-
-.user-info img {
-  width: 40px;
-  height: 40px;
+footer a {
+  font-size: 1.2em;
+  color: #fff;
 }
 
 /* Auth by Email Modal Dialog */
