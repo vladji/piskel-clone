@@ -8,7 +8,8 @@ import Tools from './js/components/Tools';
 import CanvasSize from './js/components/CavasSize';
 import initDefault from './js/initDefault';
 import googleAuth from './js/components/auth/googleAuth';
-import gifExport from './js/components/gifExport';
+import gifExport from './js/components/export/gifExport';
+import apngExport from './js/components/export/apngExport';
 
 const storage = new Storage();
 const frames = new Frames();
@@ -28,3 +29,4 @@ const components = {
 initDefault(components);
 googleAuth();
 gifExport();
+apngExport();

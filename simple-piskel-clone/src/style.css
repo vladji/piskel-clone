@@ -401,7 +401,8 @@ li.drop-elem-proxy {
   justify-content: space-between;
 }
 
-.export-btn {
+.gif-export-btn,
+.apng-export-btn {
   margin-top: 10px;
   padding: 7px 10px;
   border: 3px solid #000;

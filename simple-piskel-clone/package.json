@@ -4,7 +4,9 @@
   "description": "",
   "main": "src/index.js",
   "dependencies": {
-    "firebase": "^7.6.1"
+    "downloadjs": "^1.4.7",
+    "firebase": "^7.6.1",
+    "upng-js": "^2.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.7.7",
