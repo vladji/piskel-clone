@@ -196,5 +196,19 @@ Total: 91h
       <td>5h</td>
       <td>Creation landing page</td>
     </tr>
+    <tr>
+      <td>Jan 11</td>
+      <td>Jan 11</td>
+      <td>1h</td>
+      <td>implement ability export frames to an .apng format</td>
+    </tr>
+    <tr>
+      <td>Jan 11</td>
+      <td>Jan 11</td>
+      <td>2h</td>
+      <td>implement two jest tests</td>
+    </tr>
   </tbody>
 </table>
+
+Total: 37h
