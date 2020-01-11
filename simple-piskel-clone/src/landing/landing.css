@@ -229,9 +229,11 @@ footer p {
 
 /* Btn Sprite */
 .btn-redirect {
-  position: fixed;
-  right: 40px;
-  bottom: 30px;
+  position: relative;
+  margin-top: 5%;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
   border: 3px solid #000;
   border-radius: 5px;
   font-size: 1em;
