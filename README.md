@@ -1,5 +1,8 @@
-# Warning!  
+1. [task overview](https://github.com/rolling-scopes-school/tasks/blob/master/tasks/piskel-clone.md)
+2.  [demo link](https://piskel-clone-vladji.netlify.com/)
+3.  screenshot
+![screenshot](https://user-images.githubusercontent.com/47819058/72154963-085a5b00-33c3-11ea-9a54-0845ef32ac27.png)
 
-Я сделал PR в ветку master.old  
-Пришлось так сделать, т.к. не могу создать PR в оригинальный мастер, т.к. импортировал бранч из старого репозитория и поэтому "история" полностью отличается от текущего master и создании PR появляется такое сообщение:  
-> master and simple-piskel-clone are entirely different commit histories
+### How to run project  
+* `npm i`
+* `npm run dev`
