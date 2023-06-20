@@ -1,7 +1,7 @@
 {
-  "name": "simple-piskel-clone",
+  "name": "pixel-art",
   "version": "1.0.0",
-  "description": "",
+  "description": "gif creator",
   "main": "src/index.js",
   "dependencies": {
     "downloadjs": "^1.4.7",
@@ -9,7 +9,7 @@
     "upng-js": "^2.1.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.7.7",
+    "@babel/core": "^7.22.5",
     "@babel/preset-env": "^7.7.7",
     "babel-loader": "^8.0.6",
     "copy-webpack-plugin": "^5.1.1",
@@ -32,14 +32,9 @@
     "lint": "eslint src/",
     "test": "jest"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/rolling-scopes-school/vladji-RS2019Q3.git"
-  },
   "author": "Vladislav Priakhine",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/rolling-scopes-school/vladji-RS2019Q3/issues"
-  },
-  "homepage": "https://github.com/rolling-scopes-school/vladji-RS2019Q3#readme"
+  "volta": {
+    "node": "12.22.12"
+  }
 }
