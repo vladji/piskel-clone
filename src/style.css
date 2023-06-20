@@ -4,9 +4,22 @@
 }
 
 body {
-  color: #f7f7f7;
+  display: flex;
+  height: 100vh;
   background-color: #374848;
+  color: #f7f7f7;
   font-family: "Chakra Petch", sans-serif;
+}
+
+.body-inner {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+main {
+  margin: 50px 0;
 }
 
 li {
@@ -55,10 +68,6 @@ header h1 {
 .auth-block button {
   color: #fff;
   font-size: 1.2rem;
-}
-
-main {
-  margin-top: 50px;
 }
 
 ul {
@@ -425,12 +434,11 @@ li.drop-elem-proxy {
 footer {
   display: flex;
   align-items: center;
-  height: 50px;
-  margin-top: 50px;
+  height: 80px;
   background-color: #2b2b2b;
 }
 
-.footer-wrapper {
+.footer-inner {
   width: 100%;
 }
 

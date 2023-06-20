@@ -35,7 +35,7 @@ header {
   text-align: center;
   border-bottom: 2px solid #1b1b1b;
   -webkit-box-shadow: 0 0 8px #000;
-          box-shadow: 0 0 8px #000;
+  box-shadow: 0 0 8px #000;
   background: #17797e;
 }
 
@@ -56,14 +56,12 @@ main h3 {
   font-size: 1.3em;
 }
 
-section,
-aside,
-footer {
-  margin-top: 5%;
+.section {
+  padding-block: 50px;
 }
 
 /* Examples section */
-.exapmles-section {
+.examples-section {
   text-align: center;
 }
 
@@ -81,11 +79,11 @@ footer {
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   margin-top: 20px;
   -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-wrap: wrap;
 }
 
 .img-list__item {
@@ -101,12 +99,11 @@ footer {
   top: 50%;
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 
 /* Feature section */
 .feature-section {
-  padding-top: 25px;
   background-color: #696969;
 }
 
@@ -115,10 +112,10 @@ footer {
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
   -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-wrap: wrap;
 }
 
 .feature {
@@ -135,6 +132,9 @@ footer {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+}
+
+.feature__item:not(:last-child) {
   margin-bottom: 25px;
 }
 
@@ -146,8 +146,8 @@ footer {
 @media (max-width: 1001px) {
   .feature_left .feature__item {
     -webkit-box-pack: justify;
-        -ms-flex-pack: justify;
-            justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
   }
 }
 
@@ -185,8 +185,8 @@ footer {
   display: flex;
   margin-bottom: 5px;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .author__contact li a {
@@ -219,8 +219,14 @@ footer {
 
 /* Footer */
 footer {
-  height: 40px;
+  display: flex;
+  align-items: center;
+  height: 80px;
   background-color: #292929;
+}
+
+footer .content-wrapper {
+  margin: 0;
 }
 
 footer p {
@@ -233,7 +239,7 @@ footer p {
   margin-top: 5%;
   left: 50%;
   -webkit-transform: translateX(-50%);
-          transform: translateX(-50%);
+  transform: translateX(-50%);
   border: 3px solid #000;
   border-radius: 5px;
   font-size: 1em;
@@ -247,4 +253,5 @@ footer p {
   text-decoration: none;
   text-shadow: 0 0 5px #000;
 }
+
 /*# sourceMappingURL=landing.css.map */
